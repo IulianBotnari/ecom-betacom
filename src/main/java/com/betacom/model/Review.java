@@ -42,7 +42,7 @@ public class Review {
     private Integer rating;
 
     @Column(columnDefinition = "TEXT")
-    private String comment;
+    private String review;
 
     @CreationTimestamp
     private LocalDate date;

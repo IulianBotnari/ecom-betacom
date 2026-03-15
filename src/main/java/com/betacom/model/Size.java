@@ -36,7 +36,7 @@ public class Size {
     private Product product;
 
     @Enumerated(EnumType.STRING)
-    private Sizes description; 
+    private Sizes size; 
 
     @Column(nullable = false)
     private Integer quantity;
