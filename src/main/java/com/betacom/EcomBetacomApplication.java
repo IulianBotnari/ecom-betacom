@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class EcomBetacomApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EcomBetacomApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EcomBetacomApplication.class, args);
+    }
 
 }
