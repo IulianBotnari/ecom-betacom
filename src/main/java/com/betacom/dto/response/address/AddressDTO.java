@@ -4,9 +4,10 @@ package com.betacom.dto.response.address;
 
 import com.betacom.model.User;
 
-
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,6 +15,8 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class AddressDTO {
 	private Long id;
 	private String city;

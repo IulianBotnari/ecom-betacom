@@ -9,8 +9,10 @@ import com.betacom.model.Address;
 import com.betacom.model.OrderDetail;
 import com.betacom.model.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -18,6 +20,8 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDTO {
 	
     private Long id;

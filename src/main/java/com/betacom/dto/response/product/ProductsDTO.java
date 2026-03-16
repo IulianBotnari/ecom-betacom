@@ -7,8 +7,10 @@ import com.betacom.model.Category;
 import com.betacom.model.Review;
 import com.betacom.model.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,6 +18,8 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductsDTO {
 	
 	

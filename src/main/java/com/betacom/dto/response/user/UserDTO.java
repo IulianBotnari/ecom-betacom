@@ -2,8 +2,11 @@ package com.betacom.dto.response.user;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,6 +14,8 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 		private Long id;
 	    private LocalDate birthday;
