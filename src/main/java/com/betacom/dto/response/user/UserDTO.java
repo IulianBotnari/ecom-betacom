@@ -1,7 +1,8 @@
 package com.betacom.dto.response.user;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import com.betacom.enums.Roles;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,14 +20,14 @@ import lombok.ToString;
 public class UserDTO {
 		private Long id;
 	    private LocalDate birthday;
-	    private LocalDateTime createDate;
-	    private LocalDateTime deleteDate;
+	    private LocalDate createDate;
+	    private LocalDate deleteDate;
 	    private String codiceFiscale;
 	    private String email;
 	    private String lastName;
 	    private String name;
 	    private String password;
 	    private String phone;
-	    private String role;
+	    private Roles role;
 
 }

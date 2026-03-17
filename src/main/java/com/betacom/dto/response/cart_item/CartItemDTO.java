@@ -1,5 +1,9 @@
 package com.betacom.dto.response.cart_item;
 
+import com.betacom.model.Cart;
+import com.betacom.model.Product;
+import com.betacom.model.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +20,8 @@ import lombok.ToString;
 public class CartItemDTO {
 	 	private Long id;
 	    private Integer quantity;
-	    private Long cartId;
-	    private Long productId;
-	    private Long sizeId;
+	    private Cart cart;
+	    private Product product;
+	    private Size size;
 
 }

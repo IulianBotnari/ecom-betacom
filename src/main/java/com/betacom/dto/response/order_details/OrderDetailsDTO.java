@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OederDetailsDTO {
+public class OrderDetailsDTO {
 	
     private Long id;
 
