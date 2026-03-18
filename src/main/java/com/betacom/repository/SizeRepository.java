@@ -7,5 +7,7 @@ import com.betacom.model.Size;
 
 @Repository
 public interface SizeRepository extends JpaRepository<Size, Long>{
+	
+	Size findBySize(String size) throws Exception;
 
 }

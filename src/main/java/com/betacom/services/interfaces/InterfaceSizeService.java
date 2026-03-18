@@ -6,6 +6,7 @@ import com.betacom.dto.request.review.ReviewRequest;
 import com.betacom.dto.request.size.SizeRequest;
 import com.betacom.dto.response.review.ReviewDTO;
 import com.betacom.dto.response.size.SizeDTO;
+import com.betacom.model.Size;
 
 public interface InterfaceSizeService {
 	SizeDTO getById(Long id) throws Exception;
@@ -17,4 +18,5 @@ public interface InterfaceSizeService {
 	void update(SizeRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
+
 }

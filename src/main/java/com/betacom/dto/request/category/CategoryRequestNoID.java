@@ -1,6 +1,5 @@
 package com.betacom.dto.request.category;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +14,8 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryRequest {
-	  @NotBlank(message = "Campo id non presente")
-	  private Long id;	
+public class CategoryRequestNoID {
+
 	  @NotBlank(message = "Campo categoria non puo essere nullo")
 	  private String category;
 }

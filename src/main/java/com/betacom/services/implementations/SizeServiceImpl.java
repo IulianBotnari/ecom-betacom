@@ -1,11 +1,16 @@
 package com.betacom.services.implementations;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.size.SizeRequest;
 import com.betacom.dto.response.size.SizeDTO;
+import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
+import com.betacom.dto_mappers.map_model.ModelMappers;
+import com.betacom.model.Size;
+import com.betacom.repository.SizeRepository;
 import com.betacom.services.interfaces.InterfaceSizeService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,33 +19,48 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class SizeServiceImpl implements InterfaceSizeService{@Override
+public class SizeServiceImpl implements InterfaceSizeService{
+	public final ModelMappers modelM;
+	
+	private final SizeRepository sizeR;
+	
+	@Override
 	public SizeDTO getById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Size response = sizeR.findById(id).orElseThrow(()-> new Exception("Size non trovata"));
+		return DtoResponseMapper.sizeDTO(response);
 	}
+
 
 	@Override
 	public List<SizeDTO> list() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Size> list = sizeR.findAll();
+		return list.stream().map(el -> DtoResponseMapper.sizeDTO(el)).collect(Collectors.toList());
 	}
 
 	@Override
 	public void create(SizeRequest request) throws Exception {
-		// TODO Auto-generated method stub
+		Size size = modelM.size(request);
+		
+		sizeR.save(size);
+
 		
 	}
 
 	@Override
 	public void update(SizeRequest request) throws Exception {
-		// TODO Auto-generated method stub
+		
+		Size response = sizeR.findById(request.getId()).orElseThrow(()-> new Exception("Size non trovata in db"));
+		
+		sizeR.save(response);
+
 		
 	}
 
 	@Override
 	public void delete(Long id) throws Exception {
-		// TODO Auto-generated method stub
+		Size response = sizeR.findById(id).orElseThrow(()-> new Exception("Size non trovata in db"));
+		
+		sizeR.delete(response);
 		
 	}
 
