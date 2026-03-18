@@ -2,7 +2,8 @@ package com.betacom.services.interfaces;
 
 import java.util.List;
 
-import com.betacom.dto.request.review.ReviewRequest;
+import com.betacom.dto.request.review.ReviewCreateRequest;
+import com.betacom.dto.request.review.ReviewUpdateRequest;
 import com.betacom.dto.request.size.SizeRequest;
 import com.betacom.dto.response.review.ReviewDTO;
 import com.betacom.dto.response.size.SizeDTO;
