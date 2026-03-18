@@ -28,7 +28,7 @@ public class UserCreateRequest {
 
 	@NotNull
 	private LocalDate birthday;
-
+	
 	@Pattern(regexp = "^[A-Z0-9]{16}$", message = "Codice fiscale non valido")
 	private String codiceFiscale;
 
