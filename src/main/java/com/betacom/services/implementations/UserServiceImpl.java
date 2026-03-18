@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
 import com.betacom.dto.response.user.UserDTO;
+import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.enums.Roles;
 import com.betacom.model.User;
 import com.betacom.repository.UserRepository;
@@ -30,16 +31,7 @@ public class UserServiceImpl implements InterfaceUserService{
 		User user = userR.findById(id)
 		        .orElseThrow(() -> new Exception("utente non presente in DB"));
 
-		return UserDTO.builder()
-				.name(user.getName())
-				.lastName(user.getLastName())
-				.birthday(user.getBirthday())
-				.codiceFiscale(user.getCodiceFiscale())
-				.email(user.getEmail())
-				.password(user.getPassword())
-				.phone(user.getPhone())
-				.role(user.getRole())
-				.build();
+		return DtoResponseMapper.userDTO(user);
 	}
 
 	@Override
@@ -47,18 +39,10 @@ public class UserServiceImpl implements InterfaceUserService{
 		log.debug("list");
 		
 		List<User> users = userR.findAll();
-
-		return users.stream().map(user -> UserDTO.builder()
-				.name(user.getName())
-				.lastName(user.getLastName())
-				.birthday(user.getBirthday())
-				.codiceFiscale(user.getCodiceFiscale())
-				.email(user.getEmail())
-				.password(user.getPassword())
-				.phone(user.getPhone())
-				.role(user.getRole())
-				.build()
-				).collect(Collectors.toList());
+		
+		return users.stream().map(user -> 
+			DtoResponseMapper.userDTO(user))
+				.collect(Collectors.toList());
 	}
 
 	@Override
