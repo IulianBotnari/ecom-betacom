@@ -3,9 +3,7 @@ package com.betacom.services.interfaces;
 import java.util.List;
 
 import com.betacom.dto.request.cart.CartRequest;
-import com.betacom.dto.request.cart_item.CartItemRequest;
 import com.betacom.dto.response.cart.CartDTO;
-import com.betacom.dto.response.cart_item.CartItemDTO;
 
 public interface InterfaceCartService {
 	CartDTO getById(Long id) throws Exception;
