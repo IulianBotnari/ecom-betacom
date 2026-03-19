@@ -1,9 +1,4 @@
 package com.betacom.dto_mappers.map_model;
-
-
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.hibernate.annotations.Comment;
 import org.springframework.stereotype.Component;
 
 import com.betacom.dto.request.category.CategoryRequest;
@@ -14,7 +9,6 @@ import com.betacom.enums.Sizes;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
 import com.betacom.repository.CategoryRepository;
-import com.betacom.repository.ProductRepository;
 import com.betacom.services.implementations.CategoryServiceImpl;
 import com.betacom.services.implementations.ProductServiceImpl;
 import com.betacom.services.implementations.SizeServiceImpl;
