@@ -1,6 +1,7 @@
 package com.betacom.services.implementations;
 
 import java.util.List;
+import java.util.Locale.Category;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -43,8 +44,8 @@ public class ProductServiceImpl implements InterfaceProductService{
 
 	@Override
 	public void create(ProductRequest request) throws Exception {
-		
-		Product product = modelM.product(request);
+		com.betacom.model.Category category = categoryS.getModelCategoryById(request.getCategoryId());
+		Product product = modelM.product(request, category);
 		
 		productR.save(product);
 		
@@ -53,8 +54,8 @@ public class ProductServiceImpl implements InterfaceProductService{
 
 	@Override
 	public void update(ProductRequest request) throws Exception {
-		
-		Product product = modelM.product(request);
+		com.betacom.model.Category category = categoryS.getModelCategoryById(request.getCategoryId());
+		Product product = modelM.product(request, category);
 		
 		productR.save(product);
 		

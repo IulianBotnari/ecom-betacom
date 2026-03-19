@@ -39,7 +39,7 @@ public class SizeServiceImpl implements InterfaceSizeService{
 
 	@Override
 	public void create(SizeRequest request) throws Exception {
-		Size size = modelM.size(request);
+		Size size = modelM.size(request, null);
 		
 		sizeR.save(size);
 

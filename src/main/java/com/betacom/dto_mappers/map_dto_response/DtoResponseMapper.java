@@ -13,6 +13,9 @@ import com.betacom.model.Review;
 import com.betacom.model.Size;
 import com.betacom.model.User;
 import com.betacom.model.WishList;
+
+import org.springframework.stereotype.Component;
+
 import com.betacom.dto.response.address.*;
 import com.betacom.dto.response.card.*;
 import com.betacom.dto.response.cart.CartDTO;
@@ -27,6 +30,7 @@ import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.dto.response.user.UserDTO;
 import com.betacom.dto.response.wish_list.WishListDTO;
 
+@Component
 public class DtoResponseMapper {
 
 	

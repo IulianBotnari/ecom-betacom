@@ -23,13 +23,18 @@ public class CategoryServiceImpl implements InterfaceCategoryService{
 	
 	
 	private final CategoryRepository categoryR;
-	private final CategoryServiceImpl categoryS;
+
 	private final ModelMappers modelM;
 	
 	@Override
 	public CategoryDTO getById(Long id) throws Exception {
 		Category response = categoryR.findById(id).orElseThrow(()-> new Exception("Categoria non trovata in db"));
 		return DtoResponseMapper.categoryDTO(response);
+	}
+	
+	public Category getModelCategoryById(Long id) throws Exception {
+		Category response = categoryR.findById(id).orElseThrow(()-> new Exception("Categoria non trovata in db"));
+		return response;
 	}
 	
 	@Override

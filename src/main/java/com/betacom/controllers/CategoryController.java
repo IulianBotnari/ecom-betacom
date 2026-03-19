@@ -1,5 +1,6 @@
 package com.betacom.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(path = "/rest/category/")
 public class CategoryController {
 	
+	@Autowired
 	private final InterfaceCategoryService categoryS;
 	
 	@PostMapping(path = "create")
