@@ -1,6 +1,6 @@
 package com.betacom.dto.request.payment_method;
 
-import com.betacom.dto.request.address.AddressRequest;
+import com.betacom.dto.request.address.AddressCreateRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
