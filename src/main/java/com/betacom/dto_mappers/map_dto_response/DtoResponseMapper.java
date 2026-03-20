@@ -81,7 +81,6 @@ public class DtoResponseMapper {
 				.quantity(model.getQuantity())
 				.cart(model.getCart())
 				.product(model.getProduct())
-				.size(model.getSize())
 				.build();
 	}
 	

@@ -1,7 +1,5 @@
 package com.betacom.dto.request.cart;
 
-import com.betacom.dto.request.address.AddressRequest;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,5 +14,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartRequest {
-    private Long userId;
+	private Long userId;
+	private Long cartItemsId;
 }
