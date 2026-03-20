@@ -73,6 +73,8 @@ public class UserServiceImpl implements InterfaceUserService{
 	    if (request.getName() != null) {
 	        user.setName(request.getName());
 	    }
+	    
+	    
 
 	    if (request.getLastName() != null) {
 	        user.setLastName(request.getLastName());

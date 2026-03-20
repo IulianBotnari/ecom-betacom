@@ -1,5 +1,6 @@
-package com.betacom.dto.response.payment_method;
+	package com.betacom.dto.response.payment_method;
 
+import com.betacom.dto.response.card.CardDTO;
 import com.betacom.model.Card;
 import com.betacom.model.User;
 
@@ -20,10 +21,10 @@ public class PaymentMethodDTO {
 	 
 		private Long id;
 		
-		private User user;
-
 	    private String description; 
 	    
-	    private Card card;
+	    private CardDTO card;
+	    
+	    private Long userId;
 
 }
