@@ -9,8 +9,9 @@ import com.betacom.dto.request.card.CardRequest;
 import com.betacom.dto.response.card.CardDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.model.Card;
-import com.betacom.model.User;
+import com.betacom.model.PaymentMethod;
 import com.betacom.repository.CardRepository;
+import com.betacom.repository.PaymentMethodRepository;
 import com.betacom.services.interfaces.InterfaceCardService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 public class CardServiceImpl implements InterfaceCardService{
 	
 	private final CardRepository cardR;
-
+	private final PaymentMethodRepository pmR;
+	
 	@Override
 	public CardDTO getById(Long id) throws Exception {
 	log.debug("getById {}", id);
-	
+		
 	Card card = cardR.findById(id) 
 			.orElseThrow(() -> new Exception("carta non presente in DB"));;
 	
@@ -55,6 +57,8 @@ public class CardServiceImpl implements InterfaceCardService{
 		card.setCvv(request.getCvv());
 		card.setCardHolder(request.getCardHolder());
 		
+			
+		
 		cardR.save(card);
 	
 	}
@@ -81,7 +85,7 @@ public class CardServiceImpl implements InterfaceCardService{
 		}
 		
 		if(request.getCardHolder()!=null) {
-			card.setCardHolder(request.getCvv());
+			card.setCardHolder(request.getCardHolder());
 		}
 		
 		cardR.save(card);
@@ -94,6 +98,10 @@ public class CardServiceImpl implements InterfaceCardService{
 
 		Card card = cardR.findById(id)
 		        .orElseThrow(() -> new Exception("card non presente in DB"));
+		
+		if (card.getPaymentMethod() != null) {
+            card.getPaymentMethod().setCard(null);
+        }
 		
 		cardR.delete(card);
 		

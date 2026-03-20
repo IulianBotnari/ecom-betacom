@@ -53,7 +53,6 @@ public class DtoResponseMapper {
 		
 		return CardDTO.builder()
 				.id(model.getId())
-				.paymentMethod(model.getPaymentMethod())
 				.cardNumber(model.getCardNumber())
 				.expiryDate(model.getExpiryDate())
 				.cvv(model.getCvv())
@@ -117,9 +116,9 @@ public class DtoResponseMapper {
 	public static PaymentMethodDTO paymentMethodDTO(PaymentMethod model) {
 		return PaymentMethodDTO.builder()
 				.id(model.getId())
-				.user(model.getUser())
 				.description(model.getDescription())
-				.card(model.getCard())
+				.card(cardDTO(model.getCard()))
+				.userId(model.getUser().getId())
 				.build();
 	}
 	
