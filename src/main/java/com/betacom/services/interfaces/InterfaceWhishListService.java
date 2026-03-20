@@ -2,9 +2,8 @@ package com.betacom.services.interfaces;
 
 import java.util.List;
 
-import com.betacom.dto.request.user.UserCreateRequest;
-import com.betacom.dto.request.wish_list.WishlistRequest;
-import com.betacom.dto.response.user.UserDTO;
+import com.betacom.dto.request.wish_list.WishlistCreateRequest;
+import com.betacom.dto.request.wish_list.WishlistUpdateRequest;
 import com.betacom.dto.response.wish_list.WishListDTO;
 
 public interface InterfaceWhishListService {
@@ -12,9 +11,9 @@ public interface InterfaceWhishListService {
 	
 	List<WishListDTO> list() throws Exception;
 	
-	void create(WishlistRequest request) throws Exception;
+	void create(WishlistCreateRequest request) throws Exception;
 	
-	void update(WishlistRequest request) throws Exception;
+	void update(WishlistUpdateRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
 }
