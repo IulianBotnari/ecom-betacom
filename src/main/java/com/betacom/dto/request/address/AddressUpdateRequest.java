@@ -13,10 +13,9 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressRequest {
-	
+public class AddressUpdateRequest {
+	private Long id;
 	private Long userId;
-
     private String city;
     private String street;
     private String civic;
@@ -24,8 +23,7 @@ public class AddressRequest {
     private String province;
     private String cap;
     private String country;
-
-    private boolean residence;
-    private boolean domicile;
-    private boolean defaultAddress;
+    private Boolean residence;
+    private Boolean domicile;
+    private Boolean defaultAddress;
 }

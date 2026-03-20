@@ -2,6 +2,8 @@ package com.betacom.dto.request.user;
 
 import java.time.LocalDate;
 
+import com.betacom.enums.Roles;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,29 +22,29 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCreateRequest {
-	@NotBlank
+	@NotBlank(message = "Campo name mancante")
 	private String name;
 
-	@NotBlank
+	@NotBlank(message = "Campo lastName mancante")
 	private String lastName;
 
-	@NotNull
+	@NotNull(message = "Campo birthday mancante")
 	private LocalDate birthday;
 	
 	@Pattern(regexp = "^[A-Z0-9]{16}$", message = "Codice fiscale non valido")
 	private String codiceFiscale;
 
-	@NotBlank
+	@NotBlank(message = "Campo email mancante")
 	@Email
 	private String email;
 
-	@NotBlank
+	@NotBlank(message = "Campo password mancante")
 	private String password;
 
-	@NotBlank
+	@NotBlank(message = "Campo phone mancante")
 	@Pattern(regexp = "^[0-9]{10}$", message = "Telefono non valido")
 	private String phone;
 
-	@NotBlank
-	private String role;
+	@NotNull(message = "Campo role mancante")
+	private Roles role;
 }

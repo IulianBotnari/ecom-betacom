@@ -1,12 +1,5 @@
 package com.betacom.dto.request.product;
 
-import java.util.List;
-
-import com.betacom.dto.request.address.AddressRequest;
-import com.betacom.model.Category;
-import com.betacom.model.Review;
-import com.betacom.model.Size;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

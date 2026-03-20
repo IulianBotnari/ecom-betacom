@@ -1,5 +1,7 @@
 package com.betacom.dto.request.cart_item;
 
+import com.betacom.dto.request.address.AddressCreateRequest;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

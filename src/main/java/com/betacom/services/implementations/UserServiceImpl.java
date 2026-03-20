@@ -58,7 +58,7 @@ public class UserServiceImpl implements InterfaceUserService{
 		user.setEmail(request.getEmail());
 		user.setPassword(request.getPassword());
 		user.setPhone(request.getPhone());
-		user.setRole(Roles.valueOf(request.getRole()));
+		user.setRole(request.getRole());
 		
 		userR.save(user);
 	}

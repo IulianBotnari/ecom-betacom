@@ -1,5 +1,6 @@
 package com.betacom.dto.request.category;
 
+import com.betacom.dto.request.address.AddressCreateRequest;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,7 @@
 package com.betacom.dto.request.size;
 
+import com.betacom.dto.request.address.AddressCreateRequest;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
