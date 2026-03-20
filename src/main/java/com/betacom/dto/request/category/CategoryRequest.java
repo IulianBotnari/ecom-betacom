@@ -17,7 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryRequest {
-	  @NotBlank(message = "Campo id non presente")
+
 	  private Long id;	
 	  @NotBlank(message = "Campo categoria non puo essere nullo")
 	  private String category;

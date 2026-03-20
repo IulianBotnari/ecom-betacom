@@ -17,13 +17,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SizeRequest {
-	@NotBlank(message = "Manca campo id size")
+
 	private Long id;
-	@NotBlank(message = "Manca campo id prodotto")
+
     private Long productId;
 	@NotBlank(message = "Manca campo size")
     private String size;
-	@NotBlank(message = "Manca campo quantita")
+	
     private Integer quantity;
 
 }

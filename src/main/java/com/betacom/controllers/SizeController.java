@@ -38,7 +38,7 @@ public class SizeController {
 			response = "Creazione avvenuta con successo";
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
-			response = "Errore durnate il salvataggio";
+			response = e.getMessage();
 		}
 		return ResponseEntity.status(status).body(response);
 	}

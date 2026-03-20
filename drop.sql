@@ -1,79 +1,31 @@
-
-    set client_min_messages = WARNING;
-
-    alter table if exists addresses 
-       drop constraint if exists FK1fa36y2oqhao3wgg2rw1pi459;
-
-    alter table if exists cart_items 
-       drop constraint if exists FKpcttvuq4mxppo8sxggjtn5i2c;
-
-    alter table if exists cart_items 
-       drop constraint if exists FK1re40cjegsfvw58xrkdp6bac6;
-
-    alter table if exists carts 
-       drop constraint if exists FKb5o626f86h46m4s7ms6ginnop;
-
-    alter table if exists order_details 
-       drop constraint if exists FKjyu2qbqt8gnvno9oe9j2s2ldk;
-
-    alter table if exists order_details 
-       drop constraint if exists FK4q98utpd73imf4yhttm3w0eax;
-
-    alter table if exists order_details 
-       drop constraint if exists FKq1pfc355kfs5d2yjbdfhk4m5o;
-
-    alter table if exists orders 
-       drop constraint if exists FKjln2fg6oii48r6v3f8pcm96o7;
-
-    alter table if exists orders 
-       drop constraint if exists FK32ql8ubntj5uh44ph9659tiih;
-
-    alter table if exists payment_methods 
-       drop constraint if exists FK2oiswbo86cg7m13qakop2yuay;
-
-    alter table if exists payment_methods 
-       drop constraint if exists FKin7rtmim3ljrrhh5kxbq27s2v;
-
-    alter table if exists products 
-       drop constraint if exists FKog2rp4qthbtt2lfyhfo32lsw9;
-
-    alter table if exists reviews 
-       drop constraint if exists FKpl51cejpw4gy5swfar8br9ngi;
-
-    alter table if exists reviews 
-       drop constraint if exists FKcgy7qjc1r99dp117y9en6lxye;
-
-    alter table if exists sizes 
-       drop constraint if exists FKhs86kbnk4imwcyupgxp1g5dd2;
-
-    alter table if exists wishlist 
-       drop constraint if exists FK6p7qhvy1bfkri13u29x6pu8au;
-
-    alter table if exists wishlist 
-       drop constraint if exists FKtrd6335blsefl2gxpb8lr0gr7;
-
-    drop table if exists addresses cascade;
-
-    drop table if exists cards cascade;
-
-    drop table if exists cart_items cascade;
-
-    drop table if exists carts cascade;
-
-    drop table if exists categories cascade;
-
-    drop table if exists order_details cascade;
-
-    drop table if exists orders cascade;
-
-    drop table if exists payment_methods cascade;
-
-    drop table if exists products cascade;
-
-    drop table if exists reviews cascade;
-
-    drop table if exists sizes cascade;
-
-    drop table if exists users cascade;
-
-    drop table if exists wishlist cascade;
+set client_min_messages = WARNING;
+alter table if exists addresses drop constraint if exists FK1fa36y2oqhao3wgg2rw1pi459;
+alter table if exists cart_items drop constraint if exists FKpcttvuq4mxppo8sxggjtn5i2c;
+alter table if exists cart_items drop constraint if exists FK1re40cjegsfvw58xrkdp6bac6;
+alter table if exists carts drop constraint if exists FKb5o626f86h46m4s7ms6ginnop;
+alter table if exists order_details drop constraint if exists FKjyu2qbqt8gnvno9oe9j2s2ldk;
+alter table if exists order_details drop constraint if exists FK4q98utpd73imf4yhttm3w0eax;
+alter table if exists order_details drop constraint if exists FKq1pfc355kfs5d2yjbdfhk4m5o;
+alter table if exists orders drop constraint if exists FKjln2fg6oii48r6v3f8pcm96o7;
+alter table if exists orders drop constraint if exists FK32ql8ubntj5uh44ph9659tiih;
+alter table if exists payment_methods drop constraint if exists FK2oiswbo86cg7m13qakop2yuay;
+alter table if exists payment_methods drop constraint if exists FKin7rtmim3ljrrhh5kxbq27s2v;
+alter table if exists products drop constraint if exists FKog2rp4qthbtt2lfyhfo32lsw9;
+alter table if exists reviews drop constraint if exists FKpl51cejpw4gy5swfar8br9ngi;
+alter table if exists reviews drop constraint if exists FKcgy7qjc1r99dp117y9en6lxye;
+alter table if exists sizes drop constraint if exists FKhs86kbnk4imwcyupgxp1g5dd2;
+alter table if exists wishlist drop constraint if exists FK6p7qhvy1bfkri13u29x6pu8au;
+alter table if exists wishlist drop constraint if exists FKtrd6335blsefl2gxpb8lr0gr7;
+drop table if exists addresses cascade;
+drop table if exists cards cascade;
+drop table if exists cart_items cascade;
+drop table if exists carts cascade;
+drop table if exists categories cascade;
+drop table if exists order_details cascade;
+drop table if exists orders cascade;
+drop table if exists payment_methods cascade;
+drop table if exists products cascade;
+drop table if exists reviews cascade;
+drop table if exists sizes cascade;
+drop table if exists users cascade;
+drop table if exists wishlist cascade;

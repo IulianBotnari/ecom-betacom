@@ -9,7 +9,9 @@ import com.betacom.dto.request.size.SizeRequest;
 import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
+import com.betacom.model.Product;
 import com.betacom.model.Size;
+import com.betacom.repository.ProductRepository;
 import com.betacom.repository.SizeRepository;
 import com.betacom.services.interfaces.InterfaceSizeService;
 
@@ -23,6 +25,7 @@ public class SizeServiceImpl implements InterfaceSizeService{
 	public final ModelMappers modelM;
 	
 	private final SizeRepository sizeR;
+	private final ProductRepository productR;
 	
 	@Override
 	public SizeDTO getById(Long id) throws Exception {
@@ -39,7 +42,8 @@ public class SizeServiceImpl implements InterfaceSizeService{
 
 	@Override
 	public void create(SizeRequest request) throws Exception {
-		Size size = modelM.size(request, null);
+		Product product = productR.findById(request.getProductId()).orElseThrow(()-> new Exception("Prodotto non trovato"));
+		Size size = modelM.size(request, product);
 		
 		sizeR.save(size);
 
