@@ -16,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
+	private Long id;
 	private Long userId;
     private Long shippingAddress;
     private Double total;
