@@ -35,7 +35,6 @@ public class CardRequest {
     @Pattern(regexp = "^(0[1-9]|1[0-2])/[0-9]{2}$", message = "Formato scadenza non valido (MM/YY)")
     private String expiryDate;
 
-    // Il CVV: presente nella Request per la validazione, ma non verrà mai salvato nel DB
     @NotBlank(message = "Il CVV è obbligatorio")
     @Pattern(regexp = "^[0-9]{3}$", message = "Il CVV deve essere di 3 cifre")
     private String cvv;

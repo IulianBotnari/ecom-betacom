@@ -81,24 +81,24 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 		log.debug("create {}", request);
 		
 		PaymentMethod pm = pmR.findById(request.getId())
-		        .orElseThrow(() -> new Exception("utente non presente in DB"));
+		        .orElseThrow(() -> new Exception("Metodo di pagamento non trovato"));
 		
 		
 		if(request.getDescription()!=null) {
 			pm.setDescription(request.getDescription());
 		}
 		
-		// Aggiorno l'utente se presente
+		
         if (request.getUserId() != null) {
             User user = userR.findById(request.getUserId())
-                    .orElseThrow(() -> new Exception("Nuovo socio non trovato"));
+                    .orElseThrow(() -> new Exception("User non trovato"));	
             pm.setUser(user);
         }
 
-        // Aggiorno la carta se presente
+       
         if (request.getCardId() != null) {
             Card card = cardR.findById(request.getCardId())
-                    .orElseThrow(() -> new Exception("Nuova carta non trovata"));
+                    .orElseThrow(() -> new Exception("Carta non trovata"));
             pm.setCard(card);
         }
 		
