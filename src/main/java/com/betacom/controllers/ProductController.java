@@ -29,7 +29,7 @@ public class ProductController {
 	
 	
 	@PostMapping(path = "create")
-	public ResponseEntity<Object> create(@Valid @RequestBody ProductRequest request) {
+	public ResponseEntity<Object> create( @RequestBody ProductRequest request) {
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
@@ -38,7 +38,7 @@ public class ProductController {
 			response = "Creazione avvenuta con successo";
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
-			response = "Errore durnate il salvataggio";
+			response = e.getMessage();
 		}
 		return ResponseEntity.status(status).body(response);
 	}

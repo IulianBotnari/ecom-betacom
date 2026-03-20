@@ -2,6 +2,8 @@ package com.betacom.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +31,7 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String category;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
