@@ -99,9 +99,7 @@ public class CardServiceImpl implements InterfaceCardService{
 		Card card = cardR.findById(id)
 		        .orElseThrow(() -> new Exception("card non presente in DB"));
 		
-		if (card.getPaymentMethod() != null) {
-            card.getPaymentMethod().setCard(null);
-        }
+		
 		
 		cardR.delete(card);
 		

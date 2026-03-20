@@ -1,6 +1,7 @@
 	package com.betacom.model;
 	
-	import jakarta.persistence.Column;
+	import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ import lombok.ToString;
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
 	
-	    @OneToOne(mappedBy = "card")
+		@OneToOne(mappedBy = "card", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	    @ToString.Exclude
 	    private PaymentMethod paymentMethod;
 	
