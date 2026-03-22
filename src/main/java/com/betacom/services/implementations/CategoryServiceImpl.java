@@ -63,6 +63,10 @@ public class CategoryServiceImpl implements InterfaceCategoryService{
 	@Override
 	public void update(CategoryRequest request) throws Exception {
 		Category response = categoryR.findById(request.getId()).orElseThrow(()-> new Exception("Categoria non trovata in db"));
+		if (request.getCategory() != null) {
+			request.getCategory().toUpperCase().trim();
+			response.setCategory(request.getCategory());
+		}
 		categoryR.save(response);
 	}
 

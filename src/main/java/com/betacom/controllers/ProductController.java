@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.request.product.ProductRequest;
+import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.services.interfaces.InterfaceProductService;
 
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ public class ProductController {
 	
 	
 	@PutMapping(path = "update")
-	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) ProductRequest request){
+	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) ProudctUpdate request){
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
