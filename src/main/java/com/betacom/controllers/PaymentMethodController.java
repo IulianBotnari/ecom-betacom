@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.request.payment_method.PaymentMethodRequest;
-import com.betacom.dto.request.user.UserUpdateRequest;
 import com.betacom.services.interfaces.InterfacePaymentMethodService;
 
 import jakarta.validation.Valid;
@@ -45,12 +45,13 @@ public class PaymentMethodController {
 	
 	
 	
-	@PutMapping(path = "update")
-	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) PaymentMethodRequest request){
+	@PutMapping(path = "update/{id}")
+	public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody PaymentMethodRequest request){
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
+			request.setId(id);	
 			pmS.update(request);
 			response = "Salvataggio completato";
 		} catch (Exception e) {

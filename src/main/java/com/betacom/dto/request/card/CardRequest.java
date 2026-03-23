@@ -2,8 +2,8 @@ package com.betacom.dto.request.card;
 
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +19,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CardRequest {
-    
-    
-    private Long id;
 
-    
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private Long id;
+	
     @NotBlank(message = "Il titolare della carta è obbligatorio")
     private String cardHolder;
 

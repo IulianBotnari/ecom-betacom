@@ -1,8 +1,8 @@
 package com.betacom.dto.request.payment_method;
 
-import com.betacom.dto.request.address.AddressCreateRequest;
 import com.betacom.dto.request.card.CardRequest;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,10 +17,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentMethodRequest {
-
-	private Long id;
+	
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY) 
+    private Long id;
+	
     private Long userId;
-    private Long cardId;
+    private CardRequest card;
     private String description;
 
 }	

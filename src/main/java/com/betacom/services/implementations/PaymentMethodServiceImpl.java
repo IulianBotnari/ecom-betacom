@@ -1,7 +1,5 @@
 package com.betacom.services.implementations;
 
-
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +14,7 @@ import com.betacom.model.User;
 import com.betacom.repository.CardRepository;
 import com.betacom.repository.PaymentMethodRepository;
 import com.betacom.repository.UserRepository;
+import com.betacom.services.interfaces.InterfaceCardService;
 import com.betacom.services.interfaces.InterfacePaymentMethodService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,8 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 	
 	private final UserRepository userR;
 	
-	private final CardRepository cardR;
+	
+	private final InterfaceCardService cardService;
 	
 	@Override
 	public PaymentMethodDTO getById(Long id) throws Exception {
@@ -62,10 +62,10 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 		User user = userR.findById(request.getUserId())
 				.orElseThrow(() -> new Exception("User non trovato in DB:" + request.getUserId()));
 		
-		Card card = cardR.findById(request.getCardId())
-	            .orElseThrow(() -> new Exception("Carta non trovata in DB:" + request.getCardId()));
+		//Card card = cardR.findById(request.getCardId())
+	  //.orElseThrow(() -> new Exception("Carta non trovata in DB:" + request.getCardId()));
 			
-		
+		Card card = cardService.create(request.getCard());
 		
 		PaymentMethod pm = new PaymentMethod();
 	    pm.setDescription(request.getDescription());
@@ -87,22 +87,23 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 		if(request.getDescription()!=null) {
 			pm.setDescription(request.getDescription());
 		}
-		
-		
+			
         if (request.getUserId() != null) {
             User user = userR.findById(request.getUserId())
                     .orElseThrow(() -> new Exception("User non trovato"));	
             pm.setUser(user);
         }
 
-       
-        if (request.getCardId() != null) {
-            Card card = cardR.findById(request.getCardId())
-                    .orElseThrow(() -> new Exception("Carta non trovata"));
-            pm.setCard(card);
-        }
+      
+        if (request.getCard() != null) {	
+        	Long idCartaDaAggiornare = pm.getCard().getId();
+        	
+        	request.getCard().setId(idCartaDaAggiornare);
+        	
+            cardService.update(request.getCard());
 		
 		pmR.save(pm);
+        }
 	}
 
 	@Override
