@@ -60,9 +60,7 @@ public class CartServiceImpl implements InterfaceCartService{
 				.orElseThrow(()-> new Exception ("user non trovato"));
 		
 		Cart cart = new Cart();
-		
 		cart.setUser(user);
-		cart.setCartItems(new ArrayList<>()); 
 		
 		cartR.save(cart);
 		
