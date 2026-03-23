@@ -47,7 +47,7 @@ public class ProductServiceImpl implements InterfaceProductService{
 	public void create(ProductRequest request) throws Exception {
 		if (request.getCategoryId() == null) throw new Exception("Campo categoria id non puo essere vuoto");
 		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
-		Category category = categoryR.findById(request.getId()).orElseThrow(()-> new Exception("Categoria non trovata"));
+		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
 		Product product = modelM.product(request, category);
 		
 		productR.save(product);

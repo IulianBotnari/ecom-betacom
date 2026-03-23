@@ -41,6 +41,7 @@ public class ProductController {
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
 			response = e.getMessage();
+			e.printStackTrace();
 		}
 		return ResponseEntity.status(status).body(response);
 	}

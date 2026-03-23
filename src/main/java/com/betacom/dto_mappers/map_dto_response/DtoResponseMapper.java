@@ -167,7 +167,6 @@ public class DtoResponseMapper {
 				.id(model.getId())
 				.birthday(model.getBirthday())
 				.createDate(model.getCreateDate())
-				.deleteDate(model.getDeleteDate())
 				.codiceFiscale(model.getCodiceFiscale())
 				.email(model.getEmail())
 				.lastName(model.getLastName())
