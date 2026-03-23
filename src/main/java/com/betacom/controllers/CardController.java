@@ -92,10 +92,10 @@ public class CardController {
 	}
 	
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@RequestParam(required = true) Long id){
+	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
 		Object response = null;
 		
-		HttpStatus status = HttpStatus.CREATED;
+		HttpStatus status = HttpStatus.OK;
 		
 		try {
 			cardS.delete(id);

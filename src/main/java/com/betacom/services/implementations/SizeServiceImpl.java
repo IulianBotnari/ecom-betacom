@@ -9,6 +9,7 @@ import com.betacom.dto.request.size.SizeRequest;
 import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
+import com.betacom.enums.Sizes;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
 import com.betacom.repository.ProductRepository;
@@ -54,6 +55,20 @@ public class SizeServiceImpl implements InterfaceSizeService{
 	public void update(SizeRequest request) throws Exception {
 		
 		Size response = sizeR.findById(request.getId()).orElseThrow(()-> new Exception("Size non trovata in db"));
+		if (request.getProductId()!= null) {
+			Product product = productR.findById(request.getId()).orElseThrow(()-> new Exception("Prodotto non trovato"));
+			response.setProduct(product);
+		}
+		
+		if (request.getSize() != null) {
+			response.setSize(Sizes.valueOf(request.getSize()));
+			
+		}
+		
+		if (request.getQuantity() != null) {
+			response.setQuantity(request.getQuantity());
+			
+		}
 		
 		sizeR.save(response);
 

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,20 +27,20 @@ import lombok.extern.slf4j.Slf4j;
 public class CartController {
 private final InterfaceCartService cartS;
 	
-	@PostMapping(path = "create")
-	public ResponseEntity<Object> create(@Valid @RequestBody CartRequest request) {
-		Object response = null;
-		HttpStatus status = HttpStatus.CREATED;
-		
-		try {
-			cartS.create(request);
-			response = "Creazione avvenuta con successo";
-		} catch (Exception e) {
-			status = HttpStatus.BAD_REQUEST;
-			response = "Errore durnate il salvataggio";
-		}
-		return ResponseEntity.status(status).body(response);
-	}
+//	@PostMapping(path = "create")
+//	public ResponseEntity<Object> create(@Valid @RequestBody CartRequest request) {
+//		Object response = null;
+//		HttpStatus status = HttpStatus.CREATED;
+//		
+//		try {
+//			cartS.create(request);
+//			response = "Creazione avvenuta con successo";
+//		} catch (Exception e) {
+//			status = HttpStatus.BAD_REQUEST;
+//			response = "Errore durnate il salvataggio";
+//		}
+//		return ResponseEntity.status(status).body(response);
+//	}
 	
 	
 	
@@ -62,10 +63,10 @@ private final InterfaceCartService cartS;
 	
 	
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@RequestParam(required = true) Long id){
+	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
 		Object response = null;
 		
-		HttpStatus status = HttpStatus.CREATED;
+		HttpStatus status = HttpStatus.OK;
 		
 		try {
 			cartS.delete(id);

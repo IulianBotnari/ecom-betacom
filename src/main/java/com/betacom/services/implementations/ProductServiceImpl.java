@@ -1,17 +1,19 @@
 package com.betacom.services.implementations;
 
 import java.util.List;
-import java.util.Locale.Category;
-import java.util.stream.Collector;
+import com.betacom.model.Category;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.product.ProductRequest;
+
+import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.dto.response.product.ProductsDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
+import com.betacom.enums.Genders;
 import com.betacom.model.Product;
+import com.betacom.repository.CategoryRepository;
 import com.betacom.repository.ProductRepository;
 import com.betacom.services.interfaces.InterfaceProductService;
 
@@ -24,9 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImpl implements InterfaceProductService{
 	
 	private final ProductRepository productR;
-	private final CategoryServiceImpl categoryS;
+	private final CategoryRepository categoryR;
 	private final ModelMappers modelM;
-	private final DtoResponseMapper dtoResponseMapper;
 	
 	@Override
 	public ProductsDTO getById(Long id) throws Exception {
@@ -44,7 +45,9 @@ public class ProductServiceImpl implements InterfaceProductService{
 
 	@Override
 	public void create(ProductRequest request) throws Exception {
-		com.betacom.model.Category category = categoryS.getModelCategoryById(request.getCategoryId());
+		if (request.getCategoryId() == null) throw new Exception("Campo categoria id non puo essere vuoto");
+		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
+		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
 		Product product = modelM.product(request, category);
 		
 		productR.save(product);
@@ -53,9 +56,40 @@ public class ProductServiceImpl implements InterfaceProductService{
 	}
 
 	@Override
-	public void update(ProductRequest request) throws Exception {
-		com.betacom.model.Category category = categoryS.getModelCategoryById(request.getCategoryId());
-		Product product = modelM.product(request, category);
+	public void update(ProudctUpdate request) throws Exception {
+	
+		Product product = productR.findById(request.getId()).orElseThrow(()-> new Exception("Prodotto non trovato in db"));
+		
+		if (request.getCategoryId()!= null) {
+		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()->new Exception("Categoria non trovata in db"));
+		product.setCategory(category);
+		}
+		
+		if(request.getDescription()!= null) {
+			product.setDescription(request.getDescription());
+		}
+		
+		if(request.getGender() != null) {
+			product.setGender(Genders.valueOf(request.getGender()));
+		}
+		
+		if (request.getImage() != null) {
+			product.setImage(request.getImage());
+		}
+		
+		if(request.getMaterial()!= null) {
+			product.setMaterial(request.getMaterial());
+		}
+		
+		if(request.getPrice() != null) {
+			product.setPrice(request.getPrice());
+		}
+		
+		if(request.getName() != null) {
+			product.setName(request.getName());
+		}
+		
+		
 		
 		productR.save(product);
 		
@@ -64,7 +98,6 @@ public class ProductServiceImpl implements InterfaceProductService{
 	@Override
 	public void delete(Long id) throws Exception {
 		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));
-		
 		productR.delete(product);
 		
 	}
@@ -72,8 +105,7 @@ public class ProductServiceImpl implements InterfaceProductService{
 	@Override
 	public Product getProductModelById(Long id) throws Exception {
 		
-		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));
-		
+		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));		
 		return product;
 	}
 

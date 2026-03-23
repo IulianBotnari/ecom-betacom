@@ -83,8 +83,7 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDate createDate;
 	
-	@Column(name = "delete_date")
-	private LocalDate deleteDate;
+
 	
 	
 	

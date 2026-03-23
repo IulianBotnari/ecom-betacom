@@ -21,7 +21,7 @@ public class ModelMappers {
 		
 		public Product product(ProductRequest request, Category category) {
 	        return Product.builder()
-	                .id(request.getId())
+	              
 	                .name(request.getName())
 	                .image(request.getImage())
 	                .description(request.getDescription())
