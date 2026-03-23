@@ -62,18 +62,20 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 		User user = userR.findById(request.getUserId())
 				.orElseThrow(() -> new Exception("User non trovato in DB:" + request.getUserId()));
 		
-		Card card = cardR.findById(request.getCardId())
-	            .orElseThrow(() -> new Exception("Carta non trovata in DB:" + request.getCardId()));
+		
+		Card card = new Card();
+		card.setCardNumber(request.getCard().getCardNumber());
+		card.setExpiryDate(request.getCard().getExpiryDate());
+		card.setCvv(request.getCard().getCvv());
+		card.setCardHolder(request.getCard().getCardHolder());
 			
-		
-		
 		PaymentMethod pm = new PaymentMethod();
 	    pm.setDescription(request.getDescription());
 	    pm.setUser(user); 
 	    pm.setCard(card);
 	    
+	    cardR.save(card);
 	    pmR.save(pm);
-		
 	}
 
 	@Override
@@ -96,11 +98,11 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
         }
 
        
-        if (request.getCardId() != null) {
-            Card card = cardR.findById(request.getCardId())
-                    .orElseThrow(() -> new Exception("Carta non trovata"));
-            pm.setCard(card);
-        }
+//        if (request.getCardId() != null) {
+//            Card card = cardR.findById(request.getCardId())
+//                    .orElseThrow(() -> new Exception("Carta non trovata"));
+//            pm.setCard(card);
+//        }
 		
 		pmR.save(pm);
 	}
