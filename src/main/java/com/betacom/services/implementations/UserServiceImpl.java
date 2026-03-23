@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.betacom.dto.request.cart.CartRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
 import com.betacom.dto.response.user.UserDTO;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserServiceImpl implements InterfaceUserService{
 	
 	private final UserRepository userR;
+	private final CartServiceImpl cartService;
 	
 	@Override
 	public UserDTO getById(Long id) throws Exception {
@@ -60,7 +62,8 @@ public class UserServiceImpl implements InterfaceUserService{
 		user.setPhone(request.getPhone());
 		user.setRole(request.getRole());
 		
-		userR.save(user);
+		User userSaved = userR.save(user);
+		cartService.create(new CartRequest(userSaved.getId()));
 	}
 
 	@Override

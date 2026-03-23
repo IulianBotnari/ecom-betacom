@@ -17,5 +17,4 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CartRequest {
 	private Long userId;
-	private Long cartItemsId;
 }
