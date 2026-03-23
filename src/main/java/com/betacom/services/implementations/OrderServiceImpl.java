@@ -57,9 +57,13 @@ public class OrderServiceImpl implements InterfaceOrderService{
 	public void create(OrderRequest request) throws Exception {
 		log.debug("create {}", request);
 		
+		User user = userR.findById(request.getUserId())
+				.orElseThrow(()-> new Exception ("user non trovato"));
+		
 		Order order = new Order();
 		order.setStatus(OrderStatus.valueOf(request.getStatus()));
 	    order.setTotal(request.getTotal());
+	    order.setUser(user);	    
 	    
 	    orderR.save(order);
 	}
