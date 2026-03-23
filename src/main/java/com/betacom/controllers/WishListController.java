@@ -46,7 +46,7 @@ public class WishListController {
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity<Object> delete(@RequestParam Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         try {
             wishS.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body("Eliminazione wishlist completata");
