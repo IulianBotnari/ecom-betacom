@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.betacom.dto.request.card.CardRequest;
 import com.betacom.dto.response.card.CardDTO;
+import com.betacom.model.Card;
 
 
 public interface InterfaceCardService {
@@ -11,9 +12,17 @@ public interface InterfaceCardService {
 	
 	List<CardDTO> list() throws Exception;
 	
-	void create(CardRequest request) throws Exception;
+	Card create(CardRequest request) throws Exception;
 	
-	void update(CardRequest request) throws Exception;
+	//void update(CardRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
+
+	void update(CardRequest request) throws Exception;
+
+	
+
+	
+
+	
 }
