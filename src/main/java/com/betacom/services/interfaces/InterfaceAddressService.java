@@ -2,7 +2,8 @@ package com.betacom.services.interfaces;
 
 import java.util.List;
 
-import com.betacom.dto.request.address.AddressRequest;
+import com.betacom.dto.request.address.AddressCreateRequest;
+import com.betacom.dto.request.address.AddressUpdateRequest;
 import com.betacom.dto.response.address.AddressDTO;
 
 public interface InterfaceAddressService {
@@ -12,9 +13,9 @@ public interface InterfaceAddressService {
 	
 	List<AddressDTO> list() throws Exception;
 	
-	void create(AddressRequest request) throws Exception;
+	void create(AddressCreateRequest request) throws Exception;
 	
-	void update(AddressRequest request) throws Exception;
+	void update(AddressUpdateRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
 	

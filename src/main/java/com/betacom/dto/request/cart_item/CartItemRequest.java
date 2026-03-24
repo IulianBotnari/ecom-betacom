@@ -1,6 +1,6 @@
 package com.betacom.dto.request.cart_item;
 
-import com.betacom.dto.request.address.AddressRequest;
+import com.betacom.dto.request.address.AddressCreateRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +16,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItemRequest {
+	
+	private Long cartItemId;
 	private Long cartId;
     private Long productId;
     private Long sizeId;

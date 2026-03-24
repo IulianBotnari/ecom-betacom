@@ -33,7 +33,7 @@ public class Address {
 	@Column(nullable = false)
     private String street;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
     private String civic;
     
 	@Column(nullable = true)
@@ -49,7 +49,7 @@ public class Address {
     private String country;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") 
+    @JoinColumn(name = "user_id", nullable = true) 
     private User user;
 
     @Column(nullable = false)

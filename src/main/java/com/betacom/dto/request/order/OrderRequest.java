@@ -1,6 +1,6 @@
 package com.betacom.dto.request.order;
 
-import com.betacom.dto.request.address.AddressRequest;
+import com.betacom.dto.request.address.AddressCreateRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
+	private Long id;
 	private Long userId;
     private Long shippingAddress;
     private Double total;

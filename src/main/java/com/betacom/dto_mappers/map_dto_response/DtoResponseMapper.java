@@ -13,6 +13,9 @@ import com.betacom.model.Review;
 import com.betacom.model.Size;
 import com.betacom.model.User;
 import com.betacom.model.WishList;
+
+import org.springframework.stereotype.Component;
+
 import com.betacom.dto.response.address.*;
 import com.betacom.dto.response.card.*;
 import com.betacom.dto.response.cart.CartDTO;
@@ -27,6 +30,7 @@ import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.dto.response.user.UserDTO;
 import com.betacom.dto.response.wish_list.WishListDTO;
 
+@Component
 public class DtoResponseMapper {
 
 	
@@ -53,7 +57,6 @@ public class DtoResponseMapper {
 		
 		return CardDTO.builder()
 				.id(model.getId())
-				.paymentMethod(model.getPaymentMethod())
 				.cardNumber(model.getCardNumber())
 				.expiryDate(model.getExpiryDate())
 				.cvv(model.getCvv())
@@ -78,7 +81,6 @@ public class DtoResponseMapper {
 				.quantity(model.getQuantity())
 				.cart(model.getCart())
 				.product(model.getProduct())
-				.size(model.getSize())
 				.build();
 	}
 	
@@ -117,9 +119,9 @@ public class DtoResponseMapper {
 	public static PaymentMethodDTO paymentMethodDTO(PaymentMethod model) {
 		return PaymentMethodDTO.builder()
 				.id(model.getId())
-				.user(model.getUser())
 				.description(model.getDescription())
-				.card(model.getCard())
+				.card(cardDTO(model.getCard()))
+				.userId(model.getUser().getId())
 				.build();
 	}
 	
@@ -165,7 +167,6 @@ public class DtoResponseMapper {
 				.id(model.getId())
 				.birthday(model.getBirthday())
 				.createDate(model.getCreateDate())
-				.deleteDate(model.getDeleteDate())
 				.codiceFiscale(model.getCodiceFiscale())
 				.email(model.getEmail())
 				.lastName(model.getLastName())

@@ -45,8 +45,8 @@ public class ReviewController {
         }
     }
 
-    @DeleteMapping("delete")
-    public ResponseEntity<Object> delete(@RequestParam Long id) {
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         try {
             reviewS.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body("Eliminazione review completata");

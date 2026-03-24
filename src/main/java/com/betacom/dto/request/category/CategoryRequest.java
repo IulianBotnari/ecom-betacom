@@ -1,7 +1,8 @@
 package com.betacom.dto.request.category;
 
-import com.betacom.dto.request.address.AddressRequest;
+import com.betacom.dto.request.address.AddressCreateRequest;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,5 +17,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryRequest {
+
+	  private Long id;	
+	  @NotBlank(message = "Campo categoria non puo essere nullo")
 	  private String category;
 }
