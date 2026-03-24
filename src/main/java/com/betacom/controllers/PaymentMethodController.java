@@ -65,7 +65,7 @@ public class PaymentMethodController {
 	
 	
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
+	public ResponseEntity<Object> delete(@PathVariable(required = true) Long id){
 		Object response = null;
 		
 		HttpStatus status = HttpStatus.OK;

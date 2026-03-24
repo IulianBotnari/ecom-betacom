@@ -91,21 +91,21 @@ public class CardController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
-		Object response = null;
-		
-		HttpStatus status = HttpStatus.OK;
-		
-		try {
-			cardS.delete(id);
-			response = "Eliminazione completata";
-		} catch (Exception e) {
-			response = "Eliminazione non riuscita";
-			status = HttpStatus.BAD_REQUEST;
+		@DeleteMapping(path = "delete/{id}")
+		public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
+			Object response = null;
+			
+			HttpStatus status = HttpStatus.OK;
+			
+			try {
+				cardS.delete(id);
+				response = "Eliminazione completata";
+			} catch (Exception e) {
+				response = "Eliminazione non riuscita";
+				status = HttpStatus.BAD_REQUEST;
+			}
+			
+			
+			return ResponseEntity.status(status).body(response);
 		}
-		
-		
-		return ResponseEntity.status(status).body(response);
-	}
 }

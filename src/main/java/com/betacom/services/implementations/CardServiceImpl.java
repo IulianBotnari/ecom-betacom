@@ -64,13 +64,11 @@ public class CardServiceImpl implements InterfaceCardService{
 
 	@Override
 	public void update(CardRequest request) throws Exception {
-		log.debug("create {}", request);
+		log.debug("update {}", request);
 		
 		Card card = cardR.findById(request.getId())
 		        .orElseThrow(() -> new Exception("card non presente in DB"));
-	
-
-	
+		
 		if(request.getCardNumber()!=null) {
 			card.setCardNumber(request.getCardNumber());
 		}

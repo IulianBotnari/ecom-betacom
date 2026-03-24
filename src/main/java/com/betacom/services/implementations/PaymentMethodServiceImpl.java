@@ -11,7 +11,6 @@ import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.model.Card;
 import com.betacom.model.PaymentMethod;
 import com.betacom.model.User;
-import com.betacom.repository.CardRepository;
 import com.betacom.repository.PaymentMethodRepository;
 import com.betacom.repository.UserRepository;
 import com.betacom.services.interfaces.InterfaceCardService;
@@ -37,7 +36,7 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 	log.debug("getById {}", id);
 	
 	PaymentMethod paymentMethod = pmR.findById(id) 
-			.orElseThrow(() -> new Exception("carta non presente in DB"));;
+			.orElseThrow(() -> new Exception("Metodo di pagamento non presente in DB"));;
 	
 	return DtoResponseMapper.paymentMethodDTO(paymentMethod);
 	}
@@ -55,30 +54,30 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
 		
 	}
 
-	@Override
-	public void create(PaymentMethodRequest request) throws Exception {
-		log.debug("create {}", request);
-		
-		User user = userR.findById(request.getUserId())
-				.orElseThrow(() -> new Exception("User non trovato in DB:" + request.getUserId()));
-		
-		//Card card = cardR.findById(request.getCardId())
-	  //.orElseThrow(() -> new Exception("Carta non trovata in DB:" + request.getCardId()));
+		@Override
+		public void create(PaymentMethodRequest request) throws Exception {
+			log.debug("create {}", request);
 			
-		Card card = cardService.create(request.getCard());
-		
-		PaymentMethod pm = new PaymentMethod();
-	    pm.setDescription(request.getDescription());
-	    pm.setUser(user); 
-	    pm.setCard(card);
-	    
-	    pmR.save(pm);
-		
-	}
+			User user = userR.findById(request.getUserId())
+					.orElseThrow(() -> new Exception("User non trovato in DB:" + request.getUserId()));
+			
+			//Card card = cardR.findById(request.getCardId())
+		  //.orElseThrow(() -> new Exception("Carta non trovata in DB:" + request.getCardId()));
+				
+			Card card = cardService.create(request.getCard());
+			
+			PaymentMethod pm = new PaymentMethod();
+		    pm.setDescription(request.getDescription());
+		    pm.setUser(user); 
+		    pm.setCard(card);
+		    
+		    pmR.save(pm);
+			
+		}
 
 	@Override
 	public void update(PaymentMethodRequest request) throws Exception {
-		log.debug("create {}", request);
+		log.debug("update {}", request);
 		
 		PaymentMethod pm = pmR.findById(request.getId())
 		        .orElseThrow(() -> new Exception("Metodo di pagamento non trovato"));
@@ -95,15 +94,16 @@ public class PaymentMethodServiceImpl implements InterfacePaymentMethodService{
         }
 
       
-        if (request.getCard() != null) {	
+        if (request.getCard() != null && pm.getCard() != null) {	
         	Long idCartaDaAggiornare = pm.getCard().getId();
         	
         	request.getCard().setId(idCartaDaAggiornare);
         	
             cardService.update(request.getCard());
 		
-		pmR.save(pm);
         }
+        
+        pmR.save(pm);
 	}
 
 	@Override
