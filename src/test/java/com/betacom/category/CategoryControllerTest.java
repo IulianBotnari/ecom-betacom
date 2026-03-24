@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.betacom.controllers.CategoryController;
-import com.betacom.dto.request.category.CategoryRequest;
 import com.betacom.services.interfaces.InterfaceCategoryService;
 
 class CategoryControllerTest {
@@ -35,12 +34,11 @@ class CategoryControllerTest {
         MockitoAnnotations.openMocks(this);
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
-    }
+    } 
 
-    // --- 1. TEST CREATE ---
     @Test
-    void testCreate_Success() throws Exception {
-        doNothing().when(categoryS).create(any(CategoryRequest.class));
+    void testCreateSuccess() throws Exception {
+        doNothing().when(categoryS).create(any());
 
         mockMvc.perform(post("/rest/category/create")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -50,7 +48,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void testCreate_Error() throws Exception {
+    void testCreateError() throws Exception {
         doThrow(new RuntimeException()).when(categoryS).create(any());
 
         mockMvc.perform(post("/rest/category/create")
@@ -60,9 +58,8 @@ class CategoryControllerTest {
                 .andExpect(content().string("Errore durnate il salvataggio"));
     }
 
-    // --- 2. TEST UPDATE ---
     @Test
-    void testUpdate_Success() throws Exception {
+    void testUpdateSuccess() throws Exception {
         doNothing().when(categoryS).update(any());
 
         mockMvc.perform(put("/rest/category/update")
@@ -73,7 +70,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void testUpdate_Error() throws Exception {
+    void testUpdateError() throws Exception {
 
         doThrow(new RuntimeException()).when(categoryS).update(any());
 
@@ -84,9 +81,9 @@ class CategoryControllerTest {
                 .andExpect(content().string("Salvataggio non riuscito"));
     }
 
-    // --- 3. TEST DELETE ---
+
     @Test
-    void testDelete_Success() throws Exception {
+    void testDeleteSuccess() throws Exception {
         doNothing().when(categoryS).delete(anyLong());
 
         mockMvc.perform(delete("/rest/category/delete/1"))
@@ -95,7 +92,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void testDelete_Error() throws Exception {
+    void testDeleteError() throws Exception {
         doThrow(new RuntimeException()).when(categoryS).delete(anyLong());
 
         mockMvc.perform(delete("/rest/category/delete/1"))
@@ -103,9 +100,8 @@ class CategoryControllerTest {
                 .andExpect(content().string("Eliminazione non riuscita"));
     }
 
-    // --- 4. TEST LIST ALL ---
     @Test
-    void testListAll_Success() throws Exception {
+    void testListAllSuccess() throws Exception {
         when(categoryS.list()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/rest/category/listAll"))
@@ -113,7 +109,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void testListAll_Error() throws Exception {
+    void testListAllError() throws Exception {
         when(categoryS.list()).thenThrow(new RuntimeException());
 
         mockMvc.perform(get("/rest/category/listAll"))
@@ -121,5 +117,4 @@ class CategoryControllerTest {
                 .andExpect(content().string("Errore durante il recupero della lista"));
     }
 
-    // --- 5. TEST FIND BY ID ---
 }
