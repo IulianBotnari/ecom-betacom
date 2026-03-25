@@ -11,7 +11,7 @@ import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
 import com.betacom.model.Order;
-import com.betacom.model.OrderDetail;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.User;
 import com.betacom.repository.AddressRepository;
 import com.betacom.repository.OrderRepository;
@@ -62,7 +62,7 @@ public class OrderServiceImpl implements InterfaceOrderService{
 		
 		Order order = new Order();
 		order.setStatus(OrderStatus.valueOf(request.getStatus()));
-	    order.setTotal(request.getTotal());
+	    order.setOrderPrice(request.getOrderPrice());
 	    order.setUser(user);	    
 	    
 	    orderR.save(order);
@@ -86,8 +86,8 @@ public class OrderServiceImpl implements InterfaceOrderService{
 		    order.setShippingAddress(address);
 		}
 		
-		if (request.getTotal() != null) {
-	        order.setTotal(request.getTotal());
+		if (request.getOrderPrice() != null) {
+	        order.setOrderPrice(request.getOrderPrice());
 	    }
 		
 		if (request.getStatus() != null) {

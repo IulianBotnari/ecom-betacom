@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
-import com.betacom.model.OrderDetail;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.User;
 
 import lombok.AllArgsConstructor;
@@ -32,11 +32,11 @@ public class OrderDTO {
     
     private OrderStatus status; 
 
-    private Double total;
+    private Double orderPrice;
 
     private Address shippingAddress;
 
-    private List<OrderDetail> details;
+    private List<OrderedItemsDetails> details;
 
 
 }

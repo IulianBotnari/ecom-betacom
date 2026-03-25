@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.betacom.dto.request.order.OrderRequest;
 import com.betacom.dto.response.order.OrderDTO;
-import com.betacom.dto.response.order_details.OrderDetailsDTO;
+import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
 
 public interface InterfaceOrderService {
 	OrderDTO getById(Long id) throws Exception;

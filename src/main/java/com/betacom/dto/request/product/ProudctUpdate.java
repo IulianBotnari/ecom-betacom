@@ -22,6 +22,10 @@ public class ProudctUpdate {
     private String description;
 
     private Double price;
+    
+    private Double discount;
+    
+    private Double discountPercentage;
 
     private Long categoryId;
 

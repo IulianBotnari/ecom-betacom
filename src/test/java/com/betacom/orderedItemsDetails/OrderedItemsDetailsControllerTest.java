@@ -1,4 +1,4 @@
-package com.betacom.orderDetails;
+package com.betacom.orderedItemsDetails;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -18,13 +18,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.betacom.controllers.OrderDetailsController;
-import com.betacom.services.interfaces.InterfaceOrderDetailService;
+import com.betacom.services.interfaces.InterfaceOrderedItemsDetailsService;
 
-public class OrderDetailsControllerTest {
+public class OrderedItemsDetailsControllerTest {
 	private MockMvc mockMvc;
 
     @Mock
-    private InterfaceOrderDetailService orderDS;
+    private InterfaceOrderedItemsDetailsService orderDS;
 
     @InjectMocks
     private OrderDetailsController orderDetailsController;

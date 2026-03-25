@@ -1,4 +1,4 @@
-package com.betacom.dto.response.order_details;
+package com.betacom.dto.response.ordered_items_details;
 
 import com.betacom.model.Order;
 import com.betacom.model.Product;
@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailsDTO {
+public class OrderedItemsDetailsDTO {
 	
     private Long id;
 

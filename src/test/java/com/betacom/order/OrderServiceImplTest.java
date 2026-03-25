@@ -80,7 +80,7 @@ public class OrderServiceImplTest {
         OrderRequest request = new OrderRequest();
         request.setUserId(1L);
         request.setStatus("CREATED");
-        request.setTotal(100.0);
+        request.setOrderPrice(100.0);
 
         User user = new User();
         when(userR.findById(1L)).thenReturn(Optional.of(user));
@@ -107,7 +107,7 @@ public class OrderServiceImplTest {
         request.setUserId(2L);
         request.setShippingAddress(3L);
         request.setStatus("PAGATO");
-        request.setTotal(200.0);
+        request.setOrderPrice(200.0);
 
         Order order = new Order();
         User user = new User();
@@ -122,7 +122,7 @@ public class OrderServiceImplTest {
         assertEquals(user, order.getUser());
         assertEquals(address, order.getShippingAddress());
         assertEquals(OrderStatus.PAGATO, order.getStatus());
-        assertEquals(200.0, order.getTotal());
+        assertEquals(200.0, order.getOrderPrice());
         verify(orderR).save(order);
     }
 

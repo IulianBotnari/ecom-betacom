@@ -6,7 +6,7 @@
 	import com.betacom.model.CartItem;
 	import com.betacom.model.Category;
 	import com.betacom.model.Order;
-	import com.betacom.model.OrderDetail;
+	import com.betacom.model.OrderedItemsDetails;
 	import com.betacom.model.PaymentMethod;
 	import com.betacom.model.Product;
 	import com.betacom.model.Review;
@@ -22,8 +22,8 @@
 	import com.betacom.dto.response.cart_item.*;
 	import com.betacom.dto.response.category.*;
 	import com.betacom.dto.response.order.*;
-	import com.betacom.dto.response.order_details.*;
-	import com.betacom.dto.response.payment_method.*;
+import com.betacom.dto.response.ordered_items_details.*;
+import com.betacom.dto.response.payment_method.*;
 	import com.betacom.dto.response.product.ProductsDTO;
 	import com.betacom.dto.response.review.ReviewDTO;
 	import com.betacom.dto.response.size.SizeDTO;
@@ -99,14 +99,14 @@
 					.user(model.getUser())
 					.date(model.getDate())
 					.status(model.getStatus())
-					.total(model.getTotal())
+					.orderPrice(model.getOrderPrice())
 					.shippingAddress(model.getShippingAddress())
 					.details(model.getDetails())
 					.build();
 		}
 		
-		public static OrderDetailsDTO orderDetailsDTO(OrderDetail model) {
-			return OrderDetailsDTO.builder()
+		public static OrderedItemsDetailsDTO orderDetailsDTO(OrderedItemsDetails model) {
+			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
 					.order(model.getOrder())
 					.product(model.getProduct())
@@ -135,6 +135,8 @@
 					.gender(model.getGender())
 					.material(model.getMaterial())
 					.price(model.getPrice())
+					.discount(model.getDiscount())
+					.discountPercentage(model.getDiscountPercentage())
 					.sizes(model.getSizes())
 					.reviews(model.getReviews())
 					.build();

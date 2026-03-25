@@ -46,12 +46,12 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status; 
 
-    private Double total;
+    private Double orderPrice;
 
     @ManyToOne
     @JoinColumn(name = "shipping_address")
     private Address shippingAddress;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetail> details;
+    private List<OrderedItemsDetails> details;
 }

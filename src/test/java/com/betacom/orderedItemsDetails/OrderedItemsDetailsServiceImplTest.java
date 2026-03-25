@@ -1,4 +1,4 @@
-package com.betacom.orderDetails;
+package com.betacom.orderedItemsDetails;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -15,23 +15,23 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.betacom.dto.request.order_details.OrderDetailRequest;
-import com.betacom.dto.response.order_details.OrderDetailsDTO;
+import com.betacom.dto.request.ordered_items_details.OrderedItemsDetailsRequest;
+import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
 import com.betacom.model.Order;
-import com.betacom.model.OrderDetail;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
-import com.betacom.repository.OrderDetailRepository;
+import com.betacom.repository.OrderedItemsDetailsRepository;
 import com.betacom.repository.OrderRepository;
 import com.betacom.repository.ProductRepository;
 import com.betacom.repository.SizeRepository;
-import com.betacom.services.implementations.OrderDetailServiceImpl;
+import com.betacom.services.implementations.OrderedItemsDetailsServiceImpl;
 
 import jakarta.persistence.EntityNotFoundException;
 
-public class OrderDetailsServiceImplTest {
+public class OrderedItemsDetailsServiceImplTest {
 	@Mock
-    private OrderDetailRepository orderDR;
+    private OrderedItemsDetailsRepository orderDR;
 
     @Mock
     private OrderRepository orderR;
@@ -43,7 +43,7 @@ public class OrderDetailsServiceImplTest {
     private SizeRepository sizeR;
 
     @InjectMocks
-    private OrderDetailServiceImpl orderDetailService;
+    private OrderedItemsDetailsServiceImpl orderDetailService;
 
     @BeforeEach
     void setUp() {
@@ -53,10 +53,10 @@ public class OrderDetailsServiceImplTest {
     // --- 1. TEST GET BY ID ---
     @Test
     void testGetById_Success() throws Exception {
-        OrderDetail detail = new OrderDetail();
+        OrderedItemsDetails detail = new OrderedItemsDetails();
         when(orderDR.findById(1L)).thenReturn(Optional.of(detail));
 
-        OrderDetailsDTO result = orderDetailService.getById(1L);
+        OrderedItemsDetailsDTO result = orderDetailService.getById(1L);
         assertNotNull(result);
         verify(orderDR).findById(1L);
     }
@@ -71,9 +71,9 @@ public class OrderDetailsServiceImplTest {
     // --- 2. TEST LIST ---
     @Test
     void testList_Success() throws Exception {
-        when(orderDR.findAll()).thenReturn(Arrays.asList(new OrderDetail(), new OrderDetail()));
+        when(orderDR.findAll()).thenReturn(Arrays.asList(new OrderedItemsDetails(), new OrderedItemsDetails()));
 
-        List<OrderDetailsDTO> result = orderDetailService.list();
+        List<OrderedItemsDetailsDTO> result = orderDetailService.list();
         assertEquals(2, result.size());
         verify(orderDR).findAll();
     }
@@ -81,7 +81,7 @@ public class OrderDetailsServiceImplTest {
     // --- 3. TEST CREATE ---
     @Test
     void testCreate_Success() throws Exception {
-        OrderDetailRequest request = new OrderDetailRequest();
+        OrderedItemsDetailsRequest request = new OrderedItemsDetailsRequest();
         request.setOrderId(1L);
         request.setProductId(2L);
         request.setSizeId(3L);
@@ -95,7 +95,7 @@ public class OrderDetailsServiceImplTest {
 
     @Test
     void testCreate_OrderIdMissing() {
-        OrderDetailRequest request = new OrderDetailRequest();
+        OrderedItemsDetailsRequest request = new OrderedItemsDetailsRequest();
         request.setProductId(2L);
         request.setQuantity(1);
 
@@ -105,7 +105,7 @@ public class OrderDetailsServiceImplTest {
 
     @Test
     void testCreate_ProductIdMissing() {
-        OrderDetailRequest request = new OrderDetailRequest();
+        OrderedItemsDetailsRequest request = new OrderedItemsDetailsRequest();
         request.setOrderId(1L);
         request.setQuantity(1);
 
@@ -115,7 +115,7 @@ public class OrderDetailsServiceImplTest {
 
     @Test
     void testCreate_QuantityInvalid() {
-        OrderDetailRequest request = new OrderDetailRequest();
+        OrderedItemsDetailsRequest request = new OrderedItemsDetailsRequest();
         request.setOrderId(1L);
         request.setProductId(2L);
         request.setQuantity(0);
@@ -127,14 +127,14 @@ public class OrderDetailsServiceImplTest {
     // --- 4. TEST UPDATE ---
     @Test
     void testUpdate_Success() throws Exception {
-        OrderDetailRequest request = new OrderDetailRequest();
+        OrderedItemsDetailsRequest request = new OrderedItemsDetailsRequest();
         request.setOrderId(1L);
         request.setProductId(2L);
         request.setSizeId(3L);
         request.setQuantity(10);
         request.setTotalPrice(200.0);
 
-        OrderDetail orderD = new OrderDetail();
+        OrderedItemsDetails orderD = new OrderedItemsDetails();
         Order order = new Order();
         Product product = new Product();
         Size size = new Size();
@@ -156,7 +156,7 @@ public class OrderDetailsServiceImplTest {
 
     @Test
     void testUpdate_NotFound() {
-        OrderDetailRequest request = new OrderDetailRequest();
+        OrderedItemsDetailsRequest request = new OrderedItemsDetailsRequest();
         request.setOrderId(1L);
 
         when(orderDR.findById(1L)).thenReturn(Optional.empty());
@@ -167,7 +167,7 @@ public class OrderDetailsServiceImplTest {
     // --- 5. TEST DELETE ---
     @Test
     void testDelete_Success() throws Exception {
-        OrderDetail orderD = new OrderDetail();
+        OrderedItemsDetails orderD = new OrderedItemsDetails();
         when(orderDR.findById(1L)).thenReturn(Optional.of(orderD));
 
         orderDetailService.delete(1L);

@@ -5,18 +5,18 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.betacom.dto.request.order_details.OrderDetailRequest;
-import com.betacom.dto.response.order_details.OrderDetailsDTO;
+import com.betacom.dto.request.ordered_items_details.OrderedItemsDetailsRequest;
+import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.model.Order;
-import com.betacom.model.OrderDetail;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
-import com.betacom.repository.OrderDetailRepository;
+import com.betacom.repository.OrderedItemsDetailsRepository;
 import com.betacom.repository.OrderRepository;
 import com.betacom.repository.ProductRepository;
 import com.betacom.repository.SizeRepository;
-import com.betacom.services.interfaces.InterfaceOrderDetailService;
+import com.betacom.services.interfaces.InterfaceOrderedItemsDetailsService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,29 +25,29 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class OrderDetailServiceImpl implements InterfaceOrderDetailService{
+public class OrderedItemsDetailsServiceImpl implements InterfaceOrderedItemsDetailsService{
 	
 	private final OrderRepository orderR;
 	private final SizeRepository sizeR;
 	private final ProductRepository productR;
 	
-	private final OrderDetailRepository orderDR;
+	private final OrderedItemsDetailsRepository orderDR;
 	
 	@Override
-	public OrderDetailsDTO getById(Long id) throws Exception {
+	public OrderedItemsDetailsDTO getById(Long id) throws Exception {
 		log.debug("getById {}", id);
 		
-		OrderDetail detail = orderDR.findById(id)
+		OrderedItemsDetails detail = orderDR.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Ordine non trovato con id " + id));
 		
 		return DtoResponseMapper.orderDetailsDTO(detail);
 	}
 
 	@Override
-	public List<OrderDetailsDTO> list() throws Exception {
+	public List<OrderedItemsDetailsDTO> list() throws Exception {
 		log.debug("list");
 		
-		List<OrderDetail> detail = orderDR.findAll();
+		List<OrderedItemsDetails> detail = orderDR.findAll();
 		
 		return detail.stream().map(order -> 
 				DtoResponseMapper.orderDetailsDTO(order))
@@ -55,10 +55,10 @@ public class OrderDetailServiceImpl implements InterfaceOrderDetailService{
 	}
 
 	@Override
-	public void create(OrderDetailRequest request) throws Exception {
+	public void create(OrderedItemsDetailsRequest request) throws Exception {
 		log.debug("create {}", request);
 		
-		OrderDetail detail = new OrderDetail();
+		OrderedItemsDetails detail = new OrderedItemsDetails();
 		
 		if (request.getOrderId() == null)
 	        throw new Exception("OrderId è necessario");
@@ -75,10 +75,10 @@ public class OrderDetailServiceImpl implements InterfaceOrderDetailService{
 	}
 
 	@Override
-	public void update(OrderDetailRequest request) throws Exception {
+	public void update(OrderedItemsDetailsRequest request) throws Exception {
 		log.debug("create {}", request);
 		
-		OrderDetail orderD = orderDR.findById(request.getOrderId())
+		OrderedItemsDetails orderD = orderDR.findById(request.getOrderId())
 		        .orElseThrow(() -> new Exception("Ordine non presente in DB"));
 		
 		if (request.getProductId() != null) {
@@ -112,7 +112,7 @@ public class OrderDetailServiceImpl implements InterfaceOrderDetailService{
 	public void delete(Long id) throws Exception {
 		log.debug("delete {}", id);
 		
-		OrderDetail orderD = orderDR.findById(id)
+		OrderedItemsDetails orderD = orderDR.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Ordine non trovato con id " + id));
 		
 		orderDR.delete(orderD);
