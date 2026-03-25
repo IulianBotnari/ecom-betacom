@@ -20,6 +20,6 @@ public interface InterfaceProductService {
 	
 	Product getProductModelById(Long id) throws Exception;
 
-	List<? extends ProductsDTO> multiFilter(Long id, String name, String modello, Long categoryId, Genders gender,
+	List<? extends ProductsDTO> multiFilter(Long id, String name, Long categoryId, Genders gender,
 			String material, Double price) throws Exception;
 }
