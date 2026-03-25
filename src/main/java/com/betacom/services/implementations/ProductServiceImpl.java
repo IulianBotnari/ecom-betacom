@@ -1,17 +1,17 @@
 package com.betacom.services.implementations;
 
 import java.util.List;
-import com.betacom.model.Category;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.product.ProductRequest;
-
 import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.dto.response.product.ProductsDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
 import com.betacom.enums.Genders;
+import com.betacom.model.Category;
 import com.betacom.model.Product;
 import com.betacom.repository.CategoryRepository;
 import com.betacom.repository.ProductRepository;
@@ -108,5 +108,26 @@ public class ProductServiceImpl implements InterfaceProductService{
 		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));		
 		return product;
 	}
+	
+	@Override
+	public List<? extends ProductsDTO> multiFilter(Long id,                
+	        String name,
+	        String modello,
+	        Long categoryId,
+	        Genders gender,
+	        String material,
+	        Double price) throws Exception {
+		List<Product> prodotti = productR.findProductsByFilters(
+		        id,
+		        name != null ? name + "%" : null,
+		        categoryId,
+		        gender,
+		        material != null ? material + "%" : null,
+		        price
+		);
+	    return prodotti.stream().map(p -> 
+	    		DtoResponseMapper.productsDTO(p))
+	    		.collect(Collectors.toList()) ;
+		}
 
 }
