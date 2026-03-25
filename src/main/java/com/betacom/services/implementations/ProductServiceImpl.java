@@ -112,7 +112,6 @@ public class ProductServiceImpl implements InterfaceProductService{
 	@Override
 	public List<? extends ProductsDTO> multiFilter(Long id,                
 	        String name,
-	        String modello,
 	        Long categoryId,
 	        Genders gender,
 	        String material,

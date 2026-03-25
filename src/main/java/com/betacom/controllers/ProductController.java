@@ -126,7 +126,7 @@ public class ProductController {
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
-	        response = productS.multiFilter(id, name, null, categoryId, gender, material, price);
+	        response = productS.multiFilter(id, name, categoryId, gender, material, price);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        status = HttpStatus.BAD_REQUEST;
