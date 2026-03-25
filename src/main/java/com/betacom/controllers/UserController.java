@@ -2,6 +2,7 @@ package com.betacom.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin(value = "http://localhost:4200")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -96,8 +98,8 @@ public class UserController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
