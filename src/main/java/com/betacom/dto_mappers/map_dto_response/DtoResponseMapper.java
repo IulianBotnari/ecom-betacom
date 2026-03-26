@@ -30,6 +30,37 @@ import com.betacom.model.Review;
 import com.betacom.model.Size;
 import com.betacom.model.User;
 import com.betacom.model.WishList;
+	import com.betacom.model.Address;
+	import com.betacom.model.Card;
+	import com.betacom.model.Cart;
+	import com.betacom.model.CartItem;
+	import com.betacom.model.Category;
+	import com.betacom.model.Order;
+	import com.betacom.model.OrderedItemsDetails;
+	import com.betacom.model.PaymentMethod;
+	import com.betacom.model.Product;
+	import com.betacom.model.Review;
+	import com.betacom.model.Size;
+	import com.betacom.model.User;
+	import com.betacom.model.WishList;
+
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+	
+	import com.betacom.dto.response.address.*;
+	import com.betacom.dto.response.card.*;
+	import com.betacom.dto.response.cart.CartDTO;
+	import com.betacom.dto.response.cart_item.*;
+	import com.betacom.dto.response.category.*;
+	import com.betacom.dto.response.order.*;
+	import com.betacom.dto.response.ordered_items_details.*;
+	import com.betacom.dto.response.payment_method.*;
+	import com.betacom.dto.response.product.ProductsDTO;
+	import com.betacom.dto.response.review.ReviewDTO;
+	import com.betacom.dto.response.size.SizeDTO;
+	import com.betacom.dto.response.user.UserDTO;
+	import com.betacom.dto.response.wish_list.WishListDTO;
 	
 	@Component
 	public class DtoResponseMapper {
@@ -132,18 +163,18 @@ import com.betacom.model.WishList;
 					.name(model.getName())
 					.image(model.getImage())
 					.description(model.getDescription())
-					.category(model.getCategory())
+					.category(categoryDTO(model.getCategory()) )
 					.gender(model.getGender())
 					.material(model.getMaterial())
 					.price(model.getPrice())
 					.discount(model.getDiscount())
 					.discountPercentage(model.getDiscountPercentage())
-					.sizes(model.getSizes())
-					.reviews(model.getReviews())
+					.sizes(model.getSizes().stream().map(size -> sizeDTO(size)).collect(Collectors.toList()))
+					.reviews(model.getReviews().stream().map(review -> reviewDTO(review)).collect(Collectors.toList()))
 					.build();
 		}
 		
-		public static ReviewDTO ReviewDTO(Review model) {
+		public static ReviewDTO reviewDTO(Review model) {
 			return ReviewDTO.builder()
 					.id(model.getId())
 					.userId(model.getUser().getId())

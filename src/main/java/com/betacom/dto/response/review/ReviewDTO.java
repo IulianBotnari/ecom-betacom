@@ -6,6 +6,7 @@ import com.betacom.dto.response.user.UserDTO;
 import com.betacom.model.Product;
 import com.betacom.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
