@@ -21,8 +21,7 @@ public class SizeDTO {
 
     private Long id;
     
-    @JsonIgnore
-    private Product product;
+    private Long productId;
 
     private Sizes size; 
 

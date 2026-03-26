@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.betacom.dto.request.wish_list.WishlistCreateRequest;
 import com.betacom.dto.request.wish_list.WishlistUpdateRequest;
 import com.betacom.dto.response.wish_list.WishListDTO;
+import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.model.WishList;
 import com.betacom.repository.WishListRepository;
 import com.betacom.repository.UserRepository;
@@ -32,7 +33,7 @@ public class WishListServiceImpl implements InterfaceWhishListService {
         WishList wish = wishListRepository.findById(id)
                 .orElseThrow(() -> new Exception("Prodotto non trovato nella lista"));
 
-        return mapToDTO(wish);
+        return DtoResponseMapper.wishListDTO(wish);
     }
 
     // ---- LIST ALL ----
@@ -40,7 +41,7 @@ public class WishListServiceImpl implements InterfaceWhishListService {
     public List<WishListDTO> list() throws Exception {
         return wishListRepository.findAll()
                 .stream()
-                .map(this::mapToDTO)
+                .map(DtoResponseMapper::wishListDTO)
                 .collect(Collectors.toList());
     }
 
@@ -75,16 +76,5 @@ public class WishListServiceImpl implements InterfaceWhishListService {
         }
 
         wishListRepository.deleteById(id);
-    }
-
-    private WishListDTO mapToDTO(WishList wish) {
-        WishListDTO dto = new WishListDTO();
-
-        dto.setId(wish.getId());
-        dto.setUser(wish.getUser());
-        dto.setProduct(wish.getProduct());
-        dto.setCreateDate(wish.getCreateDate());
-
-        return dto;
     }
 }

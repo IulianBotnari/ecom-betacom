@@ -88,22 +88,5 @@ public class ReviewServiceImpl implements InterfaceReviewService {
 
         reviewRepository.deleteById(id);
     }
-    
-    // ---- UTILITY ----
-//    private ReviewDTO mapToDTO(Review review) {
-//        ReviewDTO dto = new ReviewDTO();
-//
-//        dto.setId(review.getId());
-//        dto.setUser(review.getUser());
-//        dto.setProduct(review.getProduct());
-//        dto.setRating(review.getRating());
-//        dto.setReview(review.getReview());
-//        dto.setDate(review.getDate());
-//
-//        return dto;
-//    }
 
-//    private String normalize(String value) {
-//        return value == null ? null : value.trim().toUpperCase();
-//    }
 }
