@@ -158,7 +158,7 @@ import com.betacom.model.WishList;
 			
 			return SizeDTO.builder()
 					.id(model.getId())
-					.product(model.getProduct())
+					.productId(model.getProduct().getId())
 					.size(model.getSize())
 					.quantity(model.getQuantity())
 					.build();
