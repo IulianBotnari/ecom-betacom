@@ -35,5 +35,9 @@ public class ProductRequest {
     private String image;
 	@NotBlank(message = "Campo material non puo essere vuoto")
     private String material;
+	
+	private String size;
+	
+	private Integer quantity;
 
 }

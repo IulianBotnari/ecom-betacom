@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,27 +19,23 @@ import com.betacom.model.Product;
 import com.betacom.repository.ProductRepository;
 import com.betacom.services.interfaces.InterfaceUploadService;
 
-
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@Transactional
 public class UploadServiceImpl implements InterfaceUploadService {
 	
 	private final Path uploadPath;
 	private final ProductRepository productR;
 	
-	@Value("${app.upload.dir:uploads}")
-	private String uploadDir;
 	
 	
-	public UploadServiceImpl(String uploadDir, ProductRepository productR ) {
-	        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize(); 
-	        this.productR = productR;
-	        init();
-	    }
+	public UploadServiceImpl(@Value("${app.upload.dir:uploads}") String uploadDir, ProductRepository productR) {
+        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+        this.productR = productR;
+        init();
+    }
 	
 	
 	private void init() {
@@ -55,7 +52,7 @@ public class UploadServiceImpl implements InterfaceUploadService {
 	public String saveImage(MultipartFile file, Long id) throws Exception {
 		log.debug("saveImage {}", id);
 		
-		Assert.isTrue(file.isEmpty(),() ->"Nessun file caricato");
+		Assert.isTrue(!file.isEmpty(),() ->"Nessun file caricato");
 		
 		String originalName = file.getOriginalFilename();
 		String extension = "";
