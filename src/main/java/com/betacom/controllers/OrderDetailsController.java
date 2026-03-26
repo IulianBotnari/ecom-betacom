@@ -85,6 +85,7 @@ public class OrderDetailsController {
 		try {
 			response = orderDS.list();
 		} catch (Exception e) {
+			e.printStackTrace();
 			response = "Errore durante il recupero della lista";
 			status = HttpStatus.BAD_REQUEST;
 		}
@@ -92,8 +93,8 @@ public class OrderDetailsController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {

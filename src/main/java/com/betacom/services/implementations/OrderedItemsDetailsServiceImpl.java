@@ -40,7 +40,7 @@ public class OrderedItemsDetailsServiceImpl implements InterfaceOrderedItemsDeta
 		OrderedItemsDetails detail = orderDR.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Ordine non trovato con id " + id));
 		
-		return DtoResponseMapper.orderDetailsDTO(detail);
+		return DtoResponseMapper.orderItemDetailsDTO(detail);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class OrderedItemsDetailsServiceImpl implements InterfaceOrderedItemsDeta
 		List<OrderedItemsDetails> detail = orderDR.findAll();
 		
 		return detail.stream().map(order -> 
-				DtoResponseMapper.orderDetailsDTO(order))
+				DtoResponseMapper.orderItemDetailsDTO(order))
 					.collect(Collectors.toList());
 	}
 
@@ -69,9 +69,15 @@ public class OrderedItemsDetailsServiceImpl implements InterfaceOrderedItemsDeta
 	    if (request.getQuantity() == null || request.getQuantity() <= 0)
 	        throw new Exception("Quantity deve essere maggiore di 0");
 	    
+	    Order order = orderR.findById(request.getOrderId()).orElseThrow(() -> new EntityNotFoundException("Ordine non trovato"));
+	    Product product = productR.findById(request.getProductId()).orElseThrow(() -> new EntityNotFoundException("Prodotto non trovato"));
+
+	    detail.setOrder(order);
+	    detail.setProduct(product);
 	    detail.setQuantity(request.getQuantity());
 	    detail.setTotalPrice(request.getTotalPrice());
 	    
+	    orderDR.save(detail);
 	}
 
 	@Override
@@ -106,6 +112,8 @@ public class OrderedItemsDetailsServiceImpl implements InterfaceOrderedItemsDeta
 		if (request.getTotalPrice() != null) {
 	        orderD.setTotalPrice(request.getTotalPrice());
 	    }
+		
+		orderDR.save(orderD);
 	}
 
 	@Override

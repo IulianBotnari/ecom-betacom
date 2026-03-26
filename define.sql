@@ -1,3 +1,4 @@
+
     create table addresses (
         default_address boolean,
         domicile boolean not null,
@@ -210,4 +211,3 @@
        add constraint FKtrd6335blsefl2gxpb8lr0gr7 
        foreign key (user_id) 
        references users;
-

@@ -33,7 +33,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new Exception("Recensione non trovata"));
 
-        return DtoResponseMapper.ReviewDTO(review);
+        return DtoResponseMapper.reviewDTO(review);
     }
     
     // ---- LIST ALL ----
@@ -41,7 +41,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
     public List<ReviewDTO> list() throws Exception {
         return reviewRepository.findAll()
                 .stream()
-                .map(DtoResponseMapper::ReviewDTO)
+                .map(DtoResponseMapper::reviewDTO)
                 .collect(Collectors.toList());
     }
     

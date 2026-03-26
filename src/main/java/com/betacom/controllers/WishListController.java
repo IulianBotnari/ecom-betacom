@@ -67,8 +67,8 @@ public class WishListController {
         }
     }
 
-    @GetMapping("findById")
-    public ResponseEntity<Object> findById(@RequestParam Long id) {
+    @GetMapping("findById/{id}")
+    public ResponseEntity<Object> findById(@PathVariable Long id) {
         try {
             WishListDTO item = wishS.getById(id);
             return ResponseEntity.status(HttpStatus.OK).body(item);
