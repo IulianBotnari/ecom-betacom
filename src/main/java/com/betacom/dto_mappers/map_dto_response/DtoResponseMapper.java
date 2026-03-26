@@ -13,8 +13,10 @@
 	import com.betacom.model.Size;
 	import com.betacom.model.User;
 	import com.betacom.model.WishList;
-	
-	import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
 	
 	import com.betacom.dto.response.address.*;
 	import com.betacom.dto.response.card.*;
@@ -131,18 +133,18 @@
 					.name(model.getName())
 					.image(model.getImage())
 					.description(model.getDescription())
-					.category(model.getCategory())
+					.category(categoryDTO(model.getCategory()) )
 					.gender(model.getGender())
 					.material(model.getMaterial())
 					.price(model.getPrice())
 					.discount(model.getDiscount())
 					.discountPercentage(model.getDiscountPercentage())
-					.sizes(model.getSizes())
-					.reviews(model.getReviews())
+					.sizes(model.getSizes().stream().map(size -> sizeDTO(size)).collect(Collectors.toList()))
+					.reviews(model.getReviews().stream().map(review -> reviewDTO(review)).collect(Collectors.toList()))
 					.build();
 		}
 		
-		public static ReviewDTO productsDTO(Review model) {
+		public static ReviewDTO reviewDTO(Review model) {
 			return ReviewDTO.builder()
 					.id(model.getId())
 					.user(model.getUser())

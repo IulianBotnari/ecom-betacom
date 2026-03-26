@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.betacom.model.Product;
 import com.betacom.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,9 @@ import lombok.ToString;
 public class ReviewDTO {
 	
     private Long id;
-
+    
     private User user;
-
+    @JsonIgnore
     private Product product;
 
     private Integer rating;

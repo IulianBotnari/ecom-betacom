@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.betacom.model.Product;
 import com.betacom.repository.ProductRepository;
-import com.betacom.services.interfaces.InterfaceProductService;
 import com.betacom.services.interfaces.InterfaceUploadService;
 
 
@@ -63,7 +62,7 @@ public class UploadServiceImpl implements InterfaceUploadService {
 		String originalNameMod = originalName.trim().replaceAll("\\s+", "_");
 		
 		log.debug("originalName: {}" , originalNameMod);
-		  extension = Optional.ofNullable(originalName)         // search extension file 
+		  extension = Optional.ofNullable(originalName)
 	                .filter(name -> name.contains("."))
 	                .map(name -> name.substring(name.lastIndexOf(".")))
 	                .orElse("");
