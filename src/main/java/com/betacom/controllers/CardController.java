@@ -28,8 +28,8 @@ public class CardController {
 	private  final InterfaceCardService cardS;
 	
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {

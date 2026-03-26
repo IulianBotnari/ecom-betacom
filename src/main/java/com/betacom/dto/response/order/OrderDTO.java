@@ -4,6 +4,8 @@ package com.betacom.dto.response.order;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.betacom.dto.response.address.AddressDTO;
+import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
 import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
 import com.betacom.model.OrderedItemsDetails;
@@ -27,8 +29,7 @@ public class OrderDTO {
 	
     private Long id;
 
-    @JsonIgnore
-    private User user;
+    private Long userId;
 
     private LocalDate date;
     
@@ -36,9 +37,9 @@ public class OrderDTO {
 
     private Double orderPrice;
 
-    private Address shippingAddress;
+    private AddressDTO shippingAddress;
 
-    private List<OrderedItemsDetails> details;
+    private List<OrderedItemsDetailsDTO> details;
 
 
 }

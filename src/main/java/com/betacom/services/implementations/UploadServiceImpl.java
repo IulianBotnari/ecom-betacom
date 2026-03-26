@@ -25,63 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class UploadServiceImpl implements InterfaceUploadService {
-	
-	private final Path uploadPath;
-	private final ProductRepository productR;
-	
-	@Value("${app.upload.dir:uploads}")
-	private String uploadDir;
-	
-	
-	public UploadServiceImpl(String uploadDir, ProductRepository productR ) {
-	        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize(); 
-	        this.productR = productR;
-	        init();
-	    }
-	
-	
-	private void init() {
-		try {
-			if (Files.notExists(uploadPath)) {
-				Files.createDirectories(uploadPath);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Errore durante la creazione della cartella upload");
-		}
-	}
-	
-	@Override
+public class UploadServiceImpl implements InterfaceUploadService {@Override
 	public String saveImage(MultipartFile file, Long id) throws Exception {
-		log.debug("saveImage {}", id);
-		
-		Assert.isTrue(file.isEmpty(),() ->"Nessun file caricato");
-		
-		String originalName = file.getOriginalFilename();
-		String extension = "";
-		String originalNameMod = originalName.trim().replaceAll("\\s+", "_");
-		
-		log.debug("originalName: {}" , originalNameMod);
-		  extension = Optional.ofNullable(originalName)
-	                .filter(name -> name.contains("."))
-	                .map(name -> name.substring(name.lastIndexOf(".")))
-	                .orElse("");
-		  
-		  String uniqueName =  originalName.substring(0, originalName.lastIndexOf(".")) + "-" +  UUID.randomUUID().toString() + extension;
-		  
-		  Path destinationFile = uploadPath.resolve(uniqueName);
-		
-		  try {
-	            Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
-	            Product product = productR.findById( id)
-	            	.orElseThrow(() -> new Exception("Prodotto non trovato"));	
-	            product.setImage(uniqueName);
-	            
-	        } catch (IOException e) {
-	            throw new RuntimeException("Errore durante il salvataggio del immagine");
-	        }
-	    
-	        return uniqueName;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -92,13 +39,82 @@ public class UploadServiceImpl implements InterfaceUploadService {
 
 	@Override
 	public String buildUrl(String filename) {
-		return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/images/")   
-                .path(filename)               
-                .toUriString(); 	
-	
+		// TODO Auto-generated method stub
+		return null;
 	}
-
+	
+//	private final Path uploadPath;
+//	private final ProductRepository productR;
+//	
+//	@Value("${app.upload.dir:uploads}")
+//	private String uploadDir;
+//	
+//	
+//	public UploadServiceImpl(String uploadDir, ProductRepository productR ) {
+//	        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize(); 
+//	        this.productR = productR;
+//	        init();
+//	    }
+//	
+//	
+//	private void init() {
+//		try {
+//			if (Files.notExists(uploadPath)) {
+//				Files.createDirectories(uploadPath);
+//			}
+//		} catch (IOException e) {
+//			throw new RuntimeException("Errore durante la creazione della cartella upload");
+//		}
+//	}
+//	
+//	@Override
+//	public String saveImage(MultipartFile file, Long id) throws Exception {
+//		log.debug("saveImage {}", id);
+//		
+//		Assert.isTrue(file.isEmpty(),() ->"Nessun file caricato");
+//		
+//		String originalName = file.getOriginalFilename();
+//		String extension = "";
+//		String originalNameMod = originalName.trim().replaceAll("\\s+", "_");
+//		
+//		log.debug("originalName: {}" , originalNameMod);
+//		  extension = Optional.ofNullable(originalName)
+//	                .filter(name -> name.contains("."))
+//	                .map(name -> name.substring(name.lastIndexOf(".")))
+//	                .orElse("");
+//		  
+//		  String uniqueName =  originalName.substring(0, originalName.lastIndexOf(".")) + "-" +  UUID.randomUUID().toString() + extension;
+//		  
+//		  Path destinationFile = uploadPath.resolve(uniqueName);
+//		
+//		  try {
+//	            Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
+//	            Product product = productR.findById( id)
+//	            	.orElseThrow(() -> new Exception("Prodotto non trovato"));	
+//	            product.setImage(uniqueName);
+//	            
+//	        } catch (IOException e) {
+//	            throw new RuntimeException("Errore durante il salvataggio del immagine");
+//	        }
+//	    
+//	        return uniqueName;
+//	}
+//
+//	@Override
+//	public void removeImage(String fileName) throws Exception {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public String buildUrl(String filename) {
+//		return ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/images/")   
+//                .path(filename)               
+//                .toUriString(); 	
+//	
+//	}
+//
 
 
 }
