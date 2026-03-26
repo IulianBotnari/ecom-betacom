@@ -39,6 +39,10 @@ public class ProductsDTO {
 	
 	private Double price;
 	
+	private Double discount;
+	
+	private Double discountPercentage;
+	
 	private List<Size> sizes;
 	
 	private List<Review> reviews;
