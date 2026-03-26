@@ -4,17 +4,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.dto.response.product.ProductsDTO;
+import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
 import com.betacom.enums.Genders;
+import com.betacom.enums.Sizes;
 import com.betacom.model.Category;
 import com.betacom.model.Product;
+import com.betacom.model.Size;
 import com.betacom.repository.CategoryRepository;
 import com.betacom.repository.ProductRepository;
+import com.betacom.repository.SizeRepository;
 import com.betacom.services.interfaces.InterfaceProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +32,7 @@ public class ProductServiceImpl implements InterfaceProductService{
 	
 	private final ProductRepository productR;
 	private final CategoryRepository categoryR;
+	private final SizeRepository sizeR;
 	private final ModelMappers modelM;
 	
 	@Override
@@ -42,17 +48,30 @@ public class ProductServiceImpl implements InterfaceProductService{
 		List<Product> lista = productR.findAll();
 		return lista.stream().map(el -> DtoResponseMapper.productsDTO(el)).collect(Collectors.toList());
 	}
-
+	
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void create(ProductRequest request) throws Exception {
 		if (request.getCategoryId() == null) throw new Exception("Campo categoria id non puo essere vuoto");
 		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
-		request.setDiscount(request.getDiscount());
+		// request.setDiscount(request.getDiscount());
 		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
 		Product product = modelM.product(request, category);
 		
-		productR.save(product);
+		product = productR.save(product);
 		
+		Size size = new Size();
+		
+		size.setProduct(product);
+		size.setQuantity(request.getQuantity());
+		try {
+	        size.setSize(Sizes.valueOf(request.getSize().toUpperCase()));
+	    } catch (IllegalArgumentException e) {
+	        throw new Exception("Taglia non valida: " + request.getSize());
+	    }
+		
+		sizeR.save(size);
+
 		
 	}
 

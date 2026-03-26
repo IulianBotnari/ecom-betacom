@@ -2,8 +2,11 @@ package com.betacom.dto.response.review;
 
 import java.time.LocalDate;
 
+import com.betacom.dto.response.user.UserDTO;
 import com.betacom.model.Product;
 import com.betacom.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,17 +21,11 @@ import lombok.ToString;
  @AllArgsConstructor
  @NoArgsConstructor
 public class ReviewDTO {
-	
     private Long id;
-
-    private User user;
-
-    private Product product;
-
+    private Long userId;
+    private Long productId;
     private Integer rating;
-
     private String review;
-
     private LocalDate date;
 
 }

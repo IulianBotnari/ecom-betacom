@@ -1,34 +1,35 @@
-	package com.betacom.dto_mappers.map_dto_response;
+package com.betacom.dto_mappers.map_dto_response;
 	
-	import com.betacom.model.Address;
-	import com.betacom.model.Card;
-	import com.betacom.model.Cart;
-	import com.betacom.model.CartItem;
-	import com.betacom.model.Category;
-	import com.betacom.model.Order;
-	import com.betacom.model.OrderedItemsDetails;
-	import com.betacom.model.PaymentMethod;
-	import com.betacom.model.Product;
-	import com.betacom.model.Review;
-	import com.betacom.model.Size;
-	import com.betacom.model.User;
-	import com.betacom.model.WishList;
-	
-	import org.springframework.stereotype.Component;
-	
-	import com.betacom.dto.response.address.*;
-	import com.betacom.dto.response.card.*;
-	import com.betacom.dto.response.cart.CartDTO;
-	import com.betacom.dto.response.cart_item.*;
-	import com.betacom.dto.response.category.*;
-	import com.betacom.dto.response.order.*;
-import com.betacom.dto.response.ordered_items_details.*;
-import com.betacom.dto.response.payment_method.*;
-	import com.betacom.dto.response.product.ProductsDTO;
-	import com.betacom.dto.response.review.ReviewDTO;
-	import com.betacom.dto.response.size.SizeDTO;
-	import com.betacom.dto.response.user.UserDTO;
-	import com.betacom.dto.response.wish_list.WishListDTO;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import com.betacom.dto.response.address.AddressDTO;
+import com.betacom.dto.response.card.CardDTO;
+import com.betacom.dto.response.cart.CartDTO;
+import com.betacom.dto.response.cart_item.CartItemDTO;
+import com.betacom.dto.response.category.CategoryDTO;
+import com.betacom.dto.response.order.OrderDTO;
+import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
+import com.betacom.dto.response.payment_method.PaymentMethodDTO;
+import com.betacom.dto.response.product.ProductsDTO;
+import com.betacom.dto.response.review.ReviewDTO;
+import com.betacom.dto.response.size.SizeDTO;
+import com.betacom.dto.response.user.UserDTO;
+import com.betacom.dto.response.wish_list.WishListDTO;
+import com.betacom.model.Address;
+import com.betacom.model.Card;
+import com.betacom.model.Cart;
+import com.betacom.model.CartItem;
+import com.betacom.model.Category;
+import com.betacom.model.Order;
+import com.betacom.model.OrderedItemsDetails;
+import com.betacom.model.PaymentMethod;
+import com.betacom.model.Product;
+import com.betacom.model.Review;
+import com.betacom.model.Size;
+import com.betacom.model.User;
+import com.betacom.model.WishList;
 	
 	@Component
 	public class DtoResponseMapper {
@@ -45,7 +46,7 @@ import com.betacom.dto.response.payment_method.*;
 					.province(model.getProvince())
 					.cap(model.getCap())
 					.country(model.getCountry())
-					.user(model.getUser())
+					.userId(model.getUser().getId())
 					.residence(model.isResidence())
 					.domicile(model.isDomicile())
 					.defaulAddress(model.isDefaulAddress())
@@ -96,21 +97,21 @@ import com.betacom.dto.response.payment_method.*;
 		public static OrderDTO orderDTO(Order model) {
 			return OrderDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
+					.userId(model.getUser().getId())
 					.date(model.getDate())
 					.status(model.getStatus())
 					.orderPrice(model.getOrderPrice())
-					.shippingAddress(model.getShippingAddress())
-					.details(model.getDetails())
+					.shippingAddress(addressDTO(model.getShippingAddress()))
+					.details(model.getDetails().stream().map(d -> orderItemDetailsDTO(d)).collect(Collectors.toList()))
 					.build();
 		}
 		
-		public static OrderedItemsDetailsDTO orderDetailsDTO(OrderedItemsDetails model) {
+		public static OrderedItemsDetailsDTO orderItemDetailsDTO(OrderedItemsDetails model) {
 			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
-					.order(model.getOrder())
-					.product(model.getProduct())
-					.size(model.getSize())
+					.order(orderDTO(model.getOrder()))
+					.product(productsDTO(model.getProduct()))
+					.size(sizeDTO(model.getSize()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
 					.build();
@@ -131,22 +132,22 @@ import com.betacom.dto.response.payment_method.*;
 					.name(model.getName())
 					.image(model.getImage())
 					.description(model.getDescription())
-					.category(model.getCategory())
+					.category(categoryDTO(model.getCategory()) )
 					.gender(model.getGender())
 					.material(model.getMaterial())
 					.price(model.getPrice())
 					.discount(model.getDiscount())
 					.discountPercentage(model.getDiscountPercentage())
-					.sizes(model.getSizes())
-					.reviews(model.getReviews())
+					.sizes(model.getSizes().stream().map(size -> sizeDTO(size)).collect(Collectors.toList()))
+					.reviews(model.getReviews().stream().map(review -> reviewDTO(review)).collect(Collectors.toList()))
 					.build();
 		}
 		
-		public static ReviewDTO productsDTO(Review model) {
+		public static ReviewDTO reviewDTO(Review model) {
 			return ReviewDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
-					.product(model.getProduct())
+					.userId(model.getUser().getId())
+					.productId(model.getProduct().getId())
 					.rating(model.getRating())
 					.review(model.getReview())
 					.date(model.getDate())
@@ -157,7 +158,7 @@ import com.betacom.dto.response.payment_method.*;
 			
 			return SizeDTO.builder()
 					.id(model.getId())
-					.product(model.getProduct())
+					.productId(model.getProduct().getId())
 					.size(model.getSize())
 					.quantity(model.getQuantity())
 					.build();
@@ -176,8 +177,11 @@ import com.betacom.dto.response.payment_method.*;
 					.password(model.getPassword())
 					.phone(model.getPhone())
 					.role(model.getRole())
+					.addresses(model.getAddresses().stream().map(a -> addressDTO(a)).collect(Collectors.toList()))
+					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
+					//.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
+					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
 					.build();
-			
 		}
 		
 		public static WishListDTO wishListDTO(WishList model) {

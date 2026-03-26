@@ -67,8 +67,8 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("findById")
-    public ResponseEntity<Object> findById(@RequestParam Long id) {
+    @GetMapping("findById/{id}")
+    public ResponseEntity<Object> findById(@PathVariable Long id) {
         try {
             ReviewDTO review = reviewS.getById(id);
             return ResponseEntity.status(HttpStatus.OK).body(review);

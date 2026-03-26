@@ -2,6 +2,9 @@ package com.betacom.dto.response.product;
 
 import java.util.List;
 
+import com.betacom.dto.response.category.CategoryDTO;
+import com.betacom.dto.response.review.ReviewDTO;
+import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.enums.Genders;
 import com.betacom.model.Category;
 import com.betacom.model.Review;
@@ -22,7 +25,6 @@ import lombok.ToString;
 @NoArgsConstructor
 public class ProductsDTO {
 	
-	
 	private Long id;
 	
 	private String name;
@@ -31,7 +33,7 @@ public class ProductsDTO {
 	
 	private String description;
 	
-	private Category category;
+	private CategoryDTO category;
 	
 	private Genders gender;
 	
@@ -43,8 +45,8 @@ public class ProductsDTO {
 	
 	private Double discountPercentage;
 	
-	private List<Size> sizes;
+	private List<SizeDTO> sizes;
 	
-	private List<Review> reviews;
+	private List<ReviewDTO> reviews;
 
 }

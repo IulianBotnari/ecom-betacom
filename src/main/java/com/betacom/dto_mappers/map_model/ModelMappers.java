@@ -34,6 +34,9 @@ public class ModelMappers {
 	                .gender(Genders.valueOf(request.getGender()))
 	                .material(request.getMaterial())
 	                .price(request.getPrice())
+	                .discount(request.getDiscount())
+	                //.discountPercentage(request.getDiscountPercentage()))
+	              
 	                .build();
 	    }
 	

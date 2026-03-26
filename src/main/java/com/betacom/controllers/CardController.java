@@ -28,8 +28,8 @@ public class CardController {
 	private  final InterfaceCardService cardS;
 	
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -41,20 +41,20 @@ public class CardController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
-	@PostMapping(path = "create")
-	public ResponseEntity<Object> create(@Valid @RequestBody CardRequest request) {
-		Object response = null;
-		HttpStatus status = HttpStatus.CREATED;
-		
-		try {
-			cardS.create(request);
-			response = "Creazione avvenuta con successo";
-		} catch (Exception e) {
-			status = HttpStatus.BAD_REQUEST;
-			response = "Errore durnate il salvataggio";
-		}
-		return ResponseEntity.status(status).body(response);
-	}
+//	@PostMapping(path = "create")
+//	public ResponseEntity<Object> create(@Valid @RequestBody CardRequest request) {
+//		Object response = null;
+//		HttpStatus status = HttpStatus.CREATED;
+//		
+//		try {
+//			cardS.create(request);
+//			response = "Creazione avvenuta con successo";
+//		} catch (Exception e) {
+//			status = HttpStatus.BAD_REQUEST;
+//			response = "Errore durnate il salvataggio";
+//		}
+//		return ResponseEntity.status(status).body(response);
+//	}
 	
 	
 	

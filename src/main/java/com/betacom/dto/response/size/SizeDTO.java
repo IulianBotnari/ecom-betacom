@@ -2,6 +2,7 @@ package com.betacom.dto.response.size;
 
 import com.betacom.enums.Sizes;
 import com.betacom.model.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class SizeDTO {
 
     private Long id;
     
-    private Product product;
+    private Long productId;
 
     private Sizes size; 
 
