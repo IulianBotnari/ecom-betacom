@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.product.ProudctUpdate;
+import com.betacom.enums.Genders;
 import com.betacom.services.interfaces.InterfaceProductService;
 
 import jakarta.validation.Valid;
@@ -110,5 +111,28 @@ public class ProductController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return ResponseEntity.status(status).body(r);
+	}
+	
+	@GetMapping(path = "multiFilter")
+	public ResponseEntity<Object> multiFilterProduct(
+	        @RequestParam(required = false) Long id,
+	        @RequestParam(required = false) String name,
+	        @RequestParam(required = false) Long categoryId,
+	        @RequestParam(required = false) Genders gender,
+	        @RequestParam(required = false) String material,
+	        @RequestParam(required = false) Double price) throws Exception {
+
+	    Object response = null;
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        response = productS.multiFilter(id, name, categoryId, gender, material, price);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        status = HttpStatus.BAD_REQUEST;
+	        response = "Impossibile recuperare i prodotti";
+	    }
+
+	    return ResponseEntity.status(status).body(response);
 	}
 }
