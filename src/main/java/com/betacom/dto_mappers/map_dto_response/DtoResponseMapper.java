@@ -30,37 +30,6 @@ import com.betacom.model.Review;
 import com.betacom.model.Size;
 import com.betacom.model.User;
 import com.betacom.model.WishList;
-	import com.betacom.model.Address;
-	import com.betacom.model.Card;
-	import com.betacom.model.Cart;
-	import com.betacom.model.CartItem;
-	import com.betacom.model.Category;
-	import com.betacom.model.Order;
-	import com.betacom.model.OrderedItemsDetails;
-	import com.betacom.model.PaymentMethod;
-	import com.betacom.model.Product;
-	import com.betacom.model.Review;
-	import com.betacom.model.Size;
-	import com.betacom.model.User;
-	import com.betacom.model.WishList;
-
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Component;
-	
-	import com.betacom.dto.response.address.*;
-	import com.betacom.dto.response.card.*;
-	import com.betacom.dto.response.cart.CartDTO;
-	import com.betacom.dto.response.cart_item.*;
-	import com.betacom.dto.response.category.*;
-	import com.betacom.dto.response.order.*;
-	import com.betacom.dto.response.ordered_items_details.*;
-	import com.betacom.dto.response.payment_method.*;
-	import com.betacom.dto.response.product.ProductsDTO;
-	import com.betacom.dto.response.review.ReviewDTO;
-	import com.betacom.dto.response.size.SizeDTO;
-	import com.betacom.dto.response.user.UserDTO;
-	import com.betacom.dto.response.wish_list.WishListDTO;
 	
 	@Component
 	public class DtoResponseMapper {
@@ -128,21 +97,21 @@ import org.springframework.stereotype.Component;
 		public static OrderDTO orderDTO(Order model) {
 			return OrderDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
+					.userId(model.getUser().getId())
 					.date(model.getDate())
 					.status(model.getStatus())
 					.orderPrice(model.getOrderPrice())
-					.shippingAddress(model.getShippingAddress())
-					.details(model.getDetails())
+					.shippingAddress(addressDTO(model.getShippingAddress()))
+					.details(model.getDetails().stream().map(d -> orderItemDetailsDTO(d)).collect(Collectors.toList()))
 					.build();
 		}
 		
-		public static OrderedItemsDetailsDTO orderDetailsDTO(OrderedItemsDetails model) {
+		public static OrderedItemsDetailsDTO orderItemDetailsDTO(OrderedItemsDetails model) {
 			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
-					.order(model.getOrder())
-					.product(model.getProduct())
-					.size(model.getSize())
+					.order(orderDTO(model.getOrder()))
+					.product(productsDTO(model.getProduct()))
+					.size(sizeDTO(model.getSize()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
 					.build();
@@ -210,7 +179,7 @@ import org.springframework.stereotype.Component;
 					.role(model.getRole())
 					.addresses(model.getAddresses().stream().map(a -> addressDTO(a)).collect(Collectors.toList()))
 					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
-//					.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
+					//.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
 					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
 					.build();
 		}

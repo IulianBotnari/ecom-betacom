@@ -95,8 +95,8 @@ public class AddressController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
