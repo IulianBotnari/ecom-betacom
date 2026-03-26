@@ -2,8 +2,6 @@ package com.betacom.dto.response.address;
 
 
 
-import com.betacom.model.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +24,7 @@ public class AddressDTO {
     private String province;
     private String cap;
     private String country;
-    private User user;
+    private Long userId;
     private boolean residence;
     private boolean domicile;
     private boolean defaulAddress;

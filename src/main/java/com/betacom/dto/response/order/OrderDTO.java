@@ -8,6 +8,7 @@ import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
 import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class OrderDTO {
 	
     private Long id;
 
+    @JsonIgnore
     private User user;
 
     private LocalDate date;

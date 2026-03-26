@@ -74,7 +74,7 @@ public class UserServiceImpl implements InterfaceUserService{
 
 	@Override
 	public void update(UserUpdateRequest request) throws Exception {
-		log.debug("create {}", request);
+		log.debug("update {}", request);
 
 		User user = userR.findById(request.getId())
 		        .orElseThrow(() -> new Exception("utente non presente in DB"));

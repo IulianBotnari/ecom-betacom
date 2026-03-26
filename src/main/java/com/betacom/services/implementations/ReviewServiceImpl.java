@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.betacom.dto.request.review.ReviewCreateRequest;
 import com.betacom.dto.request.review.ReviewUpdateRequest;
 import com.betacom.dto.response.review.ReviewDTO;
+import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.model.Review;
 import com.betacom.repository.ReviewRepository;
 import com.betacom.repository.UserRepository;
@@ -32,7 +33,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new Exception("Recensione non trovata"));
 
-        return mapToDTO(review);
+        return DtoResponseMapper.ReviewDTO(review);
     }
     
     // ---- LIST ALL ----
@@ -40,7 +41,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
     public List<ReviewDTO> list() throws Exception {
         return reviewRepository.findAll()
                 .stream()
-                .map(this::mapToDTO)
+                .map(DtoResponseMapper::ReviewDTO)
                 .collect(Collectors.toList());
     }
     
@@ -50,7 +51,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         Review review = new Review();
 
         review.setRating(request.getRating());
-        review.setReview(normalize(request.getReview()));
+        review.setReview(request.getReview());
 
         review.setUser(userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new Exception("Utente non trovato")));
@@ -72,7 +73,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         }
 
         if (request.getReview() != null) {
-            review.setReview(normalize(request.getReview()));
+            review.setReview(request.getReview());
         }
 
         reviewRepository.save(review);
@@ -89,20 +90,20 @@ public class ReviewServiceImpl implements InterfaceReviewService {
     }
     
     // ---- UTILITY ----
-    private ReviewDTO mapToDTO(Review review) {
-        ReviewDTO dto = new ReviewDTO();
+//    private ReviewDTO mapToDTO(Review review) {
+//        ReviewDTO dto = new ReviewDTO();
+//
+//        dto.setId(review.getId());
+//        dto.setUser(review.getUser());
+//        dto.setProduct(review.getProduct());
+//        dto.setRating(review.getRating());
+//        dto.setReview(review.getReview());
+//        dto.setDate(review.getDate());
+//
+//        return dto;
+//    }
 
-        dto.setId(review.getId());
-        dto.setUser(review.getUser());
-        dto.setProduct(review.getProduct());
-        dto.setRating(review.getRating());
-        dto.setReview(review.getReview());
-        dto.setDate(review.getDate());
-
-        return dto;
-    }
-
-    private String normalize(String value) {
-        return value == null ? null : value.trim().toUpperCase();
-    }
+//    private String normalize(String value) {
+//        return value == null ? null : value.trim().toUpperCase();
+//    }
 }
