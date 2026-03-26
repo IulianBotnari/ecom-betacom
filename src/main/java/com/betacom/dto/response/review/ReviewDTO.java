@@ -23,7 +23,7 @@ import lombok.ToString;
 public class ReviewDTO {
     private Long id;
     private Long userId;
-    private Product product;
+    private Long productId;
     private Integer rating;
     private String review;
     private LocalDate date;

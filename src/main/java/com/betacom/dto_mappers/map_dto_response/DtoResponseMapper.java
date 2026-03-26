@@ -178,7 +178,7 @@ import org.springframework.stereotype.Component;
 			return ReviewDTO.builder()
 					.id(model.getId())
 					.userId(model.getUser().getId())
-					.product(model.getProduct())
+					.productId(model.getProduct().getId())
 					.rating(model.getRating())
 					.review(model.getReview())
 					.date(model.getDate())
@@ -211,7 +211,7 @@ import org.springframework.stereotype.Component;
 					.addresses(model.getAddresses().stream().map(a -> addressDTO(a)).collect(Collectors.toList()))
 					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
 //					.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
-					.reviews(model.getReviews().stream().map(r -> ReviewDTO(r)).collect(Collectors.toList()))
+					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
 					.build();
 		}
 		
