@@ -150,7 +150,7 @@ public class UserServiceImpl implements InterfaceUserService{
 	public LoginDTO login(LoginRequest request) throws Exception {
 		User user = userR.findByEmail(request.getEmail()).orElseThrow(() -> new Exception("Utente non valido"));
 		
-		if(request.getPassword() != user.getPassword())
+		if(!request.getPassword().equals(user.getPassword()))
 			throw new Exception("Utente non valido");
 		
 		return DtoResponseMapper.loginDTO(user);

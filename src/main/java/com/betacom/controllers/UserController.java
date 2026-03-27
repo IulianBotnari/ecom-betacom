@@ -112,7 +112,7 @@ public class UserController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public ResponseEntity<Object> findById(@Valid @RequestBody(required = true) LoginRequest request) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
