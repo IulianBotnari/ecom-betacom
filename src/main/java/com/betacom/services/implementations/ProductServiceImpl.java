@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.controllers.OrderDetailsController;
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.dto.response.product.ProductsDTO;
@@ -15,9 +16,11 @@ import com.betacom.dto_mappers.map_model.ModelMappers;
 import com.betacom.enums.Genders;
 import com.betacom.enums.Sizes;
 import com.betacom.model.Category;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
 import com.betacom.repository.CategoryRepository;
+import com.betacom.repository.OrderedItemsDetailsRepository;
 import com.betacom.repository.ProductRepository;
 import com.betacom.repository.SizeRepository;
 import com.betacom.services.interfaces.InterfaceProductService;
@@ -33,6 +36,7 @@ public class ProductServiceImpl implements InterfaceProductService{
 	private final ProductRepository productR;
 	private final CategoryRepository categoryR;
 	private final SizeRepository sizeR;
+	private final OrderedItemsDetailsRepository orderDetR;
 	private final ModelMappers modelM;
 	
 	@Override
@@ -123,10 +127,17 @@ public class ProductServiceImpl implements InterfaceProductService{
 		productR.save(product);
 		
 	}
-
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void delete(Long id) throws Exception {
 		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));
+		List<OrderedItemsDetails> orderD = orderDetR.findAll().stream().filter(od -> od.getProduct().getId() == id).collect(Collectors.toList());
+		
+		orderD.forEach(od -> {
+			od.setProduct(null);
+			orderDetR.save(od);
+		});
+		
 		productR.delete(product);
 		
 	}

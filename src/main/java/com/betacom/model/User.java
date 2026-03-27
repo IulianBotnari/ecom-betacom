@@ -82,7 +82,7 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Review> reviews;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 	private List<WishList> wishList;
 	
 	@CreationTimestamp

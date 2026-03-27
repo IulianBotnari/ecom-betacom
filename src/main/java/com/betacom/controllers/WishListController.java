@@ -45,7 +45,7 @@ public class WishListController {
         }
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         try {
             wishS.delete(id);

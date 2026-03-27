@@ -66,7 +66,7 @@ public class WishListServiceImpl implements InterfaceWhishListService {
                 .orElseThrow(() -> new Exception("Elemento wishlist non trovato"));
         
         if(request.getProductId() != null) {
-        	Product product = productRepository.findById(request.getId()).orElseThrow(()-> new Exception("Prodotto non trovato"));
+        	Product product = productRepository.findById(request.getProductId()).orElseThrow(()-> new Exception("Prodotto non trovato"));
         	item.setProduct(product);
         }
 
