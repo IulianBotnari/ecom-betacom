@@ -1,8 +1,14 @@
 package com.betacom.services.implementations;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.cart.CartRequest;
@@ -33,6 +39,9 @@ public class UserServiceImpl implements InterfaceUserService{
 	private final OrderRepository orderR;
 	private final ReviewRepository reviewR;
 	private final CartServiceImpl cartService;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public UserDTO getById(Long id) throws Exception {
@@ -148,12 +157,21 @@ public class UserServiceImpl implements InterfaceUserService{
 
 	@Override
 	public LoginDTO login(LoginRequest request) throws Exception {
-		User user = userR.findByEmail(request.getEmail()).orElseThrow(() -> new Exception("Utente non valido"));
-		
-		if(!request.getPassword().equals(user.getPassword()))
-			throw new Exception("Utente non valido");
-		
-		return DtoResponseMapper.loginDTO(user);
+	
+	    User user = userR.findByEmail(request.getEmail())
+	            .orElseThrow(() -> new Exception("Credenziali non valide"));
+
+
+	    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+	        throw new Exception("Credenziali non valide");
+	    }
+
+	    UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(
+	            user.getEmail(), null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
+	    
+	    SecurityContextHolder.getContext().setAuthentication(authReq);
+
+	    return DtoResponseMapper.loginDTO(user);
 	}
 
 }
