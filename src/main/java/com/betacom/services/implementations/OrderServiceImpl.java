@@ -57,12 +57,25 @@ public class OrderServiceImpl implements InterfaceOrderService{
 	public void create(OrderRequest request) throws Exception {
 		log.debug("create {}", request);
 		
+		
+		if(request.getUserId() == null) {
+			new Exception("Devi associare un id utente all'ordine");
+		}
+		
 		User user = userR.findById(request.getUserId())
 				.orElseThrow(()-> new Exception ("user non trovato"));
 		
 		Order order = new Order();
-		order.setStatus(OrderStatus.valueOf(request.getStatus()));
-	    order.setOrderPrice(request.getOrderPrice());
+		
+	
+		Address defaultAddress = user.getAddresses().stream().filter(el -> el.isDefaulAddress() == true).findFirst().orElseThrow(() -> 
+									new Exception("Non hai un indirizzo predefinito"));
+		
+		order.setShippingAddress(defaultAddress);
+		
+		order.setStatus(null);
+		
+	    order.setOrderPrice(0.0);
 	    order.setUser(user);	    
 	    
 	    orderR.save(order);
@@ -86,9 +99,6 @@ public class OrderServiceImpl implements InterfaceOrderService{
 		    order.setShippingAddress(address);
 		}
 		
-		if (request.getOrderPrice() != null) {
-	        order.setOrderPrice(request.getOrderPrice());
-	    }
 		
 		if (request.getStatus() != null) {
 		    order.setStatus(OrderStatus.valueOf(request.getStatus()));

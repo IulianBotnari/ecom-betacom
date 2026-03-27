@@ -90,7 +90,6 @@ import com.betacom.model.WishList;
 			return CategoryDTO.builder()
 					.id(model.getId())
 					.category(model.getCategory())
-					.products(model.getProducts())
 					.build();
 		}
 		
@@ -181,14 +180,15 @@ import com.betacom.model.WishList;
 					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
 					//.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
 					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
+					.wishList(model.getWishList().stream().map(wish -> wishListDTO(wish)).collect(Collectors.toList()))
 					.build();
 		}
 		
 		public static WishListDTO wishListDTO(WishList model) {
 			return WishListDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
-					.product(model.getProduct())
+					.userId(model.getUser().getId())
+					.productId(productsDTO(model.getProduct()))
 					.createDate(model.getCreateDate())
 					.build();
 		}

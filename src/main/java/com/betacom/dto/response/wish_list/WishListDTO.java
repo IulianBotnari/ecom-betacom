@@ -2,8 +2,10 @@ package com.betacom.dto.response.wish_list;
 
 import java.time.LocalDate;
 
+import com.betacom.dto.response.product.ProductsDTO;
 import com.betacom.model.Product;
 import com.betacom.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +24,9 @@ public class WishListDTO {
 	
     private Long id;
 
-    private User user;
+    private Long userId;
 
-    private Product product;
+    private ProductsDTO productId;
 
     private LocalDate createDate;
 }

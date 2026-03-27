@@ -9,6 +9,7 @@ import com.betacom.dto.request.wish_list.WishlistCreateRequest;
 import com.betacom.dto.request.wish_list.WishlistUpdateRequest;
 import com.betacom.dto.response.wish_list.WishListDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
+import com.betacom.model.Product;
 import com.betacom.model.WishList;
 import com.betacom.repository.WishListRepository;
 import com.betacom.repository.UserRepository;
@@ -27,7 +28,7 @@ public class WishListServiceImpl implements InterfaceWhishListService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    // ---- GET BY ID ----
+
     @Override
     public WishListDTO getById(Long id) throws Exception {
         WishList wish = wishListRepository.findById(id)
@@ -36,7 +37,7 @@ public class WishListServiceImpl implements InterfaceWhishListService {
         return DtoResponseMapper.wishListDTO(wish);
     }
 
-    // ---- LIST ALL ----
+
     @Override
     public List<WishListDTO> list() throws Exception {
         return wishListRepository.findAll()
@@ -45,7 +46,7 @@ public class WishListServiceImpl implements InterfaceWhishListService {
                 .collect(Collectors.toList());
     }
 
-    // ---- CREATE ----
+
     @Override
     public void create(WishlistCreateRequest request) throws Exception {
         WishList wish = new WishList();
@@ -59,20 +60,23 @@ public class WishListServiceImpl implements InterfaceWhishListService {
         wishListRepository.save(wish);
     }
 
-    // ---- UPDATE ----
     @Override
     public void update(WishlistUpdateRequest request) throws Exception {
         WishList item = wishListRepository.findById(request.getId())
                 .orElseThrow(() -> new Exception("Elemento wishlist non trovato"));
+        
+        if(request.getProductId() != null) {
+        	Product product = productRepository.findById(request.getId()).orElseThrow(()-> new Exception("Prodotto non trovato"));
+        	item.setProduct(product);
+        }
 
         wishListRepository.save(item);
     }
 
-    // ---- DELETE ----
     @Override
     public void delete(Long id) throws Exception {
         if (!wishListRepository.existsById(id)) {
-            throw new Exception("Prodotto non trovato nella lista");
+            throw new Exception("Wish list non trovato nella lista");
         }
 
         wishListRepository.deleteById(id);

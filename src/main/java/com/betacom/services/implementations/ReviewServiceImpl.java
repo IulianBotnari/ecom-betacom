@@ -27,7 +27,6 @@ public class ReviewServiceImpl implements InterfaceReviewService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    // ---- GET BY ID ----
     @Override
     public ReviewDTO getById(Long id) throws Exception {
         Review review = reviewRepository.findById(id)
@@ -36,7 +35,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         return DtoResponseMapper.reviewDTO(review);
     }
     
-    // ---- LIST ALL ----
+
     @Override
     public List<ReviewDTO> list() throws Exception {
         return reviewRepository.findAll()
@@ -45,7 +44,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
                 .collect(Collectors.toList());
     }
     
-    // ---- CREATE ----
+
     @Override
     public void create(ReviewCreateRequest request) throws Exception {
         Review review = new Review();
@@ -62,7 +61,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         reviewRepository.save(review);
     }
 
-    // ---- UPDATE ----
+
     @Override
     public void update(ReviewUpdateRequest request) throws Exception {
         Review review = reviewRepository.findById(request.getId())
@@ -79,7 +78,7 @@ public class ReviewServiceImpl implements InterfaceReviewService {
         reviewRepository.save(review);
     }
 
-    // ---- DELETE ----
+ 
     @Override
     public void delete(Long id) throws Exception {
         if (!reviewRepository.existsById(id)) {
