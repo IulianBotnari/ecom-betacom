@@ -80,7 +80,6 @@ public class OrderServiceImplTest {
         OrderRequest request = new OrderRequest();
         request.setUserId(1L);
         request.setStatus("CREATED");
-        request.setOrderPrice(100.0);
 
         User user = new User();
         when(userR.findById(1L)).thenReturn(Optional.of(user));
@@ -107,7 +106,6 @@ public class OrderServiceImplTest {
         request.setUserId(2L);
         request.setShippingAddress(3L);
         request.setStatus("PAGATO");
-        request.setOrderPrice(200.0);
 
         Order order = new Order();
         User user = new User();

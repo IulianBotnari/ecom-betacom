@@ -9,6 +9,7 @@ import com.betacom.dto.response.card.CardDTO;
 import com.betacom.dto.response.cart.CartDTO;
 import com.betacom.dto.response.cart_item.CartItemDTO;
 import com.betacom.dto.response.category.CategoryDTO;
+import com.betacom.dto.response.login.LoginDTO;
 import com.betacom.dto.response.order.OrderDTO;
 import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
 import com.betacom.dto.response.payment_method.PaymentMethodDTO;
@@ -177,7 +178,7 @@ import com.betacom.model.WishList;
 					.role(model.getRole())
 					.addresses(model.getAddresses().stream().map(a -> addressDTO(a)).collect(Collectors.toList()))
 					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
-					//.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
+					.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
 					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
 					.wishList(model.getWishList().stream().map(wish -> wishListDTO(wish)).collect(Collectors.toList()))
 					.build();
@@ -189,6 +190,17 @@ import com.betacom.model.WishList;
 					.userId(model.getUser().getId())
 					.productId(productsDTO(model.getProduct()))
 					.createDate(model.getCreateDate())
+					.build();
+		}
+		
+		public static LoginDTO loginDTO(User model) {
+			return LoginDTO.builder()
+					.id(model.getId())
+					.name(model.getName())
+					.lastName(model.getLastName())
+					.email(model.getEmail())
+					.password(model.getPassword())
+					.role(model.getRole())
 					.build();
 		}
 	}

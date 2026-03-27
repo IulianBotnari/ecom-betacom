@@ -73,7 +73,7 @@ class WishListServiceImplTest {
     // --- UPDATE ---
     @Test
     void testUpdate_Success() throws Exception {
-        WishlistUpdateRequest req = new WishlistUpdateRequest(1L);
+        WishlistUpdateRequest req = new WishlistUpdateRequest(1L, 1L);
 
         WishList item = new WishList();
         when(wishListRepository.findById(1L)).thenReturn(Optional.of(item));
@@ -85,7 +85,7 @@ class WishListServiceImplTest {
 
     @Test
     void testUpdate_NotFound() {
-        WishlistUpdateRequest req = new WishlistUpdateRequest(1L);
+        WishlistUpdateRequest req = new WishlistUpdateRequest(1L, 1L);
 
         when(wishListRepository.findById(1L)).thenReturn(Optional.empty());
 

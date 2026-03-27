@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.dto.request.login.LoginRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
 import com.betacom.services.interfaces.InterfaceUserService;
@@ -104,6 +105,19 @@ public class UserController {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r = userS.getById(id);
+		} catch (Exception e) {
+			r = e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+	}
+	
+	@GetMapping("/login")
+	public ResponseEntity<Object> findById(@Valid @RequestBody(required = true) LoginRequest request) {
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r = userS.login(request);
 		} catch (Exception e) {
 			r = e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

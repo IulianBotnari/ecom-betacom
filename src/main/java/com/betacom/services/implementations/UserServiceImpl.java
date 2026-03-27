@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.cart.CartRequest;
+import com.betacom.dto.request.login.LoginRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
+import com.betacom.dto.response.login.LoginDTO;
 import com.betacom.dto.response.user.UserDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.enums.Roles;
@@ -142,6 +144,16 @@ public class UserServiceImpl implements InterfaceUserService{
 		}
 		
 		userR.delete(user);
+	}
+
+	@Override
+	public LoginDTO login(LoginRequest request) throws Exception {
+		User user = userR.findByEmail(request.getEmail()).orElseThrow(() -> new Exception("Utente non valido"));
+		
+		if(request.getPassword() != user.getPassword())
+			throw new Exception("Utente non valido");
+		
+		return DtoResponseMapper.loginDTO(user);
 	}
 
 }
