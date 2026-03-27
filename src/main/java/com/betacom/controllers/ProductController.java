@@ -77,7 +77,8 @@ public class ProductController {
 			productS.delete(id);
 			response = "Eliminazione completata";
 		} catch (Exception e) {
-			response = "Eliminazione non riuscita";
+			e.printStackTrace();
+			response = "Eliminazione non riuscita" + e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}
 		

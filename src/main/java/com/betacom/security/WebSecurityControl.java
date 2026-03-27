@@ -5,20 +5,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+
+
 @Configuration
+
 public class WebSecurityControl {
 
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-
+    	http.csrf(csrf -> csrf.disable());
     	http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
-                .requestMatchers("/cart/**", "/checkout/**", "/orders/**", "/profile/**", "/wishlist/**").hasRole("USER")
-                .requestMatchers("/", "/shop", "/products", "/product/**", "/login", "/register", "/saveUser").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+    			
+                //.requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
+                //.requestMatchers("/cart/**", "/checkout/**", "/orders/**", "/profile/**", "/wishlist/**").permitAll()
+                //.requestMatchers("/", "/shop", "/products", "/product/**", "/login", "/register", "/saveUser").permitAll()
+                //.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/**").permitAll()
+    			.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
                 .anyRequest().authenticated()
-        )
+        )/*
         .formLogin((form) -> form
                 .loginPage("/login")
                 .usernameParameter("email")
@@ -32,7 +39,7 @@ public class WebSecurityControl {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
-        );
+        )*/ ;
 
         return http.build();
     }

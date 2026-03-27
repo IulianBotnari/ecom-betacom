@@ -85,7 +85,8 @@ public class OrderController {
 		try {
 			response = orderS.list();
 		} catch (Exception e) {
-			response = "Errore durante il recupero della lista";
+			e.printStackTrace();
+			response = "Errore durante il recupero della lista" + e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}
 		

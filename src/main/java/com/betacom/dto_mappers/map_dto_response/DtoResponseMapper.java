@@ -46,7 +46,7 @@ import com.betacom.model.WishList;
 					.province(model.getProvince())
 					.cap(model.getCap())
 					.country(model.getCountry())
-					.userId(model.getUser().getId())
+					.userId(model.getUser() == null ? null : model.getUser().getId())
 					.residence(model.isResidence())
 					.domicile(model.isDomicile())
 					.defaulAddress(model.isDefaulAddress())
@@ -96,7 +96,7 @@ import com.betacom.model.WishList;
 		public static OrderDTO orderDTO(Order model) {
 			return OrderDTO.builder()
 					.id(model.getId())
-					.userId(model.getUser().getId())
+					.userId(model.getUser() == null ? null : model.getUser().getId())
 					.date(model.getDate())
 					.status(model.getStatus())
 					.orderPrice(model.getOrderPrice())
@@ -109,7 +109,7 @@ import com.betacom.model.WishList;
 			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
 					.orderId(model.getOrder().getId())
-					.product(productsDTO(model.getProduct()))
+					.product(model.getProduct() == null ? null : productsDTO(model.getProduct()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
 					.build();
@@ -144,7 +144,7 @@ import com.betacom.model.WishList;
 		public static ReviewDTO reviewDTO(Review model) {
 			return ReviewDTO.builder()
 					.id(model.getId())
-					.userId(model.getUser().getId())
+					.userId(model.getUser() == null ? null : model.getUser().getId() )
 					.productId(model.getProduct().getId())
 					.rating(model.getRating())
 					.review(model.getReview())
@@ -177,7 +177,7 @@ import com.betacom.model.WishList;
 					.role(model.getRole())
 					.addresses(model.getAddresses().stream().map(a -> addressDTO(a)).collect(Collectors.toList()))
 					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
-					//.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
+					.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
 					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
 					.wishList(model.getWishList().stream().map(wish -> wishListDTO(wish)).collect(Collectors.toList()))
 					.build();
