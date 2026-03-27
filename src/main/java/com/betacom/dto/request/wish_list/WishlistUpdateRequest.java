@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WishlistUpdateRequest {
-    private Long id; 
+	private Long id;
+    private Long productId;
 }

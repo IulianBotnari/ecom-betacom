@@ -69,8 +69,8 @@ import com.betacom.model.WishList;
 			
 			return CartDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
-					.cartItems(model.getCartItems())
+					.userId(model.getUser().getId())
+					.cartItems(model.getCartItems().stream().map(c -> cartItemDTO(c)).collect(Collectors.toList()))
 					.createDate(model.getCreateDate())
 					.build();
 		}
@@ -80,8 +80,8 @@ import com.betacom.model.WishList;
 			return CartItemDTO.builder()
 					.id(model.getId())
 					.quantity(model.getQuantity())
-					.cart(model.getCart())
-					.product(model.getProduct())
+					.cartId(model.getCart().getId())
+					.product(productsDTO(model.getProduct()))
 					.build();
 		}
 		
@@ -90,7 +90,6 @@ import com.betacom.model.WishList;
 			return CategoryDTO.builder()
 					.id(model.getId())
 					.category(model.getCategory())
-					.products(model.getProducts())
 					.build();
 		}
 		
@@ -101,7 +100,7 @@ import com.betacom.model.WishList;
 					.date(model.getDate())
 					.status(model.getStatus())
 					.orderPrice(model.getOrderPrice())
-					.shippingAddress(addressDTO(model.getShippingAddress()))
+					.shippingAddressId(model.getShippingAddress().getId())
 					.details(model.getDetails().stream().map(d -> orderItemDetailsDTO(d)).collect(Collectors.toList()))
 					.build();
 		}
@@ -109,9 +108,8 @@ import com.betacom.model.WishList;
 		public static OrderedItemsDetailsDTO orderItemDetailsDTO(OrderedItemsDetails model) {
 			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
-					.order(orderDTO(model.getOrder()))
+					.orderId(model.getOrder().getId())
 					.product(productsDTO(model.getProduct()))
-					.size(sizeDTO(model.getSize()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
 					.build();
@@ -181,14 +179,15 @@ import com.betacom.model.WishList;
 					.paymentMethods(model.getPaymentMethods().stream().map(p -> paymentMethodDTO(p)).collect(Collectors.toList()))
 					//.orders(model.getOrders().stream().map(o -> orderDTO(o)).collect(Collectors.toList()))
 					.reviews(model.getReviews().stream().map(r -> reviewDTO(r)).collect(Collectors.toList()))
+					.wishList(model.getWishList().stream().map(wish -> wishListDTO(wish)).collect(Collectors.toList()))
 					.build();
 		}
 		
 		public static WishListDTO wishListDTO(WishList model) {
 			return WishListDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
-					.product(model.getProduct())
+					.userId(model.getUser().getId())
+					.productId(productsDTO(model.getProduct()))
 					.createDate(model.getCreateDate())
 					.build();
 		}

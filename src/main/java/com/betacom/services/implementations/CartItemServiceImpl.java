@@ -107,7 +107,7 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 			cartItem.setProduct(prodotto);
 			Cart cart = cartR.findById(request.getCartId())
 					.orElseThrow(()-> new Exception("Carrello non trovato"));
-			cartItem.setQuantity(request.getQuantity());
+			cartItem.setCart(cart);
 			
 			cartItemR.save(cartItem);
 	

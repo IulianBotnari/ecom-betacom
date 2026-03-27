@@ -56,6 +56,9 @@ public class ProductServiceImpl implements InterfaceProductService{
 		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
 		// request.setDiscount(request.getDiscount());
 		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
+		if(request.getDiscount()!= null) {
+			request.setPrice(request.getPrice() - request.getDiscount());
+		}
 		Product product = modelM.product(request, category);
 		
 		product = productR.save(product);
@@ -69,6 +72,8 @@ public class ProductServiceImpl implements InterfaceProductService{
 	    } catch (IllegalArgumentException e) {
 	        throw new Exception("Taglia non valida: " + request.getSize());
 	    }
+		
+		
 		
 		sizeR.save(size);
 

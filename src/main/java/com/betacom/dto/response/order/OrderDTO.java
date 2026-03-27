@@ -37,7 +37,7 @@ public class OrderDTO {
 
     private Double orderPrice;
 
-    private AddressDTO shippingAddress;
+    private Long shippingAddressId;
 
     private List<OrderedItemsDetailsDTO> details;
 

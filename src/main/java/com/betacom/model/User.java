@@ -82,6 +82,9 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Review> reviews;
 	
+	@OneToMany(mappedBy = "user")
+	private List<WishList> wishList;
+	
 	@CreationTimestamp
 	@Column(name = "create_date")
 	private LocalDate createDate;

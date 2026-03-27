@@ -19,6 +19,5 @@ public class OrderRequest {
 	private Long id;
 	private Long userId;
     private Long shippingAddress;
-    private Double orderPrice;
     private String status; 
 }
