@@ -69,8 +69,8 @@ import com.betacom.model.WishList;
 			
 			return CartDTO.builder()
 					.id(model.getId())
-					.user(model.getUser())
-					.cartItems(model.getCartItems())
+					.userId(model.getUser().getId())
+					.cartItems(model.getCartItems().stream().map(c -> cartItemDTO(c)).collect(Collectors.toList()))
 					.createDate(model.getCreateDate())
 					.build();
 		}
@@ -80,8 +80,8 @@ import com.betacom.model.WishList;
 			return CartItemDTO.builder()
 					.id(model.getId())
 					.quantity(model.getQuantity())
-					.cart(model.getCart())
-					.product(model.getProduct())
+					.cartId(model.getCart().getId())
+					.product(productsDTO(model.getProduct()))
 					.build();
 		}
 		
@@ -100,7 +100,7 @@ import com.betacom.model.WishList;
 					.date(model.getDate())
 					.status(model.getStatus())
 					.orderPrice(model.getOrderPrice())
-					.shippingAddress(addressDTO(model.getShippingAddress()))
+					.shippingAddressId(model.getShippingAddress().getId())
 					.details(model.getDetails().stream().map(d -> orderItemDetailsDTO(d)).collect(Collectors.toList()))
 					.build();
 		}
@@ -108,9 +108,8 @@ import com.betacom.model.WishList;
 		public static OrderedItemsDetailsDTO orderItemDetailsDTO(OrderedItemsDetails model) {
 			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
-					.order(orderDTO(model.getOrder()))
+					.orderId(model.getOrder().getId())
 					.product(productsDTO(model.getProduct()))
-					.size(sizeDTO(model.getSize()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
 					.build();

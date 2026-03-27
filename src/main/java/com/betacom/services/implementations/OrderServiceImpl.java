@@ -10,10 +10,12 @@ import com.betacom.dto.response.order.OrderDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
+import com.betacom.model.Cart;
 import com.betacom.model.Order;
 import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.User;
 import com.betacom.repository.AddressRepository;
+import com.betacom.repository.CartRepository;
 import com.betacom.repository.OrderRepository;
 import com.betacom.repository.UserRepository;
 import com.betacom.services.interfaces.InterfaceOrderService;
@@ -29,7 +31,7 @@ public class OrderServiceImpl implements InterfaceOrderService{
 
     private final AddressRepository addressR;
 	private final UserRepository userR;
-    
+    private final CartRepository cartR;
 	private final OrderRepository orderR;
 	
 	@Override
@@ -70,6 +72,8 @@ public class OrderServiceImpl implements InterfaceOrderService{
 	
 		Address defaultAddress = user.getAddresses().stream().filter(el -> el.isDefaulAddress() == true).findFirst().orElseThrow(() -> 
 									new Exception("Non hai un indirizzo predefinito"));
+		
+
 		
 		order.setShippingAddress(defaultAddress);
 		

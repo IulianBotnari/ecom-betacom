@@ -24,12 +24,10 @@ public class OrderedItemsDetailsDTO {
 	
     private Long id;
 
-    private OrderDTO order;
+    private Long orderId;
 
     private ProductsDTO product;
-    
-    private SizeDTO size;
-
+   
     private Integer quantity;
 
     private Double totalPrice;
