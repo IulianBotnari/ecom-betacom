@@ -75,7 +75,7 @@ public class UserServiceImpl implements InterfaceUserService{
 		if(request.getCodiceFiscale() != null)
 			user.setCodiceFiscale(request.getCodiceFiscale());
 		user.setEmail(request.getEmail());
-		user.setPassword(request.getPassword());
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setPhone(request.getPhone());
 		user.setRole(request.getRole());
 		
