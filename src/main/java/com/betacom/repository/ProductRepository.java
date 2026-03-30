@@ -23,7 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 			AND (:categoryId IS NULL OR c.id = :categoryId)
 			AND (:gender IS NULL OR p.gender = :gender)
 			AND (:material IS NULL OR p.material LIKE :material)
-			AND (:price IS NULL OR p.price = :price)
+			AND (:price IS NULL OR p.price <= :price)
 			""")
 	List<Product> findProductsByFilters(
 		    @Param("id") Long id,
