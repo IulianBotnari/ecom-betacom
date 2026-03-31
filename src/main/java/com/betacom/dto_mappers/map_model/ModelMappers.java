@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Component;
 
 import com.betacom.dto.request.category.CategoryRequest;
+import com.betacom.dto.request.category.CategoryRequestNoID;
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.size.SizeRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
@@ -44,6 +45,14 @@ public class ModelMappers {
         return Category.builder()
                 .id(request.getId())
                 .category(request.getCategory())
+                .isView(request.getIsView())
+                .build();
+    }
+	
+	public Category category(CategoryRequestNoID request) {
+        return Category.builder()
+                .category(request.getCategory())
+                .isView(request.getIsView())
                 .build();
     }
 	

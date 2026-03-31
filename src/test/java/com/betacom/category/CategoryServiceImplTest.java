@@ -1,7 +1,11 @@
 package com.betacom.category;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.betacom.dto.request.category.CategoryRequest;
+import com.betacom.dto.request.category.CategoryRequestNoID;
 import com.betacom.dto.response.category.CategoryDTO;
 import com.betacom.dto_mappers.map_model.ModelMappers;
 import com.betacom.model.Category;
@@ -80,7 +85,7 @@ class CategoryServiceImplTest {
     // --- 3. TEST CREATE ---
     @Test
     void testCreate_Success() throws Exception {
-        CategoryRequest req = new CategoryRequest();
+        CategoryRequestNoID req = new CategoryRequestNoID();
         req.setCategory("Test");
         
         when(modelM.category(any(CategoryRequest.class))).thenReturn(new Category());
@@ -91,7 +96,7 @@ class CategoryServiceImplTest {
 
     @Test
     void testCreate_ValidationError() {
-        CategoryRequest req = new CategoryRequest();
+    	CategoryRequestNoID req = new CategoryRequestNoID();
         req.setCategory(null); // Forza l'eccezione dell'IF
 
         Exception exception = assertThrows(Exception.class, () -> categoryService.create(req));

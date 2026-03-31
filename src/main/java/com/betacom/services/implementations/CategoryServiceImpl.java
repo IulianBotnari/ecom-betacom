@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.category.CategoryRequest;
+import com.betacom.dto.request.category.CategoryRequestNoID;
 import com.betacom.dto.response.category.CategoryDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
@@ -51,7 +52,7 @@ public class CategoryServiceImpl implements InterfaceCategoryService{
 	}
 
 	@Override
-	public void create(CategoryRequest request) throws Exception {
+	public void create(CategoryRequestNoID request) throws Exception {
 		if(request.getCategory() == null) throw new Exception("Campo nome non inserito!");
 		
 		request.getCategory().toUpperCase().trim();
@@ -66,6 +67,10 @@ public class CategoryServiceImpl implements InterfaceCategoryService{
 		if (request.getCategory() != null) {
 			request.getCategory().toUpperCase().trim();
 			response.setCategory(request.getCategory());
+		}
+		
+		if(request.getIsView()!=null) {
+			request.setIsView(request.getIsView());
 		}
 		categoryR.save(response);
 	}

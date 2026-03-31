@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.request.category.CategoryRequest;
+import com.betacom.dto.request.category.CategoryRequestNoID;
 import com.betacom.services.interfaces.InterfaceCategoryService;
 
 import jakarta.validation.Valid;
@@ -30,7 +30,7 @@ public class CategoryController {
 	private final InterfaceCategoryService categoryS;
 	
 	@PostMapping(path = "create")
-	public ResponseEntity<Object> create(@Valid @RequestBody CategoryRequest request) {
+	public ResponseEntity<Object> create(@Valid @RequestBody CategoryRequestNoID request) {
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		

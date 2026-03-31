@@ -91,6 +91,7 @@ import com.betacom.model.WishList;
 			return CategoryDTO.builder()
 					.id(model.getId())
 					.category(model.getCategory())
+					.isView(model.getIsView())
 					.build();
 		}
 		
