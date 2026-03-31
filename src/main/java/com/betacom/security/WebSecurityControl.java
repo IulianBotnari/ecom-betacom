@@ -34,7 +34,7 @@ public class WebSecurityControl {
 	        .authorizeHttpRequests(auth -> auth
 	            .requestMatchers("/**").permitAll()
 	            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-	           // .requestMatchers("/rest/**").hasRole("ADMIN")
+	            //.requestMatchers("/rest/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
 	        )
 	        //.httpBasic(Customizer.withDefaults()) 

@@ -72,9 +72,9 @@ public class Product {
 	public void calculateDiscountPercentage() {
 	    if (price != null && discount != null && price > 0) {
 
-	        Double percentage = ((price - discount) / price) * 100;
-	        percentage = Math.round(percentage * 100.0) / 100.0;
-
+	        Double priceDiff = price - discount;
+	        Double percentage = priceDiff / (price /100);
+	        percentage = (double) Math.round(percentage);
 	        this.discountPercentage = percentage;
 	    } else {
 	        this.discountPercentage = 0.0;
