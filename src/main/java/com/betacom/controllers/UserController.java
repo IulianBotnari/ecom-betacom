@@ -18,6 +18,8 @@ import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
 import com.betacom.services.interfaces.InterfaceUserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -112,11 +114,11 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<Object> findById(@Valid @RequestBody(required = true) LoginRequest request) {
+	public ResponseEntity<Object> findById(@Valid @RequestBody(required = true) LoginRequest request, HttpServletRequest httpRrequest, HttpServletResponse httpResponse) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			r = userS.login(request);
+			r = userS.login(request, httpRrequest, httpResponse);
 		} catch (Exception e) {
 			r = e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

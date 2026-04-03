@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 import com.betacom.dto.request.cart.CartRequest;
@@ -26,6 +29,8 @@ import com.betacom.repository.ReviewRepository;
 import com.betacom.repository.UserRepository;
 import com.betacom.services.interfaces.InterfaceUserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +44,7 @@ public class UserServiceImpl implements InterfaceUserService{
 	private final OrderRepository orderR;
 	private final ReviewRepository reviewR;
 	private final CartServiceImpl cartService;
+	private final SecurityContextRepository securityContextRepository;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -156,22 +162,29 @@ public class UserServiceImpl implements InterfaceUserService{
 	}
 
 	@Override
-	public LoginDTO login(LoginRequest request) throws Exception {
+	public LoginDTO login(LoginRequest request, 
+            HttpServletRequest httpRequest, 
+            HttpServletResponse httpResponse) throws Exception {
+
 	
-	    User user = userR.findByEmail(request.getEmail())
-	            .orElseThrow(() -> new Exception("Credenziali non valide"));
+				User user = userR.findByEmail(request.getEmail())
+				  .orElseThrow(() -> new Exception("Credenziali non valide"));
+				
+				if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+				throw new Exception("Credenziali non valide");
+				}
+				
+	
+				UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(
+				  user.getEmail(), null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
+				
+	
+				SecurityContext context = SecurityContextHolder.createEmptyContext();
+				context.setAuthentication(authReq);
+				SecurityContextHolder.setContext(context);
+				securityContextRepository.saveContext(context, httpRequest, httpResponse);
 
-
-	    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-	        throw new Exception("Credenziali non valide");
-	    }
-
-	    UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken(
-	            user.getEmail(), null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
-	    
-	    SecurityContextHolder.getContext().setAuthentication(authReq);
-
-	    return DtoResponseMapper.loginDTO(user);
-	}
+				return DtoResponseMapper.loginDTO(user);
+}
 
 }

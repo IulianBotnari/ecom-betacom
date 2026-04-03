@@ -3,6 +3,7 @@ package com.betacom.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,7 +84,8 @@ public class CategoryController {
 	}
 	
 	@GetMapping(path = "listAll")	
-	public ResponseEntity<Object> listAll(){
+	public ResponseEntity<Object> listAll(Authentication authentication){
+		
 		
 		HttpStatus status = HttpStatus.OK;
 		Object response = null;
