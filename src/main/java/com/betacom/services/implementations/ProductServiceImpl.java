@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.betacom.controllers.OrderDetailsController;
 import com.betacom.dto.request.product.ProductRequest;
@@ -24,6 +25,7 @@ import com.betacom.repository.OrderedItemsDetailsRepository;
 import com.betacom.repository.ProductRepository;
 import com.betacom.repository.SizeRepository;
 import com.betacom.services.interfaces.InterfaceProductService;
+import com.betacom.services.interfaces.InterfaceUploadService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,7 @@ public class ProductServiceImpl implements InterfaceProductService{
 	private final SizeRepository sizeR;
 	private final OrderedItemsDetailsRepository orderDetR;
 	private final ModelMappers modelM;
+	private final InterfaceUploadService uploadS;
 	
 	@Override
 	public ProductsDTO getById(Long id) throws Exception {
@@ -55,13 +58,22 @@ public class ProductServiceImpl implements InterfaceProductService{
 	
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void create(ProductRequest request) throws Exception {
+	public void create(ProductRequest request, MultipartFile file) throws Exception {
 		if (request.getCategoryId() == null) throw new Exception("Campo categoria id non puo essere vuoto");
 		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
 		// request.setDiscount(request.getDiscount());
 		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
+		
+		String image = "";
+		
+		if (file != null) {
+			image = uploadS.saveImage(file);
+			request.setImage(image);
+		}
 
 		Product product = modelM.product(request, category);
+		
+		
 		
 		product = productR.save(product);
 		

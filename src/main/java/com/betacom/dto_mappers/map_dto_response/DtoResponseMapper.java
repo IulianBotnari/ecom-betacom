@@ -2,6 +2,7 @@ package com.betacom.dto_mappers.map_dto_response;
 	
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.betacom.dto.response.address.AddressDTO;
@@ -34,7 +35,15 @@ import com.betacom.model.WishList;
 	
 	@Component
 	public class DtoResponseMapper {
-	
+		
+		
+
+		private static String baseUrl;
+		
+		@Value("${base_url}")
+	    public void setBaseUrl(String url) {
+	        DtoResponseMapper.baseUrl = url;
+	    }
 		
 		public static AddressDTO addressDTO(Address model) {
 			
@@ -130,7 +139,7 @@ import com.betacom.model.WishList;
 			return ProductsDTO.builder()
 					.id(model.getId())
 					.name(model.getName())
-					.image(model.getImage())
+					.image(baseUrl + model.getImage())
 					.description(model.getDescription())
 					.category(categoryDTO(model.getCategory()) )
 					.gender(model.getGender())

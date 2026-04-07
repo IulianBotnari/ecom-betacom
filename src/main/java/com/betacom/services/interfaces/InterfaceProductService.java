@@ -1,6 +1,9 @@
 package com.betacom.services.interfaces;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.dto.response.product.ProductsDTO;
@@ -12,7 +15,7 @@ public interface InterfaceProductService {
 	
 	List<ProductsDTO> list() throws Exception;
 	
-	void create(ProductRequest request) throws Exception;
+	void create(ProductRequest request, MultipartFile file) throws Exception;
 	
 	void update(ProudctUpdate request) throws Exception;
 	

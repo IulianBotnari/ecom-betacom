@@ -31,7 +31,7 @@ public class ProductRequest {
     private Long categoryId;
 	@NotBlank(message = "Campo gender non puo essere vuoto")
     private String gender;
-	@NotBlank(message = "Campo image non puo essere vuoto")
+	
     private String image;
 	@NotBlank(message = "Campo material non puo essere vuoto")
     private String material;

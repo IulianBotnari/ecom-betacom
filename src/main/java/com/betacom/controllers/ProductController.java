@@ -1,6 +1,7 @@
 package com.betacom.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.product.ProudctUpdate;
@@ -31,13 +34,13 @@ public class ProductController {
 	private final InterfaceProductService productS;
 	
 	
-	@PostMapping(path = "create")
-	public ResponseEntity<Object> create( @RequestBody ProductRequest request) {
+	@PostMapping(path = "create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> create( @RequestPart("product") ProductRequest request, @RequestPart("file") MultipartFile file) {
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
-			productS.create(request);
+			productS.create(request, file);
 			response = "Creazione avvenuta con successo";
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
