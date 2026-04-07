@@ -52,13 +52,13 @@ public class ProductController {
 	
 	
 	
-	@PutMapping(path = "update")
-	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) ProudctUpdate request){
+	@PutMapping(path = "update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> update(@RequestPart("product") ProudctUpdate request, @RequestPart(value = "file", required = false) MultipartFile file){
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
-			productS.update(request);
+			productS.update(request, file);
 			response = "Salvataggio completato";
 		} catch (Exception e) {
 			response = "Salvataggio non riuscito";
