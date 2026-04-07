@@ -83,7 +83,7 @@ public class UserServiceImpl implements InterfaceUserService{
 		user.setEmail(request.getEmail());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setPhone(request.getPhone());
-		user.setRole(request.getRole());
+		user.setRole(Roles.USER);
 		
 		User userSaved = userR.save(user);
 		cartService.create(new CartRequest(userSaved.getId()));
@@ -126,9 +126,6 @@ public class UserServiceImpl implements InterfaceUserService{
 	        user.setPhone(request.getPhone());
 	    }
 
-	    if (request.getRole() != null) {
-	        user.setRole(Roles.valueOf(request.getRole()));
-	    }
 
 	    userR.save(user);
 	}

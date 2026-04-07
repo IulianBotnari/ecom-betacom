@@ -61,42 +61,35 @@ public class ProductServiceImpl implements InterfaceProductService{
 	public void create(ProductRequest request, MultipartFile file) throws Exception {
 		if (request.getCategoryId() == null) throw new Exception("Campo categoria id non puo essere vuoto");
 		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
-		// request.setDiscount(request.getDiscount());
-		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
 		
 		String image = "";
-		
+		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
+			
 		if (file != null) {
 			image = uploadS.saveImage(file);
 			request.setImage(image);
 		}
 
 		Product product = modelM.product(request, category);
-		
-		
-		
 		product = productR.save(product);
 		
-		Size size = new Size();
-		
+		Size size = new Size();		
 		size.setProduct(product);
 		size.setQuantity(request.getQuantity());
+		
 		try {
 	        size.setSize(Sizes.valueOf(request.getSize().toUpperCase()));
 	    } catch (IllegalArgumentException e) {
 	        throw new Exception("Taglia non valida: " + request.getSize());
 	    }
-		
-		
-		
+				
 		sizeR.save(size);
 
-		
 	}
 
 	@Override
-	public void update(ProudctUpdate request) throws Exception {
-	
+	public void update(ProudctUpdate request, MultipartFile file) throws Exception {
+		String image = "";
 		Product product = productR.findById(request.getId()).orElseThrow(()-> new Exception("Prodotto non trovato in db"));
 		
 		if (request.getCategoryId()!= null) {
@@ -110,10 +103,11 @@ public class ProductServiceImpl implements InterfaceProductService{
 		
 		if(request.getGender() != null) {
 			product.setGender(Genders.valueOf(request.getGender()));
-		}
+		}		
 		
-		if (request.getImage() != null) {
-			product.setImage(request.getImage());
+		if (file != null) {
+			image = uploadS.saveImage(file);
+			product.setImage(image);
 		}
 		
 		if(request.getMaterial()!= null) {
@@ -131,9 +125,7 @@ public class ProductServiceImpl implements InterfaceProductService{
 		if(request.getName() != null) {
 			product.setName(request.getName());
 		}
-		
-		
-		
+				
 		productR.save(product);
 		
 	}

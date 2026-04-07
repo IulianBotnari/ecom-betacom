@@ -82,7 +82,6 @@ public class ModelMappers {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .phone(request.getPhone())
-                .role(request.getRole())
                 .build();
 	}
 	

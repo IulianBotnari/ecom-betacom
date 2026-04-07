@@ -17,7 +17,7 @@ public interface InterfaceProductService {
 	
 	void create(ProductRequest request, MultipartFile file) throws Exception;
 	
-	void update(ProudctUpdate request) throws Exception;
+	void update(ProudctUpdate request, MultipartFile file) throws Exception;
 	
 	void delete(Long id) throws Exception;
 	
