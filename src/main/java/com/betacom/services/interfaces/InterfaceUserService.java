@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public interface InterfaceUserService {
 	void create(UserCreateRequest request) throws Exception;
 	void update(UserUpdateRequest request) throws Exception;
+	void updateByAdmin(UserUpdateRequest request) throws Exception;
 	void delete(Long id) throws Exception;
 
 	List<UserDTO> list() throws Exception;
