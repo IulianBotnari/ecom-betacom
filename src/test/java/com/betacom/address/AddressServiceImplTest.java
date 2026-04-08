@@ -5,6 +5,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -24,23 +26,24 @@ import com.betacom.repository.UserRepository;
 import com.betacom.services.implementations.AddressServiceImpl;
 
 public class AddressServiceImplTest {
-	@Mock
-	private AddressRepository addressR;
 
-	@Mock
-	private UserRepository userR;
+    @Mock
+    private AddressRepository addressR;
 
-	@InjectMocks
-	private AddressServiceImpl addressService;
+    @Mock
+    private UserRepository userR;
+
+    @InjectMocks
+    private AddressServiceImpl addressService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-    
+
+    // --- GET BY ID ---
     @Test
     void testGetById_Success() throws Exception {
-
         Address address = new Address();
         address.setId(1L);
 
@@ -49,53 +52,46 @@ public class AddressServiceImplTest {
         AddressDTO result = addressService.getById(1L);
 
         verify(addressR).findById(1L);
-
         assert result != null;
     }
-    
+
     @Test
     void testGetById_Fail() {
-
         when(addressR.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        try {
+        Exception ex = assertThrows(Exception.class, () -> {
             addressService.getById(1L);
-        } catch (Exception e) {
-            assert e.getMessage().equals("Indirizzo non presente in DB");
-        }
+        });
 
+        assertEquals("Indirizzo non presente in DB", ex.getMessage());
         verify(addressR).findById(1L);
     }
-    
+
+    // --- LIST ---
     @Test
     void testList_Success() throws Exception {
-
-        when(addressR.findAll()).thenReturn(java.util.List.of(new Address(), new Address()));
+        when(addressR.findAll()).thenReturn(List.of(new Address(), new Address()));
 
         List<AddressDTO> result = addressService.list();
 
         verify(addressR).findAll();
-
         assert result.size() == 2;
     }
-    
+
     @Test
     void testList_Fail() {
-
         when(addressR.findAll()).thenThrow(new RuntimeException());
 
-        try {
+        assertThrows(RuntimeException.class, () -> {
             addressService.list();
-        } catch (Exception e) {
-            // expected
-        }
+        });
 
         verify(addressR).findAll();
     }
-    
+
+    // --- CREATE ---
     @Test
     void testCreate_Success() throws Exception {
-
         AddressCreateRequest request = AddressCreateRequest.builder()
                 .city("Padova")
                 .street("Via Roma")
@@ -119,10 +115,9 @@ public class AddressServiceImplTest {
         verify(userR).findById(1L);
         verify(addressR).save(any());
     }
-    
+
     @Test
     void testCreate_Fail_UserNotFound() {
-
         AddressCreateRequest request = AddressCreateRequest.builder()
                 .city("Padova")
                 .street("Via Roma")
@@ -137,18 +132,17 @@ public class AddressServiceImplTest {
 
         when(userR.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        try {
+        Exception ex = assertThrows(Exception.class, () -> {
             addressService.create(request);
-        } catch (Exception e) {
-            assert e.getMessage().equals("Utente di riferimento non trovato");
-        }
+        });
 
+        assertEquals("Utente di riferimento non trovato", ex.getMessage());
         verify(addressR, times(0)).save(any());
     }
-    
+
+    // --- UPDATE ---
     @Test
     void testUpdate_Success() throws Exception {
-
         AddressUpdateRequest request = AddressUpdateRequest.builder()
                 .id(1L)
                 .city("Milano")
@@ -167,29 +161,24 @@ public class AddressServiceImplTest {
         verify(addressR).findById(1L);
         verify(addressR).save(any());
     }
-    
+
     @Test
     void testUpdate_Fail_AddressNotFound() {
-
-        AddressUpdateRequest request = AddressUpdateRequest.builder()
-                .id(1L)
-                .build();
+        AddressUpdateRequest request = AddressUpdateRequest.builder().id(1L).build();
 
         when(addressR.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        try {
+        Exception ex = assertThrows(Exception.class, () -> {
             addressService.update(request);
-        } catch (Exception e) {
-            assert e.getMessage().equals("Indirizzo non presente in DB");
-        }
+        });
 
+        assertEquals("Indirizzo non presente in DB", ex.getMessage());
         verify(addressR).findById(1L);
         verify(addressR, times(0)).save(any());
     }
-    
+
     @Test
     void testUpdate_Fail_UserNotFound() {
-
         AddressUpdateRequest request = AddressUpdateRequest.builder()
                 .id(1L)
                 .userId(1L)
@@ -198,18 +187,17 @@ public class AddressServiceImplTest {
         when(addressR.findById(1L)).thenReturn(java.util.Optional.of(new Address()));
         when(userR.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        try {
+        Exception ex = assertThrows(Exception.class, () -> {
             addressService.update(request);
-        } catch (Exception e) {
-            assert e.getMessage().equals("Utente di riferimento non trovato");
-        }
+        });
 
+        assertEquals("Utente di riferimento non trovato", ex.getMessage());
         verify(addressR, times(0)).save(any());
     }
-    
+
+    // --- DELETE ---
     @Test
     void testDelete_Success() throws Exception {
-
         Address address = new Address();
 
         when(addressR.findById(1L)).thenReturn(java.util.Optional.of(address));
@@ -220,18 +208,16 @@ public class AddressServiceImplTest {
         verify(addressR).findById(1L);
         verify(addressR).delete(address);
     }
-    
+
     @Test
     void testDelete_Fail() {
-
         when(addressR.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        try {
+        Exception ex = assertThrows(Exception.class, () -> {
             addressService.delete(1L);
-        } catch (Exception e) {
-            assert e.getMessage().equals("Indirizzo non presente in DB");
-        }
+        });
 
+        assertEquals("Indirizzo non presente in DB", ex.getMessage());
         verify(addressR).findById(1L);
         verify(addressR, times(0)).delete(any());
     }
