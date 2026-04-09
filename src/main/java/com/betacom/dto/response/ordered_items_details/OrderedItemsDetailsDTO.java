@@ -29,7 +29,7 @@ public class OrderedItemsDetailsDTO {
     private ProductsDTO product;
    
     private Integer quantity;
-
+    
     private Double totalPrice;
 
 }

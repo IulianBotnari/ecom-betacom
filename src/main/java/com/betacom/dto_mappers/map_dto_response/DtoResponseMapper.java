@@ -123,6 +123,7 @@ import com.betacom.model.WishList;
 					.product(model.getProduct() == null ? null : productsDTO(model.getProduct()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
+	
 					.build();
 		}
 		
