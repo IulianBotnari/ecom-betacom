@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.betacom.dto.request.cart.CartRequest;
 import com.betacom.dto.response.cart.CartDTO;
+import com.betacom.model.User;
 
 public interface InterfaceCartService {
 	CartDTO getById(Long id) throws Exception;
@@ -15,4 +16,6 @@ public interface InterfaceCartService {
 	void update(CartRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
+	
+	CartDTO  findByUserId(Long id) throws Exception;
 }
