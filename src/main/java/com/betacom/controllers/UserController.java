@@ -1,5 +1,7 @@
 package com.betacom.controllers;
 
+import java.net.http.HttpRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -66,6 +68,23 @@ public class UserController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
+	@PutMapping(path = "updateByAdmin")
+	public ResponseEntity<Object> updateByAdmin(@Valid @RequestBody(required = true) UserUpdateRequest request){
+		Object response = null;
+		HttpStatus status = HttpStatus.OK;
+		
+		try {
+			userS.updateByAdmin(request);
+			response = "Salvataggio completato";
+		} catch (Exception e) {
+			response = "Salvataggio non riuscito";
+			status = HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.status(status).body(response);
+	}
+	
 	
 	@DeleteMapping(path = "delete/{id}")
 	public ResponseEntity<Object> delete(@PathVariable(required = true) Long id){
@@ -116,6 +135,7 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<Object> findById(@Valid @RequestBody(required = true) LoginRequest request, HttpServletRequest httpRrequest, HttpServletResponse httpResponse) {
 		Object r = new Object();
+
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r = userS.login(request, httpRrequest, httpResponse);
