@@ -117,7 +117,7 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 	public void update(CartItemRequest request) throws Exception {
 		log.debug("update {}", request);
 		
-		CartItem item = cartItemR.findById(request.getCartItemId())//recupero item del carrello
+		CartItem item = cartItemR.findById(request.getCartItemId())
 				.orElseThrow(() -> new Exception("elemento carrello non presente in DB"));
 		
 		
@@ -148,7 +148,7 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 
 	@Override
 	public void delete(Long id) throws Exception {
-		CartItem item = cartItemR.findById(id)//recupero item del carrello
+		CartItem item = cartItemR.findById(id)
 				.orElseThrow(() -> new Exception("elemento carrello non presente in DB"));
 		cartItemR.delete(item);
 		

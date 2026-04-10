@@ -1,5 +1,6 @@
 package com.betacom.services.implementations;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -228,5 +229,32 @@ public class UserServiceImpl implements InterfaceUserService{
 
 				return DtoResponseMapper.loginDTO(user);
 }
+	
+	@Override
+	public List<? extends UserDTO> multiFilter(
+	        Long id,
+	        String name,
+	        String lastName,
+	        String email,
+	        String codiceFiscale,
+	        Roles role,
+	        LocalDate createDate) throws Exception {
+
+
+	    List<User> utenti = userR.searchUsers(
+	            id,
+	            name != null ? name + "%" : null,
+	            lastName != null ? lastName + "%" : null,
+	            email != null ? email + "%" : null,
+	            codiceFiscale != null ? codiceFiscale + "%" : null,
+	            role,
+	            createDate
+	    );
+
+
+	    return utenti.stream()
+	            .map(u -> DtoResponseMapper.userDTO(u))
+	            .collect(Collectors.toList());
+	}
 
 }
