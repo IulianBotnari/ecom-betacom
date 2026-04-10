@@ -43,15 +43,34 @@ public class SizeServiceImpl implements InterfaceSizeService{
 
 	@Override
 	public void create(SizeRequest request) throws Exception {
-		Product product = productR.findById(request.getProductId()).orElseThrow(()-> new Exception("Prodotto non trovato"));
-		Size size = modelM.size(request, product);
-		
-		sizeR.save(size);
+	   
+	    Product product = productR.findById(request.getProductId())
+	            .orElseThrow(() -> new Exception("Prodotto non trovato"));
 
-		
+	    
+	    Size tagliaEsistente = null;
+
+	    
+	    if (product.getSizes() != null) {
+	        for (Size s : product.getSizes()) {
+	            
+	        	if (s.getSize().name().equals(request.getSize().toString())) {
+	                tagliaEsistente = s;
+	                break;
+	            }
+	        }
+	    }
+
+	    if (tagliaEsistente != null) {      
+	        tagliaEsistente.setQuantity(tagliaEsistente.getQuantity() + request.getQuantity());
+	        sizeR.save(tagliaEsistente);    
+	    } else {
+	        Size nuovaSize = modelM.size(request, product);
+	        sizeR.save(nuovaSize);  
+	    }
 	}
 
-	@Override
+	@Override	
 	public void update(SizeRequest request) throws Exception {
 		
 		Size response = sizeR.findById(request.getId()).orElseThrow(()-> new Exception("Size non trovata in db"));

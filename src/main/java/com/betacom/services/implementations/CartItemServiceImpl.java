@@ -31,6 +31,7 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 	private final CartItemRepository cartItemR;
 	private final ProductRepository prodR;
 	private final CartRepository cartR;
+	private final SizeRepository sizeR;
    
 	@Override
 	public CartItemDTO getById(Long id) throws Exception {
@@ -71,46 +72,50 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 
 	@Override
 	public void create(CartItemRequest request) throws Exception {
-		
-		log.debug("create {}", request);
-		
-		if (request.getQuantity() == null || request.getQuantity() <= 0) {
+	    
+	    log.debug("create {}", request);
+	    
+	  
+	    if (request.getQuantity() == null || request.getQuantity() <= 0) {
 	        throw new Exception("La quantità deve essere presente e maggiore di zero");
-	
-		}
-			
-		if (request.getCartId() == null) {
+	    }
+
+	    
+	    Cart cart = cartR.findById(request.getCartId())
+	            .orElseThrow(() -> new Exception("Carrello non trovato"));
+
+	   
+	    CartItem itemEsistente = null;
+	    
+	    
+	    if (cart.getCartItems() != null) {
+	        for (CartItem item : cart.getCartItems()) {
+	            if (item.getProduct().getId().equals(request.getProductId()) && 
+	                item.getSize().getId().equals(request.getSizeId())) {
+	                itemEsistente = item;
+	                break; 
+	            }
+	        }
+	    }
 	        
-			throw new Exception("ID Carrello mancante");
-	    
-		}
-			
-		if (request.getProductId() == null) {
-	       
-			throw new Exception("ID Prodotto mancante");
-	    
-		}
-			
-		if (request.getSizeId() == null) {
-	       
-			throw new Exception("ID Taglia mancante");
-	    
-		}
-		
-			
-			CartItem cartItem = new CartItem();
-			
-			
-			cartItem.setQuantity(request.getQuantity());
-			Product prodotto = prodR.findById(request.getProductId())
-					.orElseThrow(()-> new Exception("Prodotto non trovato"));
-			cartItem.setProduct(prodotto);
-			Cart cart = cartR.findById(request.getCartId())
-					.orElseThrow(()-> new Exception("Carrello non trovato"));
-			cartItem.setCart(cart);
-			
-			cartItemR.save(cartItem);
-	
+	    if (itemEsistente != null) { 
+	        itemEsistente.setQuantity(itemEsistente.getQuantity() + request.getQuantity());
+	        cartItemR.save(itemEsistente);
+	    } else {  
+	        CartItem nuovoItem = new CartItem();
+	        
+	        Product prodotto = prodR.findById(request.getProductId())
+	                .orElseThrow(() -> new Exception("Prodotto non trovato"));
+	        Size taglia = sizeR.findById(request.getSizeId())
+	                .orElseThrow(() -> new Exception("Taglia non trovata"));
+
+	        nuovoItem.setQuantity(request.getQuantity());
+	        nuovoItem.setCart(cart);
+	        nuovoItem.setProduct(prodotto);
+	        nuovoItem.setSize(taglia);
+
+	        cartItemR.save(nuovoItem);
+	    }
 	}
 
 	@Override
@@ -138,6 +143,12 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 					.orElseThrow(()-> new Exception("Prodotto non trovato"));
 			item.setProduct(prodotto);
 	       
+		}
+		
+		if (request.getSizeId() == null) {
+		      Size size = sizeR.findById(request.getSizeId())
+		    		  .orElseThrow(()-> new Exception("Size non trovata"));
+		      item.setSize(size);
 		}
 			
 		cartItemR.save(item);

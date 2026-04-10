@@ -91,6 +91,7 @@ import com.betacom.model.WishList;
 					.id(model.getId())
 					.quantity(model.getQuantity())
 					.cartId(model.getCart().getId())
+					.size(model.getSize())
 					.product(productsDTO(model.getProduct()))
 					.build();
 		}

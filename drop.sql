@@ -10,6 +10,9 @@
     alter table if exists cart_items 
        drop constraint if exists FK1re40cjegsfvw58xrkdp6bac6;
 
+    alter table if exists cart_items 
+       drop constraint if exists FK13bjx0o7t93tkgan9ikdbw779;
+
     alter table if exists carts 
        drop constraint if exists FKb5o626f86h46m4s7ms6ginnop;
 
