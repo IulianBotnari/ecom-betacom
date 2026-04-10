@@ -80,5 +80,8 @@ public class Product {
 	        this.discountPercentage = 0.0;
 	    }
 	}
+	
+	@Column(name = "average_rating")
+	private Double averageRating;
 }
 
