@@ -47,7 +47,7 @@ public class WebSecurityControl {
 	            
 	            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 	           // .requestMatchers("/rest/category/**").hasAuthority("ROLE_USER")
-	            .anyRequest().authenticated()
+	            .anyRequest().permitAll()
 	        )
 	        .logout(logout -> logout
 	            .logoutUrl("/rest/user/logout")

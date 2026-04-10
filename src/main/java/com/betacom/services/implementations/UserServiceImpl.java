@@ -1,5 +1,6 @@
 package com.betacom.services.implementations;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -129,6 +130,51 @@ public class UserServiceImpl implements InterfaceUserService{
 
 	    userR.save(user);
 	}
+	
+	@Override
+	public void updateByAdmin(UserUpdateRequest request) throws Exception {
+		log.debug("update {}", request);
+
+		User user = userR.findById(request.getId())
+		        .orElseThrow(() -> new Exception("utente non presente in DB"));
+
+	    if (request.getName() != null) {
+	        user.setName(request.getName());
+	    }
+	    
+	    
+
+	    if (request.getLastName() != null) {
+	        user.setLastName(request.getLastName());
+	    }
+
+	    if (request.getBirthday() != null) {
+	        user.setBirthday(request.getBirthday());
+	    }
+
+	    if (request.getCodiceFiscale() != null) {
+	        user.setCodiceFiscale(request.getCodiceFiscale());
+	    }
+
+	    if (request.getEmail() != null) {
+	        user.setEmail(request.getEmail());
+	    }
+
+	    if (request.getPassword() != null) {
+	        user.setPassword(request.getPassword());
+	    }
+
+	    if (request.getPhone() != null) {
+	        user.setPhone(request.getPhone());
+	    }
+	    
+	    if(request.getRole() != null) {
+	    	user.setRole(Roles.valueOf(request.getRole()));
+	    }
+
+
+	    userR.save(user);
+	}
 
 	@Override
 	public void delete(Long id) throws Exception {
@@ -183,5 +229,32 @@ public class UserServiceImpl implements InterfaceUserService{
 
 				return DtoResponseMapper.loginDTO(user);
 }
+	
+	@Override
+	public List<? extends UserDTO> multiFilter(
+	        Long id,
+	        String name,
+	        String lastName,
+	        String email,
+	        String codiceFiscale,
+	        Roles role,
+	        LocalDate createDate) throws Exception {
+
+
+	    List<User> utenti = userR.searchUsers(
+	            id,
+	            name != null ? name + "%" : null,
+	            lastName != null ? lastName + "%" : null,
+	            email != null ? email + "%" : null,
+	            codiceFiscale != null ? codiceFiscale + "%" : null,
+	            role,
+	            createDate
+	    );
+
+
+	    return utenti.stream()
+	            .map(u -> DtoResponseMapper.userDTO(u))
+	            .collect(Collectors.toList());
+	}
 
 }

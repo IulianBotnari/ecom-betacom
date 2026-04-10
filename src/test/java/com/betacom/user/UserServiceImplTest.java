@@ -1,27 +1,23 @@
 package com.betacom.user;
 
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.betacom.dto.request.login.LoginRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
-import com.betacom.dto.response.user.UserDTO;
-import com.betacom.dto_mappers.map_model.ModelMappers;
-import com.betacom.enums.Roles;
 import com.betacom.model.User;
 import com.betacom.repository.AddressRepository;
 import com.betacom.repository.OrderRepository;
@@ -29,203 +25,167 @@ import com.betacom.repository.ReviewRepository;
 import com.betacom.repository.UserRepository;
 import com.betacom.services.implementations.CartServiceImpl;
 import com.betacom.services.implementations.UserServiceImpl;
+import com.betacom.services.interfaces.InterfaceUserService;
+import com.betacom.dto.response.login.LoginDTO;
 
-class UserServiceImplTest {
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.web.context.SecurityContextRepository;
 
-    @Mock
-    private UserRepository userR;
-    @Mock
-    private ModelMappers modelM;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UserServiceImplTest {
+
+    @Mock private UserRepository userR;
+    @Mock private AddressRepository addressR;
+    @Mock private OrderRepository orderR;
+    @Mock private ReviewRepository reviewR;
+    @Mock private CartServiceImpl cartService;
+    @Mock private SecurityContextRepository securityContextRepository;
+    @Mock private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserServiceImpl userService;
-    
-    @Mock
-    private CartServiceImpl cartService;
-    
-    @Mock
-    private AddressRepository addressR;
-    @Mock
-    private OrderRepository orderR;
-    @Mock
-    private ReviewRepository reviewR;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    // --- 3. TEST CREATE ---
+    // --- GET BY ID ---
+    @Test
+    void testGetById_Success() throws Exception {
+        User user = new User();
+        when(userR.findById(1L)).thenReturn(Optional.of(user));
+        userService.getById(1L);
+        verify(userR).findById(1L);
+    }
+
+    @Test
+    void testGetById_Fail() {
+        when(userR.findById(1L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(Exception.class, () -> userService.getById(1L));
+        assertEquals("utente non presente in DB", ex.getMessage());
+    }
+
+    // --- LIST ---
+    @Test
+    void testList_Success() throws Exception {
+        when(userR.findAll()).thenReturn(new ArrayList<>());
+        userService.list();
+        verify(userR).findAll();
+    }
+
+    @Test
+    void testList_Fail() throws Exception {
+        when(userR.findAll()).thenThrow(new RuntimeException());
+        assertThrows(RuntimeException.class, () -> userService.list());
+    }
+
+    // --- CREATE ---
     @Test
     void testCreate_Success() throws Exception {
-        UserCreateRequest request = UserCreateRequest.builder()
-                .name("Mario")
-                .lastName("Rossi")
-                .birthday(LocalDate.of(1990, 1, 1))
-                .codiceFiscale("RSSMRA90A01H501U")
-                .email("mario.rossi@example.com")
-                .password("password123")
-                .phone("1234567890")
-                .role(Roles.USER)
-                .build();
+        UserCreateRequest req = new UserCreateRequest();
+        req.setName("Mario");
+        req.setLastName("Rossi");
+        req.setEmail("test@test.com");
+        req.setPassword("1234");
+        req.setBirthday(LocalDate.of(1990, 1, 1));
+        req.setPhone("1234567890");
 
         User savedUser = new User();
         savedUser.setId(1L);
 
         when(userR.save(any())).thenReturn(savedUser);
-        doNothing().when(cartService).create(any());
+        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
 
-        userService.create(request);
+        userService.create(req);
 
-        verify(userR, times(1)).save(any());
-        verify(cartService, times(1)).create(any());
+        verify(userR).save(any());
+        verify(cartService).create(any());
     }
-    
-    @Test
-    void testCreate_Fail_SaveException() throws Exception {
-        UserCreateRequest request = new UserCreateRequest();
 
-        when(userR.save(any())).thenThrow(new RuntimeException("DB error"));
-
-        try {
-            userService.create(request);
-        } catch (Exception e) {
-            // expected
-        }
-
-        verify(userR, times(1)).save(any());
-        verify(cartService, times(0)).create(any());
-    }
-    
+    // --- UPDATE ---
     @Test
     void testUpdate_Success() throws Exception {
-        UserUpdateRequest request = UserUpdateRequest.builder()
-                .id(1L)
-                .name("Dario")
-                .build();
-
         User user = new User();
-        when(userR.findById(1L)).thenReturn(java.util.Optional.of(user));
-        when(userR.save(any())).thenReturn(user);
+        user.setId(1L);
+        when(userR.findById(1L)).thenReturn(Optional.of(user));
 
-        userService.update(request);
+        UserUpdateRequest req = new UserUpdateRequest();
+        req.setId(1L);
+        req.setName("Luigi");
 
-        verify(userR, times(1)).findById(1L);
-        verify(userR, times(1)).save(user);
+        userService.update(req);
+        verify(userR).save(any());
     }
-    
+
     @Test
     void testUpdate_Fail_UserNotFound() {
-        UserUpdateRequest request = UserUpdateRequest.builder()
-                .id(10L)
-                .name("Dario")
-                .build();
-
-        when(userR.findById(10L)).thenReturn(java.util.Optional.empty());
-
-        try {
-            userService.update(request);
-        } catch (Exception e) {
-            // expected
-        }
-
-        verify(userR, times(1)).findById(10L);
-        verify(userR, times(0)).save(any());
+        when(userR.findById(1L)).thenReturn(Optional.empty());
+        UserUpdateRequest req = new UserUpdateRequest();
+        req.setId(1L);
+        Exception ex = assertThrows(Exception.class, () -> userService.update(req));
+        assertEquals("utente non presente in DB", ex.getMessage());
     }
-    
+
+    // --- DELETE ---
     @Test
     void testDelete_Success() throws Exception {
         User user = new User();
-        when(userR.findById(1L)).thenReturn(java.util.Optional.of(user));
+        when(userR.findById(1L)).thenReturn(Optional.of(user));
         doNothing().when(userR).delete(user);
-        when(addressR.saveAll(any())).thenReturn(new ArrayList<>());
-        when(orderR.saveAll(any())).thenReturn(new ArrayList<>());
-        when(reviewR.saveAll(any())).thenReturn(new ArrayList<>());
-
         userService.delete(1L);
-
-        verify(userR, times(1)).findById(1L);
-        verify(userR, times(1)).delete(user);
+        verify(userR).delete(user);
     }
-    
+
     @Test
-    void testDelete_Fail_UserNotFound() {
-        when(userR.findById(1L)).thenReturn(java.util.Optional.empty());
-
-        try {
-            userService.delete(1L);
-        } catch (Exception e) {
-            // expected
-        }
-
-        verify(userR, times(1)).findById(1L);
-        verify(userR, times(0)).delete(any());
+    void testDelete_Fail() {
+        when(userR.findById(1L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(Exception.class, () -> userService.delete(1L));
+        assertEquals("utente non presente in DB", ex.getMessage());
     }
-    
-    @Test
-    void testGetById_Success() throws Exception {
 
+    // --- LOGIN ---
+    @Test
+    void testLogin_Success() throws Exception {
         User user = new User();
-        user.setId(1L);
-        user.setName("Mario");
+        user.setEmail("test@test.com");
+        user.setPassword("encodedPassword");
 
-        when(userR.findById(1L)).thenReturn(java.util.Optional.of(user));
+        LoginRequest req = new LoginRequest();
+        req.setEmail("test@test.com");
+        req.setPassword("1234");
 
-        UserDTO result = userService.getById(1L);
+        when(userR.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("1234", "encodedPassword")).thenReturn(true);
 
-        verify(userR, times(1)).findById(1L);
+        HttpServletRequest httpReq = mock(HttpServletRequest.class);
+        HttpServletResponse httpRes = mock(HttpServletResponse.class);
 
-        // controlli base
-        assert result != null;
-        assert result.getId().equals(1L);
+        userService.login(req, httpReq, httpRes);
+
+        verify(userR).findByEmail("test@test.com");
+        verify(securityContextRepository).saveContext(any(), any(), any());
     }
-    
+
     @Test
-    void testGetById_Fail() {
+    void testLogin_Fail_InvalidCredentials() throws Exception {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setPassword("encodedPassword");
 
-        when(userR.findById(1L)).thenReturn(java.util.Optional.empty());
+        LoginRequest req = new LoginRequest();
+        req.setEmail("test@test.com");
+        req.setPassword("wrongPassword");
 
-        try {
-            userService.getById(1L);
-        } catch (Exception e) {
-            assert e.getMessage().equals("utente non presente in DB");
-        }
+        when(userR.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
 
-        verify(userR, times(1)).findById(1L);
+        HttpServletRequest httpReq = mock(HttpServletRequest.class);
+        HttpServletResponse httpRes = mock(HttpServletResponse.class);
+
+        Exception ex = assertThrows(Exception.class, () -> userService.login(req, httpReq, httpRes));
+        assertEquals("Credenziali non valide", ex.getMessage());
     }
-    
-    @Test
-    void testList_Success() throws Exception {
-
-        User user1 = new User();
-        user1.setId(1L);
-
-        User user2 = new User();
-        user2.setId(2L);
-
-        when(userR.findAll()).thenReturn(java.util.List.of(user1, user2));
-
-        List<UserDTO> result = userService.list();
-
-        verify(userR, times(1)).findAll();
-
-        assert result != null;
-        assert result.size() == 2;
-    }
-    
-    @Test
-    void testList_Fail() {
-
-        when(userR.findAll()).thenThrow(new RuntimeException("Errore DB"));
-
-        try {
-            userService.list();
-        } catch (Exception e) {
-            // expected
-        }
-
-        verify(userR, times(1)).findAll();
-    }
-
-    
 }

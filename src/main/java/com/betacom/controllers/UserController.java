@@ -1,5 +1,8 @@
 package com.betacom.controllers;
 
+import java.net.http.HttpRequest;
+import java.time.LocalDate;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -10,12 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.request.login.LoginRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
+import com.betacom.enums.Roles;
 import com.betacom.services.interfaces.InterfaceUserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,6 +60,23 @@ public class UserController {
 		
 		try {
 			userS.update(request);
+			response = "Salvataggio completato";
+		} catch (Exception e) {
+			response = "Salvataggio non riuscito";
+			status = HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.status(status).body(response);
+	}
+	
+	@PutMapping(path = "updateByAdmin")
+	public ResponseEntity<Object> updateByAdmin(@Valid @RequestBody(required = true) UserUpdateRequest request){
+		Object response = null;
+		HttpStatus status = HttpStatus.OK;
+		
+		try {
+			userS.updateByAdmin(request);
 			response = "Salvataggio completato";
 		} catch (Exception e) {
 			response = "Salvataggio non riuscito";
@@ -116,6 +137,7 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<Object> findById(@Valid @RequestBody(required = true) LoginRequest request, HttpServletRequest httpRrequest, HttpServletResponse httpResponse) {
 		Object r = new Object();
+
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r = userS.login(request, httpRrequest, httpResponse);
@@ -124,6 +146,30 @@ public class UserController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return ResponseEntity.status(status).body(r);
+	}
+	
+	@GetMapping(path = "multiFilter")
+	public ResponseEntity<Object> multiFilterUser(
+	        @RequestParam(required = false) Long id,
+	        @RequestParam(required = false) String name,
+	        @RequestParam(required = false) String lastName,
+	        @RequestParam(required = false) String email,
+	        @RequestParam(required = false) String codiceFiscale,
+	        @RequestParam(required = false) Roles role,
+	        @RequestParam(required = false) LocalDate createDate) {
+
+	    Object response = null;
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        response = userS.multiFilter(id, name, lastName, email, codiceFiscale, role, createDate);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        status = HttpStatus.BAD_REQUEST;
+	        response = "Impossibile recuperare gli utenti: " + e.getMessage();
+	    }
+
+	    return ResponseEntity.status(status).body(response);
 	}
 
 }
