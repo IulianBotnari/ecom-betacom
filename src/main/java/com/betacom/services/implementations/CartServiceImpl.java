@@ -95,4 +95,21 @@ public class CartServiceImpl implements InterfaceCartService{
 		
 	}
 
+
+
+
+	@Override
+	public CartDTO findByUserId(Long id) throws Exception {
+		 log.debug("getById{}",id);
+		 User us = userR.findById(id)
+				 .orElseThrow(()->new Exception("user non prsente nel DB"));
+		Cart cart = cartR.findByUser(us)
+				.orElseThrow(()->new Exception("cart non prsente nel DB"));
+		
+		
+		return DtoResponseMapper.cartDTO(cart);
+		
+		
+	}
+
 }
