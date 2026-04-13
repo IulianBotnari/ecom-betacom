@@ -1,5 +1,6 @@
 package com.betacom.services.implementations;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.request.cart.CartRequest;
 import com.betacom.dto.request.login.LoginRequest;
@@ -69,7 +71,9 @@ public class UserServiceImpl implements InterfaceUserService{
 			DtoResponseMapper.userDTO(user))
 				.collect(Collectors.toList());
 	}
-
+	
+	
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void create(UserCreateRequest request) throws Exception {
 		log.debug("create {}", request);
@@ -86,7 +90,9 @@ public class UserServiceImpl implements InterfaceUserService{
 		user.setRole(Roles.USER);
 		
 		User userSaved = userR.save(user);
+
 		cartService.create(new CartRequest(userSaved.getId()));
+
 	}
 
 	@Override
@@ -228,5 +234,32 @@ public class UserServiceImpl implements InterfaceUserService{
 
 				return DtoResponseMapper.loginDTO(user);
 }
+	
+	@Override
+	public List<? extends UserDTO> multiFilter(
+	        Long id,
+	        String name,
+	        String lastName,
+	        String email,
+	        String codiceFiscale,
+	        Roles role,
+	        LocalDate createDate) throws Exception {
+
+
+	    List<User> utenti = userR.searchUsers(
+	            id,
+	            name != null ? name + "%" : null,
+	            lastName != null ? lastName + "%" : null,
+	            email != null ? email + "%" : null,
+	            codiceFiscale != null ? codiceFiscale + "%" : null,
+	            role,
+	            createDate
+	    );
+
+
+	    return utenti.stream()
+	            .map(u -> DtoResponseMapper.userDTO(u))
+	            .collect(Collectors.toList());
+	}
 
 }

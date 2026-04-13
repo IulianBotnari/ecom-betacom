@@ -36,4 +36,8 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer quantity;
+    
+    @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
+    private Size size;
 }

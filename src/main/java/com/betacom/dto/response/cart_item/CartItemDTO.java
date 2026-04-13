@@ -1,6 +1,7 @@
 package com.betacom.dto.response.cart_item;
 
 import com.betacom.dto.response.product.ProductsDTO;
+import com.betacom.enums.Sizes;
 import com.betacom.model.Cart;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
@@ -22,6 +23,7 @@ public class CartItemDTO {
 	 	private Long id;
 	    private Integer quantity;
 	    private Long cartId;
+	    private Size size;
 	    private ProductsDTO product;
 
 }
