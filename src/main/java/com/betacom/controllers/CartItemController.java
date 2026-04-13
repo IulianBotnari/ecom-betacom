@@ -40,6 +40,7 @@ public class CartItemController {
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
 			response = "Errore durnate il salvataggio";
+			e.printStackTrace();
 		}
 		return ResponseEntity.status(status).body(response);
 	}

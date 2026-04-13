@@ -74,6 +74,7 @@ private final InterfaceCartService cartS;
 		} catch (Exception e) {
 			response = "Errore durante il recupero della lista";
 			status = HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
 		}
 		
 		return ResponseEntity.status(status).body(response);

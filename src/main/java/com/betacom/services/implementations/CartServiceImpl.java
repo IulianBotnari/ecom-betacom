@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.request.cart.CartRequest;
 import com.betacom.dto.response.cart.CartDTO;
@@ -51,12 +52,12 @@ public class CartServiceImpl implements InterfaceCartService{
 				.map(cart -> DtoResponseMapper.cartDTO(cart))
 				.collect(Collectors.toList());
 	}
-
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void create(CartRequest request) throws Exception {
 		log.debug("create{}",request );
 		
-		User user = userR.findById(request.getUserId()) // controllo se ci sia un utente 
+		User user = userR.findById(request.getUserId()) 
 				.orElseThrow(()-> new Exception ("user non trovato"));
 		
 		Cart cart = new Cart();
