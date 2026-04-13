@@ -145,7 +145,7 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 	       
 		}
 		
-		if (request.getSizeId() == null) {
+		if (request.getSizeId() != null) {
 		      Size size = sizeR.findById(request.getSizeId())
 		    		  .orElseThrow(()-> new Exception("Size non trovata"));
 		      item.setSize(size);

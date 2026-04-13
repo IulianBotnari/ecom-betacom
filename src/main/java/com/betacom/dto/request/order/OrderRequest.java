@@ -19,5 +19,6 @@ public class OrderRequest {
 	private Long id;
 	private Long userId;
     private Long shippingAddress;
-    private String status; 
+    private String status;
+    private Long paymentMethodId;
 }

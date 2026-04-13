@@ -47,7 +47,11 @@ public class Order {
     private OrderStatus status; 
 
     private Double orderPrice;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "payment_method")
+    private PaymentMethod paymentMethod;
+    
     @ManyToOne
     @JoinColumn(name = "shipping_address")
     private Address shippingAddress;

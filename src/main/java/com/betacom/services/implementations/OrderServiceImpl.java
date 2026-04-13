@@ -13,10 +13,12 @@ import com.betacom.model.Address;
 import com.betacom.model.Cart;
 import com.betacom.model.Order;
 import com.betacom.model.OrderedItemsDetails;
+import com.betacom.model.PaymentMethod;
 import com.betacom.model.User;
 import com.betacom.repository.AddressRepository;
 import com.betacom.repository.CartRepository;
 import com.betacom.repository.OrderRepository;
+import com.betacom.repository.PaymentMethodRepository;
 import com.betacom.repository.UserRepository;
 import com.betacom.services.interfaces.InterfaceOrderService;
 
@@ -33,6 +35,7 @@ public class OrderServiceImpl implements InterfaceOrderService{
 	private final UserRepository userR;
     private final CartRepository cartR;
 	private final OrderRepository orderR;
+	private final PaymentMethodRepository payR;
 	
 	@Override
 	public OrderDTO getById(Long id) throws Exception {
@@ -73,11 +76,13 @@ public class OrderServiceImpl implements InterfaceOrderService{
 		Address defaultAddress = user.getAddresses().stream().filter(el -> el.isDefaulAddress() == true).findFirst().orElseThrow(() -> 
 									new Exception("Non hai un indirizzo predefinito"));
 		
-
+		PaymentMethod paymentMethod = payR.findById(request.getPaymentMethodId()).orElseThrow(()->new Exception("metodo pagamento non trovato"));
 		
 		order.setShippingAddress(defaultAddress);
 		
 		order.setStatus(null);
+		
+		order.setPaymentMethod(paymentMethod);
 		
 	    order.setOrderPrice(0.0);
 	    order.setUser(user);	    
@@ -103,6 +108,11 @@ public class OrderServiceImpl implements InterfaceOrderService{
 		    order.setShippingAddress(address);
 		}
 		
+		if (request.getPaymentMethodId() != null) {
+			PaymentMethod paymentMethod = payR.findById(request.getPaymentMethodId()).orElseThrow(()->new Exception("metodo pagamento non trovato"));
+		    order.setPaymentMethod(paymentMethod);
+		}
+		
 		
 		if (request.getStatus() != null) {
 		    order.setStatus(OrderStatus.valueOf(request.getStatus()));
@@ -121,4 +131,25 @@ public class OrderServiceImpl implements InterfaceOrderService{
 		orderR.delete(order);
 	}
 
+	@Override
+	public OrderDTO getByUserId(Long id) throws Exception {
+	    log.debug("Richiesta ordine per userId: {}", id);
+	    
+	
+	    User user = userR.findById(id)
+	            .orElseThrow(() -> new Exception("Utente non trovato con id: " + id));
+	    
+
+	    Order order = orderR.findByUser(user)
+	            .orElseThrow(() -> new Exception("Nessun ordine trovato associato all'utente con id: " + id));
+	    
+	 
+	    return DtoResponseMapper.orderDTO(order);
+	}
+	
+	
+	
+	
+	
+	
 }

@@ -113,6 +113,7 @@ import com.betacom.model.WishList;
 					.status(model.getStatus())
 					.orderPrice(model.getOrderPrice())
 					.shippingAddressId(model.getShippingAddress().getId())
+					.paymentMethod(paymentMethodDTO( model.getPaymentMethod()))
 					.details(model.getDetails().stream().map(d -> orderItemDetailsDTO(d)).collect(Collectors.toList()))
 					.build();
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.betacom.dto.response.address.AddressDTO;
 import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
+import com.betacom.dto.response.payment_method.PaymentMethodDTO;
 import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
 import com.betacom.model.OrderedItemsDetails;
@@ -38,6 +39,8 @@ public class OrderDTO {
     private Double orderPrice;
 
     private Long shippingAddressId;
+    
+    private PaymentMethodDTO paymentMethod;
 
     private List<OrderedItemsDetailsDTO> details;
 

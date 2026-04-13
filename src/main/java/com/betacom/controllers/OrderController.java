@@ -105,4 +105,17 @@ public class OrderController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@GetMapping("/findByUserId/{id}")
+	public ResponseEntity<Object> findByUserId(@PathVariable (required = true) Long id) {
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r = orderS.getByUserId(id);
+		} catch (Exception e) {
+			r = e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+	}
 }

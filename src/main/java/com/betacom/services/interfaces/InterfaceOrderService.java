@@ -16,4 +16,6 @@ public interface InterfaceOrderService {
 	void update(OrderRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
+	
+	OrderDTO getByUserId(Long id) throws Exception;
 }
