@@ -1,5 +1,6 @@
 package com.betacom.dto_mappers.map_dto_response;
 	
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +60,7 @@ import com.betacom.model.WishList;
 					.userId(model.getUser() == null ? null : model.getUser().getId())
 					.residence(model.isResidence())
 					.domicile(model.isDomicile())
-					.defaulAddress(model.isDefaulAddress())
+					.defaultAddress(model.isDefaulAddress())
 					.build();
 		}
 		
@@ -106,16 +107,20 @@ import com.betacom.model.WishList;
 		}
 		
 		public static OrderDTO orderDTO(Order model) {
-			return OrderDTO.builder()
-					.id(model.getId())
-					.userId(model.getUser() == null ? null : model.getUser().getId())
-					.date(model.getDate())
-					.status(model.getStatus())
-					.orderPrice(model.getOrderPrice())
-					.shippingAddressId(model.getShippingAddress().getId())
-					.paymentMethod(paymentMethodDTO( model.getPaymentMethod()))
-					.details(model.getDetails().stream().map(d -> orderItemDetailsDTO(d)).collect(Collectors.toList()))
-					.build();
+		    return OrderDTO.builder()
+		            .id(model.getId())
+		            .userId(model.getUser() != null ? model.getUser().getId() : null)
+		            .date(model.getDate())
+		            .status(model.getStatus())
+		            .orderPrice(model.getOrderPrice())
+		            .shippingAddressId(model.getShippingAddress() != null ? model.getShippingAddress().getId() : null)
+		            .paymentMethod(model.getPaymentMethod() != null ? paymentMethodDTO(model.getPaymentMethod()) : null)
+	
+		            .details(model.getDetails() == null ? new ArrayList<>() : 
+		                     model.getDetails().stream()
+		                          .map(d -> orderItemDetailsDTO(d))
+		                          .collect(Collectors.toList()))
+		            .build();
 		}
 		
 		public static OrderedItemsDetailsDTO orderItemDetailsDTO(OrderedItemsDetails model) {

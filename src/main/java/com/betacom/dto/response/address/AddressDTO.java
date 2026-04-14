@@ -27,5 +27,5 @@ public class AddressDTO {
     private Long userId;
     private boolean residence;
     private boolean domicile;
-    private boolean defaulAddress;
+    private boolean defaultAddress;
 }

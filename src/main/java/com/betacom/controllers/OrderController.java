@@ -33,8 +33,8 @@ public class OrderController {
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
-			orderS.create(request);
-			response = "Creazione avvenuta con successo";
+			
+			response = orderS.create(request);
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
 			response = e.getMessage();

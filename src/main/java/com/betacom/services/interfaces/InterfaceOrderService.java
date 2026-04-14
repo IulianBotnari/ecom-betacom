@@ -11,7 +11,7 @@ public interface InterfaceOrderService {
 	
 	List<OrderDTO> list() throws Exception;
 	
-	void create(OrderRequest request) throws Exception;
+	OrderDTO create(OrderRequest request) throws Exception;
 	
 	void update(OrderRequest request) throws Exception;
 	
