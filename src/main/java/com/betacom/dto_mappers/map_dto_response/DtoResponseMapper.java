@@ -126,11 +126,10 @@ import com.betacom.model.WishList;
 		public static OrderedItemsDetailsDTO orderItemDetailsDTO(OrderedItemsDetails model) {
 			return OrderedItemsDetailsDTO.builder()
 					.id(model.getId())
-					.orderId(model.getOrder().getId())
+					.orderId(model.getOrder() != null ? model.getOrder().getId() : null)
 					.product(model.getProduct() == null ? null : productsDTO(model.getProduct()))
 					.quantity(model.getQuantity())
 					.totalPrice(model.getTotalPrice())
-	
 					.build();
 		}
 		

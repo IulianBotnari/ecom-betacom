@@ -1,6 +1,7 @@
 package com.betacom.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -57,7 +58,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "shipping_address")
     private Address shippingAddress;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderedItemsDetails> details;
+    private List<OrderedItemsDetails> details = new ArrayList<>();
 }

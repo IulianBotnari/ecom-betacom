@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.dto.request.order.OrderRequest;
 import com.betacom.dto.response.order.OrderDTO;
@@ -59,40 +60,37 @@ public class OrderServiceImpl implements InterfaceOrderService{
 	}
 
 	@Override
+	@Transactional 
 	public OrderDTO create(OrderRequest request) throws Exception {
-		log.debug("create {}", request);
-		
-		
-		if(request.getUserId() == null) {
-			new Exception("Devi associare un id utente all'ordine");
-		}
-		
-		User user = userR.findById(request.getUserId())
-				.orElseThrow(()-> new Exception ("user non trovato"));
-		
-		Order order = new Order();
-		
-	
-		Address defaultAddress = user.getAddresses().stream().filter(el -> el.isDefaulAddress() == true).findFirst().orElseThrow(() -> 
-									new Exception("Non hai un indirizzo predefinito"));
-		
-		PaymentMethod paymentMethod = payR.findById(request.getPaymentMethodId()).orElseThrow(()->new Exception("metodo pagamento non trovato"));
-		
-		order.setShippingAddress(defaultAddress);
-		
-		order.setStatus(null);
-		
-		order.setPaymentMethod(paymentMethod);
-		
+	    log.debug("create {}", request);
+	    
+	    if(request.getUserId() == null) {
+	        throw new Exception("Devi associare un id utente all'ordine"); 
+	    }
+	    
+	    User user = userR.findById(request.getUserId())
+	            .orElseThrow(() -> new Exception("User non trovato"));
+	    
+	    Order order = new Order();
+	    
+	    Address defaultAddress = user.getAddresses().stream()
+	            .filter(Address::isDefaulAddress) 
+	            .findFirst()
+	            .orElseThrow(() -> new Exception("Non hai un indirizzo predefinito"));
+	    
+
+	    PaymentMethod paymentMethod = payR.findById(request.getPaymentMethodId())
+	            .orElseThrow(() -> new Exception("Metodo pagamento non trovato"));
+	    
+	    order.setShippingAddress(defaultAddress);
+	    order.setStatus(OrderStatus.ORDINATO); 
+	    order.setPaymentMethod(paymentMethod);
 	    order.setOrderPrice(0.0);
 	    order.setUser(user);	    
-	    
 
 	    Order response = orderR.save(order);
 	    
-	    System.out.println("Ordine restituito: " + response.toString());
-	    
-	    
+	    log.info("Ordine creato con ID: {}", response.getId());
 	    
 	    return DtoResponseMapper.orderDTO(response);
 	}
