@@ -66,7 +66,7 @@ public class CartItemController {
 	
 	
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
+	public ResponseEntity<Object> delete(@PathVariable(required = true) Long id){
 		Object response = null;
 		
 		HttpStatus status = HttpStatus.OK;
@@ -109,6 +109,25 @@ public class CartItemController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return ResponseEntity.status(status).body(r);
+	}
+	
+	
+	@DeleteMapping(path = "deleteAllByCartId/{id}")
+	public ResponseEntity<Object> deleteByCartId(@PathVariable(required = true) Long id){
+		Object response = null;
+		
+		HttpStatus status = HttpStatus.OK;
+		
+		try {
+			cartItmS.deleteAllByCart(id);
+			response = "Eliminazione completata";
+		} catch (Exception e) {
+			response = "Eliminazione non riuscita";
+			status = HttpStatus.BAD_REQUEST;
+		}
+		
+		
+		return ResponseEntity.status(status).body(response);
 	}
 
 }

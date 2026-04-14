@@ -6,6 +6,7 @@ import com.betacom.dto.request.card.CardRequest;
 import com.betacom.dto.request.cart_item.CartItemRequest;
 import com.betacom.dto.response.card.CardDTO;
 import com.betacom.dto.response.cart_item.CartItemDTO;
+import com.betacom.model.Cart;
 
 public interface InterfaceCartItemService {
 	CartItemDTO getById(Long id) throws Exception;
@@ -17,4 +18,6 @@ public interface InterfaceCartItemService {
 	void update(CartItemRequest request) throws Exception;
 	
 	void delete(Long id) throws Exception;
+	
+	void deleteAllByCart(Long cart) throws Exception;
 }

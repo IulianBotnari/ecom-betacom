@@ -165,4 +165,15 @@ public class CartItemServiceImpl implements InterfaceCartItemService{
 		
 	}
 
+
+	@Override
+	public void deleteAllByCart(Long cartId) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Cart cart = cartR.findById(cartId).orElseThrow(() -> new Exception("Carrello non trovato"));
+		
+		cartItemR.deleteAllByCart(cart);
+		
+	}
+
 }
