@@ -3,9 +3,11 @@ package com.betacom.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.betacom.enums.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,6 +25,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Builder
@@ -78,6 +81,9 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Review> reviews;
+	
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<WishList> wishList;
 	
 	@CreationTimestamp
 	@Column(name = "create_date")

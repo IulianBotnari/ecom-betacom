@@ -31,6 +31,10 @@ public class Category {
 
     @Column(nullable = false, unique = true)
     private String category;
+    
+    @Column(nullable = false)
+    private Boolean isView;
+    
     @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> products;

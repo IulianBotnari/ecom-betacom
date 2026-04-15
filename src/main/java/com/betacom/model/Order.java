@@ -1,6 +1,7 @@
 package com.betacom.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,6 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @Entity
@@ -31,6 +33,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Order {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +49,16 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status; 
 
-    private Double total;
-
+    private Double orderPrice;
+    
+    @ManyToOne
+    @JoinColumn(name = "payment_method")
+    private PaymentMethod paymentMethod;
+    
     @ManyToOne
     @JoinColumn(name = "shipping_address")
     private Address shippingAddress;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetail> details;
+    private List<OrderedItemsDetails> details = new ArrayList<>();
 }

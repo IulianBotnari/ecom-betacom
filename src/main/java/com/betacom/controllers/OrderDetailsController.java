@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.dto.request.order_details.OrderDetailRequest;
-import com.betacom.services.interfaces.InterfaceOrderDetailService;
+import com.betacom.dto.request.ordered_items_details.OrderedItemsDetailsRequest;
+import com.betacom.services.interfaces.InterfaceOrderedItemsDetailsService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping ("/rest/orderDetails")
 public class OrderDetailsController {
 	
-	private final InterfaceOrderDetailService orderDS;
+	private final InterfaceOrderedItemsDetailsService orderDS;
 	
 	@PostMapping(path = "create")
-	public ResponseEntity<Object> create(@Valid @RequestBody OrderDetailRequest request) {
+	public ResponseEntity<Object> create(@Valid @RequestBody OrderedItemsDetailsRequest request) {
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
@@ -38,12 +38,13 @@ public class OrderDetailsController {
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
 			response = "Errore durnate il salvataggio";
+			e.printStackTrace();
 		}
 		return ResponseEntity.status(status).body(response);
 	}
 	
 	@PutMapping(path = "update")
-	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) OrderDetailRequest request){
+	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) OrderedItemsDetailsRequest request){
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
@@ -85,6 +86,7 @@ public class OrderDetailsController {
 		try {
 			response = orderDS.list();
 		} catch (Exception e) {
+			e.printStackTrace();
 			response = "Errore durante il recupero della lista";
 			status = HttpStatus.BAD_REQUEST;
 		}
@@ -92,8 +94,8 @@ public class OrderDetailsController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {

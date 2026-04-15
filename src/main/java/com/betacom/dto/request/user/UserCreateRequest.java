@@ -45,6 +45,4 @@ public class UserCreateRequest {
 	@Pattern(regexp = "^[0-9]{10}$", message = "Telefono non valido")
 	private String phone;
 
-	@NotNull(message = "Campo role mancante")
-	private Roles role;
 }

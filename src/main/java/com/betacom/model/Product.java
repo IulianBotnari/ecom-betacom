@@ -15,6 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,12 +55,33 @@ public class Product {
 	
 	private Double price;
 	
+	@Column(nullable = true)
+	private Double discount;
+	
+	@Column(nullable = true)
+	private Double discountPercentage;
+	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private List<Size> sizes;
 	
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private List<Review> reviews;
 	
+	@PrePersist
+	@PreUpdate
+	public void calculateDiscountPercentage() {
+	    if (price != null && discount != null && price > 0) {
+
+	        Double priceDiff = price - discount;
+	        Double percentage = priceDiff / (price /100);
+	        percentage = (double) Math.round(percentage);
+	        this.discountPercentage = percentage;
+	    } else {
+	        this.discountPercentage = 0.0;
+	    }
+	}
 	
-	
+	@Column(name = "average_rating")
+	private Double averageRating;
 }
+

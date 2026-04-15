@@ -1,6 +1,7 @@
 package com.betacom.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +11,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.betacom.dto.request.product.ProductRequest;
 import com.betacom.dto.request.product.ProudctUpdate;
+import com.betacom.enums.Genders;
 import com.betacom.services.interfaces.InterfaceProductService;
 
 import jakarta.validation.Valid;
@@ -30,13 +34,13 @@ public class ProductController {
 	private final InterfaceProductService productS;
 	
 	
-	@PostMapping(path = "create")
-	public ResponseEntity<Object> create( @RequestBody ProductRequest request) {
+	@PostMapping(path = "create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> create( @RequestPart("product") ProductRequest request, @RequestPart("file") MultipartFile file) {
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
-			productS.create(request);
+			productS.create(request, file);
 			response = "Creazione avvenuta con successo";
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
@@ -48,13 +52,13 @@ public class ProductController {
 	
 	
 	
-	@PutMapping(path = "update")
-	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) ProudctUpdate request){
+	@PutMapping(path = "update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> update(@RequestPart("product") ProudctUpdate request, @RequestPart(value = "file", required = false) MultipartFile file){
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
-			productS.update(request);
+			productS.update(request, file);
 			response = "Salvataggio completato";
 		} catch (Exception e) {
 			response = "Salvataggio non riuscito";
@@ -76,7 +80,8 @@ public class ProductController {
 			productS.delete(id);
 			response = "Eliminazione completata";
 		} catch (Exception e) {
-			response = "Eliminazione non riuscita";
+			e.printStackTrace();
+			response = "Eliminazione non riuscita" + e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}
 		
@@ -99,8 +104,8 @@ public class ProductController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -110,5 +115,28 @@ public class ProductController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return ResponseEntity.status(status).body(r);
+	}
+	
+	@GetMapping(path = "multiFilter")
+	public ResponseEntity<Object> multiFilterProduct(
+	        @RequestParam(required = false) Long id,
+	        @RequestParam(required = false) String name,
+	        @RequestParam(required = false) Long categoryId,
+	        @RequestParam(required = false) Genders gender,
+	        @RequestParam(required = false) String material,
+	        @RequestParam(required = false) Double price) throws Exception {
+
+	    Object response = null;
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        response = productS.multiFilter(id, name, categoryId, gender, material, price);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        status = HttpStatus.BAD_REQUEST;
+	        response = "Impossibile recuperare i prodotti";
+	    }
+
+	    return ResponseEntity.status(status).body(response);
 	}
 }

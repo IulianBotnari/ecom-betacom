@@ -1,4 +1,4 @@
-package com.betacom.dto.request.order_details;
+package com.betacom.dto.request.ordered_items_details;
 
 import com.betacom.dto.request.address.AddressCreateRequest;
 
@@ -15,7 +15,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailRequest {
+public class OrderedItemsDetailsRequest {
 	private Long orderId;
     private Long productId;
     private Long sizeId;

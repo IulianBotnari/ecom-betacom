@@ -1,21 +1,31 @@
 package com.betacom.services.implementations;
 
 import java.util.List;
-import com.betacom.model.Category;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.betacom.controllers.OrderDetailsController;
 import com.betacom.dto.request.product.ProductRequest;
-
 import com.betacom.dto.request.product.ProudctUpdate;
 import com.betacom.dto.response.product.ProductsDTO;
+import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.dto_mappers.map_dto_response.DtoResponseMapper;
 import com.betacom.dto_mappers.map_model.ModelMappers;
 import com.betacom.enums.Genders;
+import com.betacom.enums.Sizes;
+import com.betacom.model.Category;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.Product;
+import com.betacom.model.Size;
 import com.betacom.repository.CategoryRepository;
+import com.betacom.repository.OrderedItemsDetailsRepository;
 import com.betacom.repository.ProductRepository;
+import com.betacom.repository.SizeRepository;
 import com.betacom.services.interfaces.InterfaceProductService;
+import com.betacom.services.interfaces.InterfaceUploadService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +37,10 @@ public class ProductServiceImpl implements InterfaceProductService{
 	
 	private final ProductRepository productR;
 	private final CategoryRepository categoryR;
+	private final SizeRepository sizeR;
+	private final OrderedItemsDetailsRepository orderDetR;
 	private final ModelMappers modelM;
+	private final InterfaceUploadService uploadS;
 	
 	@Override
 	public ProductsDTO getById(Long id) throws Exception {
@@ -42,22 +55,41 @@ public class ProductServiceImpl implements InterfaceProductService{
 		List<Product> lista = productR.findAll();
 		return lista.stream().map(el -> DtoResponseMapper.productsDTO(el)).collect(Collectors.toList());
 	}
-
+	
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void create(ProductRequest request) throws Exception {
+	public void create(ProductRequest request, MultipartFile file) throws Exception {
 		if (request.getCategoryId() == null) throw new Exception("Campo categoria id non puo essere vuoto");
 		if (request.getPrice() == null) throw new Exception("Campo prezzo non puo essere vuoto");
+		
+		String image = "";
 		Category category = categoryR.findById(request.getCategoryId()).orElseThrow(()-> new Exception("Categoria non trovata"));
+			
+		if (file != null) {
+			image = uploadS.saveImage(file);
+			request.setImage(image);
+		}
+
 		Product product = modelM.product(request, category);
+		product = productR.save(product);
 		
-		productR.save(product);
+		Size size = new Size();		
+		size.setProduct(product);
+		size.setQuantity(request.getQuantity());
 		
-		
+		try {
+	        size.setSize(Sizes.valueOf(request.getSize().toUpperCase()));
+	    } catch (IllegalArgumentException e) {
+	        throw new Exception("Taglia non valida: " + request.getSize());
+	    }
+				
+		sizeR.save(size);
+
 	}
 
 	@Override
-	public void update(ProudctUpdate request) throws Exception {
-	
+	public void update(ProudctUpdate request, MultipartFile file) throws Exception {
+		String image = "";
 		Product product = productR.findById(request.getId()).orElseThrow(()-> new Exception("Prodotto non trovato in db"));
 		
 		if (request.getCategoryId()!= null) {
@@ -71,10 +103,11 @@ public class ProductServiceImpl implements InterfaceProductService{
 		
 		if(request.getGender() != null) {
 			product.setGender(Genders.valueOf(request.getGender()));
-		}
+		}		
 		
-		if (request.getImage() != null) {
-			product.setImage(request.getImage());
+		if (file != null) {
+			image = uploadS.saveImage(file);
+			product.setImage(image);
 		}
 		
 		if(request.getMaterial()!= null) {
@@ -85,19 +118,28 @@ public class ProductServiceImpl implements InterfaceProductService{
 			product.setPrice(request.getPrice());
 		}
 		
+		if(request.getDiscount() != null) {
+			product.setDiscount(request.getDiscount());
+		}
+		
 		if(request.getName() != null) {
 			product.setName(request.getName());
 		}
-		
-		
-		
+				
 		productR.save(product);
 		
 	}
-
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void delete(Long id) throws Exception {
 		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));
+		List<OrderedItemsDetails> orderD = orderDetR.findAll().stream().filter(od -> od.getProduct().getId() == id).collect(Collectors.toList());
+		
+		orderD.forEach(od -> {
+			od.setProduct(null);
+			orderDetR.save(od);
+		});
+		
 		productR.delete(product);
 		
 	}
@@ -108,5 +150,25 @@ public class ProductServiceImpl implements InterfaceProductService{
 		Product product = productR.findById(id).orElseThrow(()-> new Exception("Prodotto non trovato"));		
 		return product;
 	}
+	
+	@Override
+	public List<? extends ProductsDTO> multiFilter(Long id,                
+	        String name,
+	        Long categoryId,
+	        Genders gender,
+	        String material,
+	        Double price) throws Exception {
+		List<Product> prodotti = productR.findProductsByFilters(
+		        id,
+		        name != null ? name + "%" : null,
+		        categoryId,
+		        gender,
+		        material != null ? material + "%" : null,
+		        price
+		);
+	    return prodotti.stream().map(p -> 
+	    		DtoResponseMapper.productsDTO(p))
+	    		.collect(Collectors.toList()) ;
+		}
 
 }

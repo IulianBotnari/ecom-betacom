@@ -1,21 +1,35 @@
 package com.betacom.services.interfaces;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import com.betacom.dto.request.size.SizeRequest;
+import com.betacom.dto.request.login.LoginRequest;
 import com.betacom.dto.request.user.UserCreateRequest;
 import com.betacom.dto.request.user.UserUpdateRequest;
-import com.betacom.dto.response.size.SizeDTO;
+import com.betacom.dto.response.login.LoginDTO;
 import com.betacom.dto.response.user.UserDTO;
+import com.betacom.enums.Roles;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface InterfaceUserService {
-	UserDTO getById(Long id) throws Exception;
-	
-	List<UserDTO> list() throws Exception;
-	
 	void create(UserCreateRequest request) throws Exception;
-	
 	void update(UserUpdateRequest request) throws Exception;
-	
+	void updateByAdmin(UserUpdateRequest request) throws Exception;
 	void delete(Long id) throws Exception;
+
+	List<UserDTO> list() throws Exception;
+	UserDTO getById(Long id) throws Exception;
+	LoginDTO login(LoginRequest request, HttpServletRequest httpRequest, 
+            HttpServletResponse httpResponse) throws Exception;
+	
+	public List<? extends UserDTO> multiFilter(
+	        Long id,
+	        String name,
+	        String lastName,
+	        String email,
+	        String codiceFiscale,
+	        Roles role,
+	        LocalDate createDate) throws Exception;
 }

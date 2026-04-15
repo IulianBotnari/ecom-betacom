@@ -4,10 +4,14 @@ package com.betacom.dto.response.order;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.betacom.dto.response.address.AddressDTO;
+import com.betacom.dto.response.ordered_items_details.OrderedItemsDetailsDTO;
+import com.betacom.dto.response.payment_method.PaymentMethodDTO;
 import com.betacom.enums.OrderStatus;
 import com.betacom.model.Address;
-import com.betacom.model.OrderDetail;
+import com.betacom.model.OrderedItemsDetails;
 import com.betacom.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,17 +30,19 @@ public class OrderDTO {
 	
     private Long id;
 
-    private User user;
+    private Long userId;
 
     private LocalDate date;
     
     private OrderStatus status; 
 
-    private Double total;
+    private Double orderPrice;
 
-    private Address shippingAddress;
+    private Long shippingAddressId;
+    
+    private PaymentMethodDTO paymentMethod;
 
-    private List<OrderDetail> details;
+    private List<OrderedItemsDetailsDTO> details;
 
 
 }

@@ -40,6 +40,7 @@ public class CartItemController {
 		} catch (Exception e) {
 			status = HttpStatus.BAD_REQUEST;
 			response = "Errore durnate il salvataggio";
+			e.printStackTrace();
 		}
 		return ResponseEntity.status(status).body(response);
 	}
@@ -65,7 +66,7 @@ public class CartItemController {
 	
 	
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
+	public ResponseEntity<Object> delete(@PathVariable(required = true) Long id){
 		Object response = null;
 		
 		HttpStatus status = HttpStatus.OK;
@@ -97,8 +98,8 @@ public class CartItemController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -108,6 +109,25 @@ public class CartItemController {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return ResponseEntity.status(status).body(r);
+	}
+	
+	
+	@DeleteMapping(path = "deleteAllByCartId/{id}")
+	public ResponseEntity<Object> deleteByCartId(@PathVariable(required = true) Long id){
+		Object response = null;
+		
+		HttpStatus status = HttpStatus.OK;
+		
+		try {
+			cartItmS.deleteAllByCart(id);
+			response = "Eliminazione completata";
+		} catch (Exception e) {
+			response = "Eliminazione non riuscita";
+			status = HttpStatus.BAD_REQUEST;
+		}
+		
+		
+		return ResponseEntity.status(status).body(response);
 	}
 
 }

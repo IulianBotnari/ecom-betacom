@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.dto.request.payment_method.PaymentMethodRequest;
-import com.betacom.dto.request.user.UserUpdateRequest;
 import com.betacom.services.interfaces.InterfacePaymentMethodService;
 
 import jakarta.validation.Valid;
@@ -46,12 +45,13 @@ public class PaymentMethodController {
 	
 	
 	
-	@PutMapping(path = "update")
-	public ResponseEntity<Object> update(@Valid @RequestBody(required = true) PaymentMethodRequest request){
+	@PutMapping(path = "update/{id}")
+	public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody PaymentMethodRequest request){
 		Object response = null;
 		HttpStatus status = HttpStatus.CREATED;
 		
 		try {
+			request.setId(id);	
 			pmS.update(request);
 			response = "Salvataggio completato";
 		} catch (Exception e) {
@@ -65,7 +65,7 @@ public class PaymentMethodController {
 	
 	
 	@DeleteMapping(path = "delete/{id}")
-	public ResponseEntity<Object> create(@PathVariable(required = true) Long id){
+	public ResponseEntity<Object> delete(@PathVariable(required = true) Long id){
 		Object response = null;
 		
 		HttpStatus status = HttpStatus.OK;
@@ -97,8 +97,8 @@ public class PaymentMethodController {
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {

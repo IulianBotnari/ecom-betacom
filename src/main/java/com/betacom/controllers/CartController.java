@@ -74,17 +74,31 @@ private final InterfaceCartService cartS;
 		} catch (Exception e) {
 			response = "Errore durante il recupero della lista";
 			status = HttpStatus.BAD_REQUEST;
+			e.printStackTrace();
 		}
 		
 		return ResponseEntity.status(status).body(response);
 	}
 	
-	@GetMapping("/findById")
-	public ResponseEntity<Object> findById(@RequestParam (required = true) Long id) {
+	@GetMapping("/findById/{id}")
+	public ResponseEntity<Object> findById(@PathVariable (required = true) Long id) {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r = cartS.getById(id);
+		} catch (Exception e) {
+			r = e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+	}
+	
+	@GetMapping("/findByUserId/{id}")
+	public ResponseEntity<Object> findByUserId(@PathVariable (required = true) Long id) {
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r = cartS.findByUserId(id);
 		} catch (Exception e) {
 			r = e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

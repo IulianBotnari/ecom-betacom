@@ -23,13 +23,21 @@ public class ProductRequest {
     private String description;
 
     private Double price;
-
+    
+    private Double discount;
+    
+    private Double discountPercentage;
+    
     private Long categoryId;
 	@NotBlank(message = "Campo gender non puo essere vuoto")
     private String gender;
-	@NotBlank(message = "Campo image non puo essere vuoto")
+	
     private String image;
 	@NotBlank(message = "Campo material non puo essere vuoto")
     private String material;
+	
+	private String size;
+	
+	private Integer quantity;
 
 }

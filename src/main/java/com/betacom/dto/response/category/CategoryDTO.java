@@ -1,8 +1,5 @@
 package com.betacom.dto.response.category;
 
-import java.util.List;
-
-import com.betacom.model.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +18,7 @@ public class CategoryDTO {
 	
     private Long id;
     private String category;
-    private List<Product> products;
+	private Boolean isView;
+    //private List<ProductsDTO> products;
 
 }

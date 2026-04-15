@@ -1,5 +1,8 @@
-package com.betacom.dto.response.order_details;
+package com.betacom.dto.response.ordered_items_details;
 
+import com.betacom.dto.response.order.OrderDTO;
+import com.betacom.dto.response.product.ProductsDTO;
+import com.betacom.dto.response.size.SizeDTO;
 import com.betacom.model.Order;
 import com.betacom.model.Product;
 import com.betacom.model.Size;
@@ -17,18 +20,16 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDetailsDTO {
+public class OrderedItemsDetailsDTO {
 	
     private Long id;
 
-    private Order order;
+    private Long orderId;
 
-    private Product product;
-    
-    private Size size;
-
+    private ProductsDTO product;
+   
     private Integer quantity;
-
+    
     private Double totalPrice;
 
 }

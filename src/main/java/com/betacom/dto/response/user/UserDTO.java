@@ -1,7 +1,13 @@
 package com.betacom.dto.response.user;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.betacom.dto.response.address.AddressDTO;
+import com.betacom.dto.response.order.OrderDTO;
+import com.betacom.dto.response.payment_method.PaymentMethodDTO;
+import com.betacom.dto.response.review.ReviewDTO;
+import com.betacom.dto.response.wish_list.WishListDTO;
 import com.betacom.enums.Roles;
 
 import lombok.AllArgsConstructor;
@@ -29,5 +35,10 @@ public class UserDTO {
 	    private String password;
 	    private String phone;
 	    private Roles role;
+	    private List<AddressDTO> addresses;
+	    private List<PaymentMethodDTO> paymentMethods;
+	    private List<OrderDTO> orders;
+	    private List<ReviewDTO> reviews;
+	    private List<WishListDTO> wishList;
 
 }
