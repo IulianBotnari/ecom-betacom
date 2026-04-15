@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,10 @@ import lombok.Setter;
 
 @Builder
 @Entity
-@Table(name = "wishlist")
+@Table(name = "wishlist",
+	uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "product_id"})
+    })
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
